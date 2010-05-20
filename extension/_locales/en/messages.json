@@ -16,11 +16,11 @@
 
 {
   "app_name": {
-    "message": "Chrome to Phone",
+    "message": "Google Chrome to Phone Extension",
     "description": "Name of the application"
   },
   "app_desc": {
-    "message": "This extension adds a button to let you send a link to your Android phone. Requires the Chrome to Phone app to be installed on your Android device.",
+    "message": "This extension adds a button to let you send a link to your Android phone. Requires the Google Chrome to Phone Extension app to be installed on your Android device.",
     "description": "Description of the application."
   },
   "sending_message": {
