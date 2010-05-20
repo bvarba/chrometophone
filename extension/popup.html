@@ -1,0 +1,75 @@
+<!--
+    Copyright 2010 Google Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<style type="text/css">
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  font-family: verdana;
+  font-size: 12px;
+  color: black;
+  background-color: white;
+}
+</style>
+
+<script type="text/javascript">
+var baseUrl = 'http://chrometophone.appspot.com/send';
+var req = new XMLHttpRequest();
+
+function loadHandler() {
+  document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sending_message');
+  document.getElementById('about').innerHTML = chrome.i18n.getMessage('about_message');
+
+  chrome.tabs.getSelected(null, function(tab) {
+    if (tab.url.indexOf('http:') == 0 ||
+        tab.url.indexOf('https:') == 0) {
+      sendToPhone(tab.title, tab.url);
+    } else {
+      document.getElementById('msg').innerHTML = chrome.i18n.getMessage('invalid_scheme_message');
+    }
+  });
+}
+
+function sendToPhone(title, url) {
+  var sendUrl = baseUrl + '?title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url);
+  req.open('GET', sendUrl, true);
+ 
+  req.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      if (req.status == 200) {
+        if (req.responseText.substring(0, 2) == 'OK') {
+          document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sent_message');
+        } else {  // most likely login, handle in new tab
+          document.getElementById('msg').innerHTML =
+              chrome.i18n.getMessage('login_required_message');
+          chrome.tabs.create({url: sendUrl});
+        }
+      } else { 
+        document.getElementById('msg').innerHTML =  
+            chrome.i18n.getMessage('error_sending_message', req.responseText);
+      }
+    }
+  }
+  
+  req.send(null);
+}
+
+</script>
+
+<body onload="loadHandler()">
+<b><div id="msg"></div></b>
+<p><a href="#" onclick="chrome.tabs.create({url: 'about.html'})"><div id="about"></div></a></p>
+</body>

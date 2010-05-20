@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chrome to Phone</string>
+    <string name="status_registering">Status: Registering device...</string>
+    <string name="status_unregistering">Status: Unregistering device...</string>
+    <string name="status_registered">Status: Device registered</string>
+    <string name="status_not_registered">Status: Device not registered</string>
+    <string name="launch_check_box">Launch browser/maps directly</string>
+    <string name="accounts">Desktop Account</string>
+    <string name="register">Register Device</string>
+    <string name="unregister">Unregister Device</string>
+    <string name="setup">Setup</string>
+    <string name="action">Action</string>
+</resources>
