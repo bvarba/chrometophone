@@ -40,15 +40,17 @@ public class SendServlet extends HttpServlet {
     private static final String OK_STATUS = "OK";
     private static final String ERROR_STATUS = "ERROR";
 
+    @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doGet(req, resp);
     }
-    
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
         String url = req.getParameter("url");
         String title = req.getParameter("title");
+        String sel = req.getParameter("sel");  // optional
         if (url == null && title == null) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + " (Must specify url and title parameters)");
@@ -58,17 +60,18 @@ public class SendServlet extends HttpServlet {
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
         if (user != null) {
-            doSendToPhone(url, title, user.getEmail(), resp);
+            doSendToPhone(url, title, sel, user.getEmail(), resp);
         } else {
             String followOnURL = req.getRequestURI() + "?title=" +
                     URLEncoder.encode(req.getParameter("title"), "UTF-8") +
-                    "&url=" + URLEncoder.encode(req.getParameter("url"), "UTF-8");
+                    "&url=" + URLEncoder.encode(req.getParameter("url"), "UTF-8") +
+                    "&sel=" + URLEncoder.encode(req.getParameter("sel"), "UTF-8");
             resp.sendRedirect(userService.createLoginURL(followOnURL));
         }
     }
 
-    private boolean doSendToPhone(String url, String title, String userAccount,
-            HttpServletResponse resp) throws IOException {
+    private boolean doSendToPhone(String url, String title, String sel,
+            String userAccount, HttpServletResponse resp) throws IOException {
         // Get device info
         DeviceInfo deviceInfo = null;
         // Shared PMF
@@ -91,7 +94,8 @@ public class SendServlet extends HttpServlet {
         // Send push message to phone
         C2DMessaging push = C2DMessaging.get(getServletContext());
         if (push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
-                "" + url.hashCode(),  "url", url, "title", title)) {
+                "" + url.hashCode(),  "url", url, "title", title,
+                "sel", sel)) {
             log.info("Link sent to phone!");
             resp.getWriter().println(OK_STATUS);
             return true;
