@@ -73,7 +73,7 @@ chrome.extension.onConnect.addListener(function(port) {
   // This will get called by the content script. We go through
   // these hoops to get the optional text selection.
   port.onMessage.addListener(function(info) {
-    var max_length = 1024;
+    var max_length = 256;
     if (info.selection.length > max_length) {
       info.selection = info.selection.substring(0, max_length);
     }
