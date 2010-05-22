@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
@@ -60,8 +61,14 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        if (extras != null) {
            String url = (String) extras.get("url");
            String title = (String) extras.get("title");
+           String sel = (String) extras.get("sel");
            if (url != null && title != null) {
                if (url.startsWith("http")) {
+                   if (sel != null) {
+                       ClipboardManager cm =
+                               (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+                       cm.setText(sel);
+                   }
                    SharedPreferences settings = Prefs.get(context);
                    if (settings.getBoolean("launchBrowserOrMaps", false)) {
                        launchBrowserOrMaps(context, url, title);
