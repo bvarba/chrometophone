@@ -36,17 +36,18 @@ function loadHandler() {
   chrome.tabs.getSelected(null, function(tab) {
     if (tab.url.indexOf('http:') == 0 ||
         tab.url.indexOf('https:') == 0) {
-      sendToPhone(tab.title, tab.url);
+      chrome.tabs.executeScript(null, {file: "content_script.js"});
     } else {
       document.getElementById('msg').innerHTML = chrome.i18n.getMessage('invalid_scheme_message');
     }
   });
 }
 
-function sendToPhone(title, url) {
-  var sendUrl = baseUrl + '?title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url);
+function sendToPhone(title, url, selection) {
+  var sendUrl = baseUrl + '?title=' + encodeURIComponent(title) +
+      '&url=' + encodeURIComponent(url) + '&sel=' + encodeURIComponent(selection);
   req.open('GET', sendUrl, true);
- 
+
   req.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (req.status == 200) {
@@ -66,6 +67,19 @@ function sendToPhone(title, url) {
   
   req.send(null);
 }
+
+chrome.extension.onConnect.addListener(function(port) {
+  var tab = port.sender.tab;
+  // This will get called by the content script. We go through
+  // these hoops to get the optional text selection.
+  port.onMessage.addListener(function(info) {
+    var max_length = 1024;
+    if (info.selection.length > max_length) {
+      info.selection = info.selection.substring(0, max_length);
+    }
+    sendToPhone(info.title, info.url, info.selection);
+  });
+});
 
 </script>
 

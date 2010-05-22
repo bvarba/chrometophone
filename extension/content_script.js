@@ -14,19 +14,10 @@
  * limitations under the License.
  */
 
-{
-  "name": "__MSG_app_name__",
-  "description": "__MSG_app_desc__",
-  "version": "1.0.0",
-  "default_locale": "en",
-  "icons": { "128": "icon_128.png" },
-  "options_page": "about.html",
-  "browser_action": {
-    "default_title": "__MSG_app_name__",
-    "default_icon": "icon_19.png",
-    "popup": "popup.html"
-  },
-  "permissions": [
-    "tabs", "http://*/*", "https://*/*"
-  ]
-}
+var additionalInfo = {
+  "title": document.title,
+  "url": document.location.href,
+  "selection": window.getSelection().toString()
+};
+
+chrome.extension.connect().postMessage(additionalInfo);
