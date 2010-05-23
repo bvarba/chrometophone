@@ -42,7 +42,7 @@ public class RegisterServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doGet(req, resp);
     }
-    
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
@@ -74,6 +74,7 @@ public class RegisterServlet extends HttpServlet {
                 pm.close();
             }
         } else {
+            resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + " (Not authorized)");
         }
     }
