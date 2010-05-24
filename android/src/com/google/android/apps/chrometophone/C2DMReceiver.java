@@ -32,7 +32,7 @@ import android.util.Log;
 import com.google.android.c2dm.C2DMBaseReceiver;
 
 public class C2DMReceiver extends C2DMBaseReceiver {
-    private static final String TAG = "DataMessageReceiver";
+    private static final String TAG = "C2DMReceiver";
 
     public C2DMReceiver() {
         super(DeviceRegistrar.SENDER_ID);
@@ -99,6 +99,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
            context.startActivity(intent);
        } catch (ActivityNotFoundException e) {
            if (isMapsURL) {  // try again without GMM
+               Log.w(TAG, "Maps not found, falling back to browser");
                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                context.startActivity(intent);

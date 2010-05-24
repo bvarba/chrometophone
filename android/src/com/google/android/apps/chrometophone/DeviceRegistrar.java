@@ -42,35 +42,39 @@ public class DeviceRegistrar {
     private static final String TAG = "DeviceRegistrar";
     static final String SENDER_ID = "stp.chrome@gmail.com";
     private static final String BASE_URL = "http://chrometophone.appspot.com";
-    
+
     // Appengine authentication
     private static final String AUTH_URL = BASE_URL + "/_ah/login";
     private static final String AUTH_TOKEN_TYPE = "ah";
 
     private static final String REGISTER_URL = BASE_URL + "/register";
     private static final String UNREGISTER_URL = BASE_URL + "/unregister";
-    
+
     public static void registerWithServer(final Context context,
           final String deviceRegistrationID) {
-        try {
-            HttpResponse res = makeRequest(context, deviceRegistrationID, REGISTER_URL);
-            if (res.getStatusLine().getStatusCode() == 200) {
-                SharedPreferences settings = Prefs.get(context);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("deviceRegistrationID", deviceRegistrationID);
-                editor.commit();
-            } else {
-                Log.w(TAG, "Registration error " +
-                        String.valueOf(res.getStatusLine().getStatusCode()));
-            }
-        } catch (PendingAuthException e) {
-            // Ignore - we'll reregister later
-        } catch (Exception e) {
-            Log.w(TAG, "Registration error " + e.getMessage());
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    HttpResponse res = makeRequest(context, deviceRegistrationID, REGISTER_URL);
+                    if (res.getStatusLine().getStatusCode() == 200) {
+                        SharedPreferences settings = Prefs.get(context);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("deviceRegistrationID", deviceRegistrationID);
+                        editor.commit();
+                    } else {
+                        Log.w(TAG, "Registration error " +
+                                String.valueOf(res.getStatusLine().getStatusCode()));
+                    }
+                } catch (PendingAuthException e) {
+                    // Ignore - we'll reregister later
+                } catch (Exception e) {
+                    Log.w(TAG, "Registration error " + e.getMessage());
+                }
 
-        // Update dialog activity
-        context.sendBroadcast(new Intent("com.google.ctp.UPDATE_UI"));
+                // Update dialog activity
+                context.sendBroadcast(new Intent("com.google.ctp.UPDATE_UI"));
+            }
+        }).start();
     }
 
     public static void unregisterWithServer(final Context context,
@@ -96,15 +100,15 @@ public class DeviceRegistrar {
 
     private static HttpResponse makeRequest(Context context, String deviceRegistrationID,
             String url) throws Exception {
-        HttpResponse res = makeRequestNoRetry(context, deviceRegistrationID, url, 
+        HttpResponse res = makeRequestNoRetry(context, deviceRegistrationID, url,
                 false);
         if (res.getStatusLine().getStatusCode() == 500) {
-            res = makeRequestNoRetry(context, deviceRegistrationID, url, 
+            res = makeRequestNoRetry(context, deviceRegistrationID, url,
                     true);
         }
         return res;
     }
-    
+
     private static HttpResponse makeRequestNoRetry(Context context, String deviceRegistrationID,
             String url, boolean newToken) throws Exception {
         // Get chosen user account
