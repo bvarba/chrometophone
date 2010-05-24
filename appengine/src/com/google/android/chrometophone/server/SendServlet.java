@@ -65,9 +65,9 @@ public class SendServlet extends HttpServlet {
             doSendToPhone(url, title, sel, user.getEmail(), resp);
         } else {
             String followOnURL = req.getRequestURI() + "?title=" +
-                    URLEncoder.encode(req.getParameter("title"), "UTF-8") +
-                    "&url=" + URLEncoder.encode(req.getParameter("url"), "UTF-8") +
-                    "&sel=" + URLEncoder.encode(req.getParameter("sel"), "UTF-8");
+                    URLEncoder.encode(title, "UTF-8") +
+                    "&url=" + URLEncoder.encode(url, "UTF-8") +
+                    "&sel=" + URLEncoder.encode(sel, "UTF-8");
             resp.sendRedirect(userService.createLoginURL(followOnURL));
         }
     }
