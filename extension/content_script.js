@@ -16,7 +16,6 @@
 
 var additionalInfo = {
   "title": document.title,
-  "url": document.location.href,
   "selection": window.getSelection().toString()
 };
 

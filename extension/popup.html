@@ -77,7 +77,7 @@ chrome.extension.onConnect.addListener(function(port) {
     if (info.selection.length > max_length) {
       info.selection = info.selection.substring(0, max_length);
     }
-    sendToPhone(info.title, info.url, info.selection);
+    sendToPhone(info.title, tab.url, info.selection);
   });
 });
 
