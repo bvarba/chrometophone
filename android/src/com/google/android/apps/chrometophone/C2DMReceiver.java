@@ -23,6 +23,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,8 +88,9 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
        boolean isMapsURL = url.startsWith("http://maps.google.");
 
-       RingtoneManager.getRingtone(context,
-               RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)).play();
+       Ringtone rt = RingtoneManager.getRingtone(context,
+               RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+       if (rt != null) rt.play();
 
        try {
            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
