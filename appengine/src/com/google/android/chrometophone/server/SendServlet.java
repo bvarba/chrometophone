@@ -48,6 +48,14 @@ public class SendServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
+
+        //String extHeader = req.getHeader("X-Extension");  // simple XSRF protection
+        //if (extHeader == null) {
+        //    resp.setStatus(400);
+        //    resp.getWriter().println(ERROR_STATUS + " (Unauthorized: Please install latest extension)");
+        //    return;
+        //}
+
         String sel = req.getParameter("sel");
         if (sel == null) sel = "";  // optional
 
