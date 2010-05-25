@@ -16,6 +16,8 @@
 package com.google.android.apps.chrometophone;
 
 
+import java.net.URI;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -88,9 +90,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
        boolean isMapsURL = url.startsWith("http://maps.google.");
 
-       Ringtone rt = RingtoneManager.getRingtone(context,
-               RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-       if (rt != null) rt.play();
+       playNotificationSound(context);
 
        try {
            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -131,5 +131,13 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        SharedPreferences.Editor editor = settings.edit();
        editor.putInt("notificationID", ++notificatonID % 32);
        editor.commit();
+   }
+
+   private void playNotificationSound(Context context) {
+       Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+       if (uri != null) {
+           Ringtone rt = RingtoneManager.getRingtone(context, uri);
+           if (rt != null) rt.play();
+       }
    }
 }
