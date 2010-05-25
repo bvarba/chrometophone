@@ -34,6 +34,7 @@ public class C2DMessaging {
     public static final String REQUEST_REGISTRATION_INTENT = "com.google.android.c2dm.intent.REGISTER";
     public static final String LAST_REGISTRATION_CHANGE = "last_registration_change";
     public static final String BACKOFF = "backoff";
+    public static final String GSF_PACKAGE = "com.google.android.gsf";
 
 
     // package
@@ -47,6 +48,7 @@ public class C2DMessaging {
     public static void register(Context context,
             String senderId) {
         Intent registrationIntent = new Intent(REQUEST_REGISTRATION_INTENT);
+        registrationIntent.setPackage(GSF_PACKAGE);
         registrationIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT,
                 PendingIntent.getBroadcast(context, 0, new Intent(), 0));
         registrationIntent.putExtra(EXTRA_SENDER, senderId);
@@ -59,6 +61,7 @@ public class C2DMessaging {
      */
     public static void unregister(Context context) {
         Intent regIntent = new Intent(REQUEST_UNREGISTRATION_INTENT);
+        regIntent.setPackage(GSF_PACKAGE);
         regIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT, PendingIntent.getBroadcast(context,
                 0, new Intent(), 0));
         context.startService(regIntent);
