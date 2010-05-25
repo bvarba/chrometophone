@@ -47,6 +47,7 @@ function sendToPhone(title, url, selection) {
   var sendUrl = baseUrl + '?title=' + encodeURIComponent(title) +
       '&url=' + encodeURIComponent(url) + '&sel=' + encodeURIComponent(selection);
   req.open('GET', sendUrl, true);
+  req.setRequestHeader('X-Extension', 'true');  // XSRF protector
 
   req.onreadystatechange = function() {
     if (this.readyState == 4) {
