@@ -16,8 +16,6 @@
 package com.google.android.apps.chrometophone;
 
 
-import java.net.URI;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -67,14 +65,17 @@ public class C2DMReceiver extends C2DMBaseReceiver {
            String sel = (String) extras.get("sel");
            if (url != null && title != null) {
                if (url.startsWith("http")) {
+                   // Put selection in clipboard
                    if (sel != null) {
                        ClipboardManager cm =
                                (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
                        cm.setText(sel);
                    }
+
+                   // Action for phone numbers
                    SharedPreferences settings = Prefs.get(context);
                    if (settings.getBoolean("launchBrowserOrMaps", false)) {
-                       launchBrowserOrMaps(context, url, title);
+                       launchApp(context, url, title, sel);
                    } else {
                        generateNotification(context, url, title);
                    }
@@ -85,13 +86,27 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        }
    }
 
-   private void launchBrowserOrMaps(Context context, String url, String title) {
+   private void launchApp(Context context, String url, String title, String sel) {
+       playNotificationSound(context);
+
+       // Special handling for phone numbers
+       String number = null;
+       if (sel != null && isTelephoneNumber(sel, number)) {
+           try {
+               Intent intent = new Intent("android.intent.action.DIAL",
+                       Uri.parse("tel:" + number));
+               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               startActivity(intent);
+               return;
+           } catch (ActivityNotFoundException e) {
+               Log.w(TAG, "Dialer did not recognize " + sel);
+           }
+       }
+
+       // Handling for URLs
        final String GMM_PACKAGE_NAME = "com.google.android.apps.maps";
        final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
        boolean isMapsURL = url.startsWith("http://maps.google.");
-
-       playNotificationSound(context);
-
        try {
            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -107,6 +122,15 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                context.startActivity(intent);
            }
        }
+   }
+
+   private boolean isTelephoneNumber(String sel, String number) {
+       if (sel.matches("^([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|-]\\)?)+$")) {
+           String elements[] = sel.split("([Tt]el[:]?)");
+           number = elements.length > 1 ? elements[1] : elements[0];
+           return true;
+       }
+       return false;
    }
 
    private void generateNotification(Context context, String url, String title) {
