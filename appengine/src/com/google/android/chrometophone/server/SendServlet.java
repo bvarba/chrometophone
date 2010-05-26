@@ -65,7 +65,7 @@ public class SendServlet extends HttpServlet {
 
         String url = req.getParameter("url");
         String title = req.getParameter("title");
-        if (url == null && title == null) {
+        if (url == null || title == null) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + " (Must specify url and title parameters)");
             return;
