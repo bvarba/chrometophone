@@ -18,10 +18,21 @@ package com.google.android.apps.chrometophone;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -41,7 +52,7 @@ import android.util.Log;
 public class DeviceRegistrar {
     private static final String TAG = "DeviceRegistrar";
     static final String SENDER_ID = "stp.chrome@gmail.com";
-    private static final String BASE_URL = "http://chrometophone.appspot.com";
+    private static final String BASE_URL = "https://chrometophone.appspot.com";
 
     // Appengine authentication
     private static final String AUTH_URL = BASE_URL + "/_ah/login";
@@ -131,13 +142,45 @@ public class DeviceRegistrar {
 
         // Register device with server
         DefaultHttpClient client = new DefaultHttpClient();
-        String continueURL = url + "?devregid=" +
-                deviceRegistrationID;
+        String continueURL = BASE_URL;
+
         URI uri = new URI(AUTH_URL + "?continue=" +
                 URLEncoder.encode(continueURL, "UTF-8") +
                 "&auth=" + authToken);
         HttpGet method = new HttpGet(uri);
+        // No redirect following - continue is not used
+        final HttpParams params = new BasicHttpParams();
+        HttpClientParams.setRedirecting(params, false);
+        method.setParams(params);
+        
         HttpResponse res = client.execute(method);
+        StatusLine statusLine = res.getStatusLine();
+        Header[] headers = res.getHeaders("Set-Cookie");
+        if (res.getStatusLine().getStatusCode() != 302 ||
+                headers.length == 0) {
+            return res;
+        }
+        String ascidCookie = null;
+        for (Header header: headers) {
+            if (header.getValue().indexOf("ACSID=") >=0) {
+                // let's parse it
+                String value = header.getValue();
+                String[] pairs = value.split(";");
+                ascidCookie = pairs[0];
+            }
+        }
+        
+        uri = new URI(url);
+        HttpPost post = new HttpPost(uri);
+        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        formparams.add(new BasicNameValuePair("devregid", deviceRegistrationID));
+        // XSRF - needs to be verified by server. 
+        formparams.add(new BasicNameValuePair("token", ascidCookie));
+        UrlEncodedFormEntity entity = 
+            new UrlEncodedFormEntity(formparams, "UTF-8");
+        post.setEntity(entity);
+        post.setHeader("Cookie", ascidCookie);
+        res = client.execute(post);
         return res;
     }
 
