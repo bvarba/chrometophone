@@ -38,6 +38,7 @@ public class SendServlet extends HttpServlet {
     private static final Logger log =
         Logger.getLogger(SendServlet.class.getName());
     private static final String OK_STATUS = "OK";
+    private static final String LOGIN_REQUIRED_STATUS = "LOGIN_REQUIRED";
     private static final String ERROR_STATUS = "ERROR";
 
     @Override
@@ -49,15 +50,26 @@ public class SendServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
-        String extHeader = req.getHeader("X-Extension");  // simple XSRF protection
-        if (extHeader == null) {
-            resp.setStatus(400);
-            resp.getWriter().println(ERROR_STATUS + " To remove this error message, " +
-                    " please install latest extension from code.google.com/p/chrometophone");
-            log.warning("Would block send");
-            //return;  // TODO working for now
-        } else {
-            log.info("Got X-Extension header");
+        String apiVersion = req.getParameter("ver");
+        if (apiVersion == null) apiVersion = "1";
+
+        // Basic XSRF protection
+        String extHeader = req.getHeader("X-Extension");
+        if (apiVersion.equals("2")) {  // TODO: Make default code path on launch
+            if (extHeader == null) {
+                resp.setStatus(400);
+                return;
+            }
+        } else {  // TODO: DEPRECATED code path. Delete on launch
+            if (extHeader == null && req.getParameter("login") == null) {
+                resp.setStatus(400);
+                resp.getWriter().println(ERROR_STATUS + " NOTE: You are using an old version of the extension. It will " +
+                		"stop working very soon. To avoid interrupted service, please install v0.2 or later " +
+                		"from http://code.google.com/p/chrometophone.");
+                log.warning("Missing X-Extension header");
+            } else {
+                log.warning("Got X-Extension header");
+            }
         }
 
         String sel = req.getParameter("sel");
@@ -76,11 +88,15 @@ public class SendServlet extends HttpServlet {
         if (user != null) {
             doSendToPhone(url, title, sel, user.getEmail(), resp);
         } else {
-            String followOnURL = req.getRequestURI() + "?title=" +
-                    URLEncoder.encode(title, "UTF-8") +
-                    "&url=" + URLEncoder.encode(url, "UTF-8") +
-                    "&sel=" + URLEncoder.encode(sel, "UTF-8");
-            resp.sendRedirect(userService.createLoginURL(followOnURL));
+            if (apiVersion.equals("2")) {  // TODO: Make default code path on launch
+              resp.getWriter().println(LOGIN_REQUIRED_STATUS);
+            } else {  // TODO: DEPRECATED code path. Delete on launch
+                String followOnURL = req.getRequestURI() + "?login=true&title="  +
+                        URLEncoder.encode(title, "UTF-8") +
+                        "&url=" + URLEncoder.encode(url, "UTF-8") +
+                        "&sel=" + URLEncoder.encode(sel, "UTF-8");
+                resp.sendRedirect(userService.createLoginURL(followOnURL));
+            }
         }
     }
 

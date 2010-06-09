@@ -26,12 +26,20 @@ body {
 </style>
 
 <script type="text/javascript">
-var baseUrl = 'http://chrometophone.appspot.com/send';
+var apiVersion = 2;
+var baseUrl = 'https://chrometophone.appspot.com';
+var sendUrl = baseUrl + '/send?ver=' + apiVersion;;
+var signInUrl = baseUrl + '/signin?extret=' +
+    encodeURIComponent(chrome.extension.getURL('signed_in.html')) + '&ver=' + apiVersion;
+var signOutUrl = baseUrl + '/signout?extret=' +
+    encodeURIComponent(chrome.extension.getURL('signed_out.html')) + '&ver=' + apiVersion;
+
 var req = new XMLHttpRequest();
 
 function loadHandler() {
   document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sending_message');
   document.getElementById('about').innerHTML = chrome.i18n.getMessage('about_message');
+  document.getElementById('signout').innerHTML = chrome.i18n.getMessage('sign_out_message');
 
   chrome.tabs.getSelected(null, function(tab) {
     if (tab.url.indexOf('http:') == 0 ||
@@ -44,29 +52,33 @@ function loadHandler() {
 }
 
 function sendToPhone(title, url, selection) {
-  var sendUrl = baseUrl + '?title=' + encodeURIComponent(title) +
-      '&url=' + encodeURIComponent(url) + '&sel=' + encodeURIComponent(selection);
-  req.open('GET', sendUrl, true);
+  req.open('POST', sendUrl, true);
+  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   req.setRequestHeader('X-Extension', 'true');  // XSRF protector
 
   req.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (req.status == 200) {
-        if (req.responseText.substring(0, 2) == 'OK') {
+        var body = req.responseText;
+        if (body.indexOf('OK') == 0) {
           document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sent_message');
-        } else {  // most likely login, handle in new tab
+          activateSignOutLink();  
+        } else if (body.indexOf('LOGIN_REQUIRED') == 0) {
+          var link = '<a href="#" onclick="chrome.tabs.create({url: \'' + signInUrl + '\'})">login</a>';
           document.getElementById('msg').innerHTML =
-              chrome.i18n.getMessage('login_required_message');
-          chrome.tabs.create({url: sendUrl});
+              chrome.i18n.getMessage('login_required_message', link);
         }
       } else { 
         document.getElementById('msg').innerHTML =  
             chrome.i18n.getMessage('error_sending_message', req.responseText);
+        activateSignOutLink();
       }
     }
   }
-  
-  req.send(null);
+
+  var data = 'title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url) +
+      '&sel=' + encodeURIComponent(selection);
+  req.send(data);
 }
 
 chrome.extension.onConnect.addListener(function(port) {
@@ -82,9 +94,18 @@ chrome.extension.onConnect.addListener(function(port) {
   });
 });
 
+function activateSignOutLink() {
+  var signOutLink = document.getElementById('signout');
+  signOutLink.style.color = 'blue';
+  signOutLink.onclick = function() {
+    chrome.tabs.create({url: signOutUrl});
+  }  
+}
+
 </script>
 
 <body onload="loadHandler()">
 <b><div id="msg"></div></b>
-<p><a href="#" onclick="chrome.tabs.create({url: 'about.html'})"><div id="about"></div></a></p>
+<p><a id="about" href="#" onclick="chrome.tabs.create({url: 'about.html'})"></a> |
+<a id="signout" href="#" style="color:gray"></a></p> 
 </body>

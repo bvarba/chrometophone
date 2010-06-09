@@ -27,26 +27,44 @@ body {
   background-color: white;
 }
 </style>
+
 </head>
 
-<body>
-<h1><img src="icon_128.png" valign="bottom">Google Chrome to Phone Extension</h1>
+<body onload="loadHandler()">
+<h1><img src="icon_128.png" width="64" height="64" valign="bottom">Google Chrome to Phone Extension</h1>
 
 <h2>About</h2>
 <p>Google Chrome to Phone Extension enables you to send the link for the current open tab to your Android device. Simply<br>
 click on the phone icon and the link will be pushed to your device. You will be required to log in with the same account used by<br>
 your Android device.</p>
 
-<h2>Setup instructions</h2>
+<h2>Features</h2>
+<p>
+<ul>
+  <li>Google Maps links automatically launches the Google Maps application Android.</li>
+  <li>Selecting a phone number will automatically launch the dialer with the number populated.</li>
+  <li>Selecting text on a Web page will copy the clipboard to Android (long press a text box to paste on Android).</li>
+</ul>
+</p>
+
+<h2>Setup Instructions</h2>
 <p>
 <ol>
-<li>Download the Google Chrome to Phone Extension application to your Android device from <a href="http://code.google.com/p/chrometophone/downloads">http://code.google.com/p/chrometophone/downloads</a> (make sure Settings->Applications->Unknown Sources is checked). Note that this application requires Android 2.2 ("Froyo") or later.</li>
+<li>Download the Google Chrome to Phone Extension application to your Android device from <a href="http://code.google.com/p/chrometophone/downloads">http://code.google.com/p/chrometophone/downloads</a><br>(make sure Settings->Applications->Unknown Sources is checked). Note that this application requires Android 2.2 ("Froyo") or later.</li>
 <li>Start the Google Chrome to Phone Extension application on the phone. </li>
 <li>Choose the account to register with (this must match the account you sign in to with Google Chrome to Phone Extension on the desktop).</li>
 <li>Click on "Register Device" to register your phone with the Google Chrome to Phone Extension service.</li>
 </ol>
 </p>
+
+<h2>Troubleshooting</h2><p>
+<ul>
+<li>A "User Unknown" error means that the phone failed to register that user name with the server. Either the device was not registered<br>(see Setup Instructions above) or the device failed to register. Note that only Google Account logins are supported - Google Apps accounts are not supported.</li>
+</ul>
+</p>
+
 <div align="center"><br>&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html">About Google</a> - 
 <a href="http://www.google.com/privacy.html">Privacy</a> - <a href="http://chrome.google.com/extensions/intl/en/gallery_tos.html">Terms of Service</a></div>
+
 </body>
 </html>

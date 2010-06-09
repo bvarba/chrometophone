@@ -24,15 +24,15 @@
     "description": "Description of the application."
   },
   "sending_message": {
-    "message": "Sending link to phone...",
+    "message": "Sending to phone...",
     "description": "Notice when link is being sent to phone."
   },
   "sent_message": {
-    "message": "Link sent to phone.",
+    "message": "Sent to phone.",
     "description": "Notice when link has been successfully sent to phone."
   },
   "error_sending_message": {
-    "message": "Error sending link: $details$",
+    "message": "Error sending to phone: $details$",
     "description": "Notice when link cannot be sent.",
     "placeholders": {
       "details": {
@@ -42,20 +42,29 @@
     }
   },
   "login_required_message": {
-    "message": "Login required.",
-    "description": "Notice when login is required."
+    "message": "Chrome to Phone requires you to $link$.</a>",
+    "description": "Notice when login is required.",
+    "placeholders": {
+      "link": {
+        "content": "$1",
+        "example": "Login link."
+      }
+    }
   },
+  "sign_out_message": {
+    "message": "Sign out",
+    "description": "Sign out link message."
+  }, 
   "invalid_scheme_message": {
     "message": "Only http or https pages supported.",
     "description": "Notice when user attempt to send a file link."
   },
   "about_message": {
-    "message": "About Chrome to Phone",
+    "message": "About",
     "description": "The about message."
   },
   "connectivity_error_message": {
     "message": "Connection error.",
     "description": "Error message when there is a connection error with the server."
   }
-
 }
