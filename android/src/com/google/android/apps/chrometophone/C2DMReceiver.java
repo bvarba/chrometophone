@@ -90,8 +90,8 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        playNotificationSound(context);
 
        // Special handling for phone numbers
-       String number = null;
-       if (sel != null && isTelephoneNumber(sel, number)) {
+       String number = parseTelephoneNumber(sel);
+       if (number != null) {
            try {
                Intent intent = new Intent("android.intent.action.DIAL",
                        Uri.parse("tel:" + number));
@@ -124,13 +124,13 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        }
    }
 
-   private boolean isTelephoneNumber(String sel, String number) {
-       if (sel.matches("^([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|-]\\)?)+$")) {
+   private String parseTelephoneNumber(String sel) {
+       String number = null;
+       if (sel != null && sel.matches("^([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|-]\\)?)+$")) {
            String elements[] = sel.split("([Tt]el[:]?)");
            number = elements.length > 1 ? elements[1] : elements[0];
-           return true;
        }
-       return false;
+       return number;
    }
 
    private void generateNotification(Context context, String url, String title) {
