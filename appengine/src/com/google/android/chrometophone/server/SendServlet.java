@@ -52,7 +52,8 @@ public class SendServlet extends HttpServlet {
         resp.setContentType("text/plain");
 
         // Basic XSRF protection
-        if (req.getHeader("X-Extension") == null) {
+        if (req.getHeader("X-Extension") == null &&
+                req.getHeader("User-Agent").indexOf("Firefox") == -1) {  // TODO: Remove exception for Firefox
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + " You are using an old version of the extension that is no " +
                     "longer supported. Please install v0.2 or later of the extension " +
