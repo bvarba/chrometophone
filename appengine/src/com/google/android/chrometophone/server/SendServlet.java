@@ -39,6 +39,7 @@ public class SendServlet extends HttpServlet {
         Logger.getLogger(SendServlet.class.getName());
     private static final String OK_STATUS = "OK";
     private static final String LOGIN_REQUIRED_STATUS = "LOGIN_REQUIRED";
+    private static final String DEVICE_NOT_REGISTERED_STATUS = "DEVICE_NOT_REGISTERED";
     private static final String ERROR_STATUS = "ERROR";
 
     @Override
@@ -50,27 +51,21 @@ public class SendServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
-        String apiVersion = req.getParameter("ver");
-        if (apiVersion == null) apiVersion = "1";
-
         // Basic XSRF protection
-        String extHeader = req.getHeader("X-Extension");
-        if (apiVersion.equals("2")) {  // TODO: Make default code path on launch
-            if (extHeader == null) {
-                resp.setStatus(400);
-                return;
-            }
-        } else {  // TODO: DEPRECATED code path. Delete on launch
-            if (extHeader == null && req.getParameter("login") == null) {
-                resp.setStatus(400);
-                resp.getWriter().println(ERROR_STATUS + " NOTE: You are using an old version of the extension. It will " +
-                		"stop working very soon. To avoid interrupted service, please install v0.2 or later " +
-                		"from http://code.google.com/p/chrometophone.");
-                log.warning("Missing X-Extension header");
-            } else {
-                log.warning("Got X-Extension header");
-            }
+        if (req.getHeader("X-Extension") == null) {
+            resp.setStatus(400);
+            resp.getWriter().println(ERROR_STATUS + " You are using an old version of the extension that is no " +
+                    "longer supported. Please install v0.2 or later of the extension " +
+                    "from http://code.google.com/p/chrometophone.");
+            log.warning("Missing X-Extension header");
+            resp.setStatus(400);
+            return;
         }
+
+        String apiVersionString = req.getParameter("ver");
+        if (apiVersionString == null) apiVersionString = "1";
+        int apiVersion = Integer.parseInt(apiVersionString);
+        log.info("Extension version: " + apiVersion);
 
         String sel = req.getParameter("sel");
         if (sel == null) sel = "";  // optional
@@ -86,12 +81,12 @@ public class SendServlet extends HttpServlet {
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
         if (user != null) {
-            doSendToPhone(url, title, sel, user.getEmail(), resp);
+            doSendToPhone(url, title, sel, user.getEmail(), apiVersion, resp);
         } else {
-            if (apiVersion.equals("2")) {  // TODO: Make default code path on launch
+            if (apiVersion >= 2) {  // TODO: Make this default code path on launch
               resp.getWriter().println(LOGIN_REQUIRED_STATUS);
             } else {  // TODO: DEPRECATED code path. Delete on launch
-                String followOnURL = req.getRequestURI() + "?login=true&title="  +
+                String followOnURL = req.getRequestURI() + "?title="  +
                         URLEncoder.encode(title, "UTF-8") +
                         "&url=" + URLEncoder.encode(url, "UTF-8") +
                         "&sel=" + URLEncoder.encode(sel, "UTF-8");
@@ -101,7 +96,7 @@ public class SendServlet extends HttpServlet {
     }
 
     private boolean doSendToPhone(String url, String title, String sel,
-            String userAccount, HttpServletResponse resp) throws IOException {
+            String userAccount, int apiVersion, HttpServletResponse resp) throws IOException {
         // Get device info
         DeviceInfo deviceInfo = null;
         // Shared PMF
@@ -112,9 +107,13 @@ public class SendServlet extends HttpServlet {
             try {
                 deviceInfo = pm.getObjectById(DeviceInfo.class, key);
             } catch (JDOObjectNotFoundException e) {
-                log.warning("User unknown");
-                resp.setStatus(400);
-                resp.getWriter().println(ERROR_STATUS + " (User unknown)");
+                log.warning("Device not registered");
+                if (apiVersion >= 3) {  // TODO: Make this default code path on launch
+                    resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
+                } else {  // TODO: DEPRECATED code path. Delete on launch
+                    resp.setStatus(400);
+                    resp.getWriter().println(ERROR_STATUS + " (Device not registered)");
+                }
                 return false;
             }
         } finally {
