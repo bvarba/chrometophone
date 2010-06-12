@@ -26,7 +26,7 @@ body {
 </style>
 
 <script type="text/javascript">
-var apiVersion = 2;
+var apiVersion = 3;
 var baseUrl = 'https://chrometophone.appspot.com';
 var sendUrl = baseUrl + '/send?ver=' + apiVersion;;
 var signInUrl = baseUrl + '/signin?extret=' +
@@ -67,6 +67,9 @@ function sendToPhone(title, url, selection) {
           var link = '<a href="#" onclick="chrome.tabs.create({url: \'' + signInUrl + '\'})">login</a>';
           document.getElementById('msg').innerHTML =
               chrome.i18n.getMessage('login_required_message', link);
+        } else if (body.indexOf('DEVICE_NOT_REGISTERED') == 0) {
+          document.getElementById('msg').innerHTML = chrome.i18n.getMessage('device_not_registered_message');
+          activateSignOutLink();
         }
       } else { 
         document.getElementById('msg').innerHTML =  
@@ -86,11 +89,11 @@ chrome.extension.onConnect.addListener(function(port) {
   // This will get called by the content script. We go through
   // these hoops to get the optional text selection.
   port.onMessage.addListener(function(info) {
-    var max_length = 256;
+    var max_length = 1024;
     if (info.selection.length > max_length) {
       info.selection = info.selection.substring(0, max_length);
     }
-    sendToPhone(info.title, tab.url, info.selection);
+    sendToPhone(info.title, info.url, info.selection);
   });
 });
 

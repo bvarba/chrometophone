@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-var additionalInfo = {
+var pageInfo = {
+  "url": document.location.href,
   "title": document.title,
   "selection": window.getSelection().toString()
 };
 
-chrome.extension.connect().postMessage(additionalInfo);
+// URL overrides
+if (pageInfo.url.match(/^http[s]?:\/\/maps\.google\./)) {
+  var link = document.getElementById('link');
+  if (link && link.href) {
+    pageInfo.url = link.href;
+  }
+}
+
+chrome.extension.connect().postMessage(pageInfo);

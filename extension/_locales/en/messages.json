@@ -66,5 +66,9 @@
   "connectivity_error_message": {
     "message": "Connection error.",
     "description": "Error message when there is a connection error with the server."
+  },
+  "device_not_registered_message": {
+    "message": "Device not registered for user.",
+    "description": "Error message when we can't match a user to a device."
   }
 }
