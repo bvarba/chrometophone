@@ -17,7 +17,7 @@
 {
   "name": "__MSG_app_name__",
   "description": "__MSG_app_desc__",
-  "version": "0.2",
+  "version": "0.3",
   "default_locale": "en",
   "icons": { "128": "icon_128.png" },
   "options_page": "about.html",
