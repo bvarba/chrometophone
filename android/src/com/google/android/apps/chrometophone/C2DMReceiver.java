@@ -16,6 +16,12 @@
 package com.google.android.apps.chrometophone;
 
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -63,6 +69,26 @@ public class C2DMReceiver extends C2DMBaseReceiver {
            String url = (String) extras.get("url");
            String title = (String) extras.get("title");
            String sel = (String) extras.get("sel");
+           String debug = (String) extras.get("debug");
+           if (debug != null) {
+               // server-controlled debug - the server wants to know 
+               // we received the message, and when. This is not user-controllable,
+               // we don't want extra traffic on the server or phone. Server may
+               // turn this on for a small percentage of requests or for users 
+               // who report issues.
+               DefaultHttpClient client = new DefaultHttpClient();
+               HttpGet get = new HttpGet(DeviceRegistrar.BASE_URL + "/debug?id=" 
+                       + extras.get("collapse_key"));
+               // No auth - the purpose is only to generate a log/confirm delivery
+               // (to avoid overhead of getting the token)
+               try {
+                   client.execute(get);
+               } catch (ClientProtocolException e) {
+                   // ignore
+               } catch (IOException e) {
+                   // ignore
+               }
+           }
            if (url != null && title != null) {
                if (url.startsWith("http")) {
                    // Put selection in clipboard

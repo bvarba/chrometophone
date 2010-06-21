@@ -52,7 +52,7 @@ import android.util.Log;
 public class DeviceRegistrar {
     private static final String TAG = "DeviceRegistrar";
     static final String SENDER_ID = "stp.chrome@gmail.com";
-    private static final String BASE_URL = "https://chrometophone.appspot.com";
+    static final String BASE_URL = "https://chrometophone.appspot.com";
 
     // Appengine authentication
     private static final String AUTH_URL = BASE_URL + "/_ah/login";
