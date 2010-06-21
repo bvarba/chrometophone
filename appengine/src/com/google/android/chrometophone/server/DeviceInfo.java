@@ -31,10 +31,21 @@ public class DeviceInfo {
 
     @Persistent
     private String deviceRegistrationID;
+    
+    @Persistent 
+    private boolean debug;
 
     public DeviceInfo(Key key, String deviceRegistrationID) {
         this.key = key;
         this.deviceRegistrationID = deviceRegistrationID;
+    }
+
+    public boolean getDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     public Key getKey() {

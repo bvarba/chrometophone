@@ -39,8 +39,16 @@ public class UnregisterServlet extends HttpServlet {
     private static final String OK_STATUS = "OK";
     private static final String ERROR_STATUS = "ERROR";
 
+    /**
+     * @deprecated Will be removed in next rel cycle.
+     */
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        doPost(req, resp);
+    }
+    
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
         String deviceRegistrationID = req.getParameter("devregid");

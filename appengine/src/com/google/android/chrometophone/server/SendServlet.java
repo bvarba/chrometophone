@@ -76,8 +76,7 @@ public class SendServlet extends HttpServlet {
             return;
         }
 
-        UserService userService = UserServiceFactory.getUserService();
-        User user = userService.getCurrentUser();
+        User user = RegisterServlet.checkUser(req, resp, false);
         if (user != null) {
             doSendToPhone(url, title, sel, user.getEmail(), apiVersion, resp);
         } else {
@@ -88,6 +87,7 @@ public class SendServlet extends HttpServlet {
                         URLEncoder.encode(title, "UTF-8") +
                         "&url=" + URLEncoder.encode(url, "UTF-8") +
                         "&sel=" + URLEncoder.encode(sel, "UTF-8");
+                UserService userService = UserServiceFactory.getUserService();
                 resp.sendRedirect(userService.createLoginURL(followOnURL));
             }
         }
@@ -120,10 +120,25 @@ public class SendServlet extends HttpServlet {
 
         // Send push message to phone
         C2DMessaging push = C2DMessaging.get(getServletContext());
-        if (push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
-                "" + url.hashCode(),  "url", url, "title", title,
-                "sel", sel)) {
-            log.info("Link sent to phone!");
+        boolean res = false;
+        String collapseKey = "" + url.hashCode();
+        if (deviceInfo.getDebug()) {
+            res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
+                    collapseKey, 
+                    "url", url, 
+                    "title", title,
+                    "sel", sel,
+                    "debug", "1");
+            
+        } else {
+            res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
+                    collapseKey, 
+                    "url", url, 
+                    "title", title,
+                    "sel", sel);
+        }
+        if (res) {
+            log.info("Link sent to phone! collapse_key:" + collapseKey);
             resp.getWriter().println(OK_STATUS);
             return true;
         } else {

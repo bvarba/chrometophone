@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.android.c2dm.server.C2DMessaging;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.oauth.OAuthService;
+import com.google.appengine.api.oauth.OAuthServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -38,13 +40,50 @@ public class RegisterServlet extends HttpServlet {
     private static final String OK_STATUS = "OK";
     private static final String ERROR_STATUS = "ERROR";
 
+    /**
+     * Get the user using the UserService.
+     * 
+     * If not logged in, return an error message.
+     * 
+     * @return user, or null if not logged in. 
+     * @throws IOException 
+     */
+    static User checkUser(HttpServletRequest req, HttpServletResponse resp,
+            boolean errorIfNotLoggedIn) throws IOException {
+        // Is it OAuth ?
+        User user = null;
+        OAuthService oauthService = OAuthServiceFactory.getOAuthService();
+        try {
+            user = oauthService.getCurrentUser();
+            if (user != null) {
+                log.info("Found OAuth user " + user);
+                return user;
+            }
+        } catch (Throwable t) {
+            user = null;
+        }
+        
+        UserService userService = UserServiceFactory.getUserService();
+        user = userService.getCurrentUser();
+        if (user == null && errorIfNotLoggedIn) {
+            // TODO: redirect to OAuth/user service login, or send the URL
+            // TODO: 401 instead of 400
+            resp.setStatus(400);
+            resp.getWriter().println(ERROR_STATUS + " (Not authorized)");
+        }
+        return user;
+    }
+    
+    /**
+     * @deprecated will be removed in next rel.
+     */
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        doGet(req, resp);
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        doPost(req, resp);
     }
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
         String deviceRegistrationID = req.getParameter("devregid");
@@ -54,9 +93,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        // Authorize & store device info
-        UserService userService = UserServiceFactory.getUserService();
-        User user = userService.getCurrentUser();
+        User user = checkUser(req, resp, true);
         if (user != null) {
             Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(), user.getEmail());
             DeviceInfo device = new DeviceInfo(key, deviceRegistrationID);
@@ -73,9 +110,6 @@ public class RegisterServlet extends HttpServlet {
             } finally {
                 pm.close();
             }
-        } else {
-            resp.setStatus(400);
-            resp.getWriter().println(ERROR_STATUS + " (Not authorized)");
         }
     }
 }
