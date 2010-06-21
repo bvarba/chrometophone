@@ -184,9 +184,8 @@ public class C2DMessaging {
         // Since App Engine's task queue mechanism automatically does this for tasks that
         // return non-success error codes, this is not explicitly implemented here.
         // If we weren't using App Engine, we'd need to manually implement this.
-        log.info("Got " + responseCode + " response from Google datamessaging endpoint.");
-
         if (responseLine == null || responseLine.equals("")) {
+            log.info("Got " + responseCode + " response from Google datamessaging endpoint.");
             throw new IOException("Got empty response from Google datamessaging endpoint.");
         }
 
@@ -256,6 +255,30 @@ public class C2DMessaging {
         }
     }
 
+    public boolean sendNoRetry(String token, String collapseKey,
+            String... nameValues)
+                throws IOException {
+
+        Map<String, String[]> params = new HashMap<String, String[]>();
+        int len = nameValues.length;
+        if (len % 2 == 1) {
+            len--; // ignore last
+        }
+        for (int i = 0; i < len; i+=2) {
+            String name = nameValues[i];
+            String value = nameValues[i + 1];
+            if (name != null && value != null) {
+                params.put("data." + name, new String[] {value});
+            }
+        }
+
+        try {
+            return sendNoRetry(token, collapseKey, params, true);
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+    
     private void retry(String token, String collapseKey,
             Map<String, String[]> params, boolean delayWhileIdle) {
         Queue dmQueue = QueueFactory.getQueue("c2dm");
