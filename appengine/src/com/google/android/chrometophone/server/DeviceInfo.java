@@ -31,9 +31,9 @@ public class DeviceInfo {
 
     @Persistent
     private String deviceRegistrationID;
-    
-    @Persistent 
-    private boolean debug;
+
+    @Persistent
+    private Boolean debug;
 
     public DeviceInfo(Key key, String deviceRegistrationID) {
         this.key = key;
@@ -41,11 +41,11 @@ public class DeviceInfo {
     }
 
     public boolean getDebug() {
-        return debug;
+        return debug != null ? debug.booleanValue() : false;
     }
 
     public void setDebug(boolean debug) {
-        this.debug = debug;
+        this.debug = new Boolean(debug);
     }
 
     public Key getKey() {
