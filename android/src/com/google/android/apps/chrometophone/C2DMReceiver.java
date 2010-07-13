@@ -71,13 +71,13 @@ public class C2DMReceiver extends C2DMBaseReceiver {
            String sel = (String) extras.get("sel");
            String debug = (String) extras.get("debug");
            if (debug != null) {
-               // server-controlled debug - the server wants to know 
+               // server-controlled debug - the server wants to know
                // we received the message, and when. This is not user-controllable,
                // we don't want extra traffic on the server or phone. Server may
-               // turn this on for a small percentage of requests or for users 
+               // turn this on for a small percentage of requests or for users
                // who report issues.
                DefaultHttpClient client = new DefaultHttpClient();
-               HttpGet get = new HttpGet(DeviceRegistrar.BASE_URL + "/debug?id=" 
+               HttpGet get = new HttpGet(DeviceRegistrar.BASE_URL + "/debug?id="
                        + extras.get("collapse_key"));
                // No auth - the purpose is only to generate a log/confirm delivery
                // (to avoid overhead of getting the token)
@@ -132,7 +132,8 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        // Handling for URLs
        final String GMM_PACKAGE_NAME = "com.google.android.apps.maps";
        final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
-       boolean isMapsURL = url.startsWith("http://maps.google.");
+       boolean isMapsURL = url.startsWith("http://maps.google.") ||
+               url.matches("^http://www\\.google\\.[a-z\\.]+/maps");
        try {
            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
