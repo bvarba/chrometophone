@@ -25,21 +25,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.ClipboardManager;
-import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
 
 public class C2DMReceiver extends C2DMBaseReceiver {
-    private static final String TAG = "C2DMReceiver";
 
     public C2DMReceiver() {
         super(DeviceRegistrar.SENDER_ID);
@@ -70,6 +68,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
            String title = (String) extras.get("title");
            String sel = (String) extras.get("sel");
            String debug = (String) extras.get("debug");
+
            if (debug != null) {
                // server-controlled debug - the server wants to know
                // we received the message, and when. This is not user-controllable,
@@ -90,69 +89,54 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                }
            }
 
-           if (url != null && title != null) {
-               if (url.startsWith("http")) {
-                   SharedPreferences settings = Prefs.get(context);
+           if (title != null && url != null && url.startsWith("http")) {
+               SharedPreferences settings = Prefs.get(context);
+               Intent launchIntent = getLaunchIntent(context, url, title, sel);
 
-                   if (sel != null && sel.length() > 0) {  // user selected text
-                       ClipboardManager cm =
-                               (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
-                       cm.setText(sel);
-
-                       // Special handling for launching phone numbers
-                       String number = parseTelephoneNumber(sel);
-                       if (number != null && settings.getBoolean("launchBrowserOrMaps", false)) {
-                           try {
-                               Intent dialerIntent = new Intent("android.intent.action.DIAL",
-                                       Uri.parse("tel:" + number));
-                               dialerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                               startActivity(dialerIntent);
-                               return;  // done
-                           } catch (ActivityNotFoundException e) {
-                               Log.w(TAG, "Dialer did not recognize " + sel);
-                           }
-                       } else {  // otherwise generate a notification with clipboard content
-                           generateNotification(context, sel,
-                                   context.getString(R.string.clipboard_copied), null);
-                       }
-                   } else {  // user didn't select text - launch app or create notification
-                       if (settings.getBoolean("launchBrowserOrMaps", false)) {
-                           launchApp(context, url, title, sel);
-                       } else {
-                           Intent urlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                           generateNotification(context, url, title, urlIntent);
-                       }
-                   }
+               if (settings.getBoolean("launchBrowserOrMaps", false) && launchIntent != null) {
+                   playNotificationSound(context);
+                   context.startActivity(launchIntent);
                } else {
-                   Log.w(TAG, "Invalid URL: " + url);
+                   generateNotification(context, sel != null && sel.length() > 0 ? sel : url,
+                           title, launchIntent);
                }
            }
        }
    }
 
-   private void launchApp(Context context, String url, String title, String sel) {
-       playNotificationSound(context);
+    private Intent getLaunchIntent(Context context, String url, String title, String sel) {
+        Intent intent = null;
+        String number = parseTelephoneNumber(sel);
+        if (number != null) {
+            intent = new Intent("android.intent.action.DIAL",
+                    Uri.parse("tel:" + number));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } else if (sel != null && sel.length() > 0) {
+            // No intent for selection - just copy to clipboard
+            ClipboardManager cm =
+                (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+            cm.setText(sel);
+        } else {
+            final String GMM_PACKAGE_NAME = "com.google.android.apps.maps";
+            final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
+            boolean isMapsURL = url.startsWith("http://maps.google.") ||
+                    url.matches("^http://www\\.google\\.[a-z\\.]+/maps");
 
-       final String GMM_PACKAGE_NAME = "com.google.android.apps.maps";
-       final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
-       boolean isMapsURL = url.startsWith("http://maps.google.") ||
-               url.matches("^http://www\\.google\\.[a-z\\.]+/maps");
-       try {
-           Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-           intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-           if (isMapsURL) {
-               intent.setClassName(GMM_PACKAGE_NAME, GMM_CLASS_NAME);
-           }
-           context.startActivity(intent);
-       } catch (ActivityNotFoundException e) {
-           if (isMapsURL) {  // try again without GMM
-               Log.w(TAG, "Maps not found, falling back to browser");
-               Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-               context.startActivity(intent);
-           }
-       }
-   }
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (isMapsURL) {
+                intent.setClassName(GMM_PACKAGE_NAME, GMM_CLASS_NAME);
+            }
+
+            // Fall back if we can't resolve intent (i.e. maps missing)
+            PackageManager pm = context.getPackageManager();
+            if (null == intent.resolveActivity(pm)) {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+        }
+        return intent;
+    }
 
    private void generateNotification(Context context, String msg, String title, Intent intent) {
        int icon = R.drawable.status_icon;

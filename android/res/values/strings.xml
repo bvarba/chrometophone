@@ -19,7 +19,6 @@
     <string name="link_action_pref_text">Link action preference:</string>
     <string name="disconnect">Disconnect phone</string>
     <string name="disconnect_error_text">Error! Unable to disconnect.</string>
-    <string name="clipboard_copied">Clipboard copied from desktop</string>
     <string name="help">Help</string>
         <string name="intro_text">
         Chrome to Phone lets you easily share links, maps, and selected phone numbers and text
