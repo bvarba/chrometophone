@@ -89,21 +89,39 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                    // ignore
                }
            }
+
            if (url != null && title != null) {
                if (url.startsWith("http")) {
-                   // Put selection in clipboard
-                   if (sel != null) {
+                   SharedPreferences settings = Prefs.get(context);
+
+                   if (sel != null && sel.length() > 0) {  // user selected text
                        ClipboardManager cm =
                                (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
                        cm.setText(sel);
-                   }
 
-                   // Action for phone numbers
-                   SharedPreferences settings = Prefs.get(context);
-                   if (settings.getBoolean("launchBrowserOrMaps", false)) {
-                       launchApp(context, url, title, sel);
-                   } else {
-                       generateNotification(context, url, title);
+                       // Special handling for launching phone numbers
+                       String number = parseTelephoneNumber(sel);
+                       if (number != null && settings.getBoolean("launchBrowserOrMaps", false)) {
+                           try {
+                               Intent dialerIntent = new Intent("android.intent.action.DIAL",
+                                       Uri.parse("tel:" + number));
+                               dialerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                               startActivity(dialerIntent);
+                               return;  // done
+                           } catch (ActivityNotFoundException e) {
+                               Log.w(TAG, "Dialer did not recognize " + sel);
+                           }
+                       } else {  // otherwise generate a notification with clipboard content
+                           generateNotification(context, sel,
+                                   context.getString(R.string.clipboard_copied), null);
+                       }
+                   } else {  // user didn't select text - launch app or create notification
+                       if (settings.getBoolean("launchBrowserOrMaps", false)) {
+                           launchApp(context, url, title, sel);
+                       } else {
+                           Intent urlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                           generateNotification(context, url, title, urlIntent);
+                       }
                    }
                } else {
                    Log.w(TAG, "Invalid URL: " + url);
@@ -115,21 +133,6 @@ public class C2DMReceiver extends C2DMBaseReceiver {
    private void launchApp(Context context, String url, String title, String sel) {
        playNotificationSound(context);
 
-       // Special handling for phone numbers
-       String number = parseTelephoneNumber(sel);
-       if (number != null) {
-           try {
-               Intent intent = new Intent("android.intent.action.DIAL",
-                       Uri.parse("tel:" + number));
-               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-               startActivity(intent);
-               return;
-           } catch (ActivityNotFoundException e) {
-               Log.w(TAG, "Dialer did not recognize " + sel);
-           }
-       }
-
-       // Handling for URLs
        final String GMM_PACKAGE_NAME = "com.google.android.apps.maps";
        final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
        boolean isMapsURL = url.startsWith("http://maps.google.") ||
@@ -151,24 +154,13 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        }
    }
 
-   private String parseTelephoneNumber(String sel) {
-       String number = null;
-       if (sel != null && sel.matches("^([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|-]\\)?)+$")) {
-           String elements[] = sel.split("([Tt]el[:]?)");
-           number = elements.length > 1 ? elements[1] : elements[0];
-       }
-       return number;
-   }
-
-   private void generateNotification(Context context, String url, String title) {
+   private void generateNotification(Context context, String msg, String title, Intent intent) {
        int icon = R.drawable.status_icon;
        long when = System.currentTimeMillis();
 
-       Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-       PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
        Notification notification = new Notification(icon, title, when);
-       notification.setLatestEventInfo(context, title, url, contentIntent);
+       notification.setLatestEventInfo(context, title, msg,
+               PendingIntent.getActivity(context, 0, intent, 0));
        notification.defaults = Notification.DEFAULT_SOUND;
        notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
@@ -190,5 +182,14 @@ public class C2DMReceiver extends C2DMBaseReceiver {
            Ringtone rt = RingtoneManager.getRingtone(context, uri);
            if (rt != null) rt.play();
        }
+   }
+
+   private String parseTelephoneNumber(String sel) {
+       String number = null;
+       if (sel != null && sel.matches("^([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|-]\\)?)+$")) {
+           String elements[] = sel.split("([Tt]el[:]?)");
+           number = elements.length > 1 ? elements[1] : elements[0];
+       }
+       return number;
    }
 }
