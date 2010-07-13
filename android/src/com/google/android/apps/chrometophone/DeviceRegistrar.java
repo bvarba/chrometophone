@@ -24,7 +24,6 @@ import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -76,14 +75,13 @@ public class DeviceRegistrar {
                         Log.w(TAG, "Registration error " +
                                 String.valueOf(res.getStatusLine().getStatusCode()));
                     }
+                    context.sendBroadcast(new Intent("com.google.ctp.UPDATE_UI"));
                 } catch (PendingAuthException e) {
                     // Ignore - we'll reregister later
                 } catch (Exception e) {
                     Log.w(TAG, "Registration error " + e.getMessage());
+                    context.sendBroadcast(new Intent("com.google.ctp.UPDATE_UI"));
                 }
-
-                // Update dialog activity
-                context.sendBroadcast(new Intent("com.google.ctp.UPDATE_UI"));
             }
         }).start();
     }
@@ -152,9 +150,8 @@ public class DeviceRegistrar {
         final HttpParams params = new BasicHttpParams();
         HttpClientParams.setRedirecting(params, false);
         method.setParams(params);
-        
+
         HttpResponse res = client.execute(method);
-        StatusLine statusLine = res.getStatusLine();
         Header[] headers = res.getHeaders("Set-Cookie");
         if (res.getStatusLine().getStatusCode() != 302 ||
                 headers.length == 0) {
@@ -169,14 +166,14 @@ public class DeviceRegistrar {
                 ascidCookie = pairs[0];
             }
         }
-        
+
         uri = new URI(url);
         HttpPost post = new HttpPost(uri);
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("devregid", deviceRegistrationID));
-        // XSRF - needs to be verified by server. 
+        // XSRF - needs to be verified by server.
         formparams.add(new BasicNameValuePair("token", ascidCookie));
-        UrlEncodedFormEntity entity = 
+        UrlEncodedFormEntity entity =
             new UrlEncodedFormEntity(formparams, "UTF-8");
         post.setEntity(entity);
         post.setHeader("Cookie", ascidCookie);
@@ -195,7 +192,7 @@ public class DeviceRegistrar {
             // User will be asked for "App Engine" permission.
             if (authToken == null) {
                 // No auth token - will need to ask permission from user.
-                Intent intent = new Intent(ActivityUI.AUTH_PERMISSION_ACTION);
+                Intent intent = new Intent(MainActivity.AUTH_PERMISSION_ACTION);
                 intent.putExtra("AccountManagerBundle", bundle);
                 context.sendBroadcast(intent);
             }

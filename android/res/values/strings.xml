@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Chrome to Phone</string>
-    <string name="status_registering">Status: Registering device...</string>
-    <string name="status_unregistering">Status: Unregistering device...</string>
-    <string name="status_registered">Status: Device registered</string>
-    <string name="status_not_registered">Status: Device not registered</string>
-    <string name="launch_check_box">Launch browser/maps directly</string>
-    <string name="accounts">Desktop Account</string>
-    <string name="register">Register Device</string>
-    <string name="unregister">Unregister Device</string>
-    <string name="setup">Setup</string>
-    <string name="action">Action</string>
+    <string name="prev">Prev</string>
+    <string name="next">Next</string>
+    <string name="exit">Exit</string>
+    <string name="select_text">Select an account to use:</string>
+    <string name="no_accounts">There are no accounts setup on this phone.</string>
+    <string name="click_next_text">Click Next to establish the connection between Chrome and this phone.</string>
+    <string name="connecting_text">Connecting...</string>
+    <string name="disconnecting_text">Disconnecting...</string>
+    <string name="connected_text">Your phone is now connected to Chrome.</string>
+    <string name="connect_error_text">Error! Unable to establish connection.</string>
+    <string name="finish">Finish</string>
+    <string name="select_link_action_text">Please set your link action preference:</string>
+    <string name="auto_launch_text">Automatically launch links</string>
+    <string name="manual_launch_text">Let me launch links manually</string>
+    <string name="connected_with_account_text">Your phone is connected to Chrome using this account:</string>
+    <string name="link_action_pref_text">Link action preference:</string>
+    <string name="disconnect">Disconnect phone</string>
+    <string name="disconnect_error_text">Error! Unable to disconnect.</string>
+    <string name="help">Help</string>
+        <string name="intro_text">
+        Chrome to Phone lets you easily share links, maps, and selected phone numbers and text
+        between your computer and your phone. &lt;br>&lt;br>You need to install the Chrome
+        browser extension on your computer to send links to your phone. The browser extension
+        can be downloaded from the Chrome extension gallery at http://chrome.google.com/extensions/
+        &lt;br>&lt;br>There are just 3 simple steps to complete the set up on your phone:
+        &lt;br>&lt;br>1. Choose the Google Account to use.&lt;br>2. Connect your Chrome and your
+        phone.&lt;br>3. Set your link action preference.
+    </string>
+    <string name="help_text">
+        Chrome to Phone lets you easily share links, maps, and selected phone numbers and text
+        between your computer and your phone. &lt;br>&lt;br>It is comprised of two components:
+        an Android application and a Chrome browser extension. The browser extension can be
+        downloaded from the Chrome extension gallery at http://chrome.google.com/extensions/
+        &lt;br>&lt;br>Once the Chrome extension is installed on your computer, you can
+        connect your Android phone.&lt;br>&lt;br>You can choose whether links sent from
+        your phone are automatically opened by the appropriate application or left as messages
+        in the status bar which you can action manually. &lt;br>&lt;br>Note that only Google
+        Accounts are supported (Google Apps accounts are not supported).
+    </string>
 </resources>
