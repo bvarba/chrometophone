@@ -39,24 +39,25 @@ public class SendServlet extends HttpServlet {
     private static final String DEVICE_NOT_REGISTERED_STATUS = "DEVICE_NOT_REGISTERED";
     private static final String ERROR_STATUS = "ERROR";
 
+    @Deprecated
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        doGet(req, resp);
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        doPost(req, resp);
     }
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
         // Check API version
         String apiVersionString = req.getParameter("ver");
         if (apiVersionString == null) apiVersionString = "1";
         int apiVersion = Integer.parseInt(apiVersionString);
-        log.info("Extension version: " + apiVersion);
         if (apiVersion < 3) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS +
                     " (Please remove old Chrome extension and install latest)");
+            log.warning("Old extension version not supported: " + apiVersion);
             return;
         }
 
