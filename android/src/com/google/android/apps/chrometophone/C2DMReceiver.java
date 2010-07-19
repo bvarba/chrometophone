@@ -38,7 +38,6 @@ import android.text.ClipboardManager;
 import com.google.android.c2dm.C2DMBaseReceiver;
 
 public class C2DMReceiver extends C2DMBaseReceiver {
-
     public C2DMReceiver() {
         super(DeviceRegistrar.SENDER_ID);
     }
@@ -119,12 +118,10 @@ public class C2DMReceiver extends C2DMBaseReceiver {
         } else {
             final String GMM_PACKAGE_NAME = "com.google.android.apps.maps";
             final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
-            boolean isMapsURL = url.startsWith("http://maps.google.") ||
-                    url.matches("^http://www\\.google\\.[a-z\\.]+/maps");
 
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (isMapsURL) {
+            if (isMapsURL(url)) {
                 intent.setClassName(GMM_PACKAGE_NAME, GMM_CLASS_NAME);
             }
 
@@ -170,10 +167,15 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
    private String parseTelephoneNumber(String sel) {
        String number = null;
-       if (sel != null && sel.matches("^([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|-]\\)?)+$")) {
+       if (sel != null && sel.matches("([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|-]\\)?)+")) {
            String elements[] = sel.split("([Tt]el[:]?)");
            number = elements.length > 1 ? elements[1] : elements[0];
        }
        return number;
+   }
+
+   private boolean isMapsURL(String url) {
+       return url.matches("http://maps\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?[/?].*") ||
+               url.matches("http://www\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?/maps.*");
    }
 }

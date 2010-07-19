@@ -171,12 +171,11 @@ public class DeviceRegistrar {
         HttpPost post = new HttpPost(uri);
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("devregid", deviceRegistrationID));
-        // XSRF - needs to be verified by server.
-        formparams.add(new BasicNameValuePair("token", ascidCookie));
         UrlEncodedFormEntity entity =
             new UrlEncodedFormEntity(formparams, "UTF-8");
         post.setEntity(entity);
         post.setHeader("Cookie", ascidCookie);
+        post.setHeader("X-Same-Domain", "1");  // XSRF
         res = client.execute(post);
         return res;
     }
