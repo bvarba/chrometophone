@@ -42,14 +42,23 @@ public class UnregisterServlet extends HttpServlet {
     /**
      * @deprecated Will be removed in next rel cycle.
      */
+    @Deprecated
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doPost(req, resp);
     }
-    
+
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
+
+        // Basic XSRF protection
+        if (req.getHeader("X-Same-Domain") == null) {
+            // TODO: Enable at consumer launch
+            //resp.setStatus(400);
+            //resp.getWriter().println(ERROR_STATUS + " (Missing X-Same-Domain header)");
+            //return;
+        }
 
         String deviceRegistrationID = req.getParameter("devregid");
         if (deviceRegistrationID == null) {

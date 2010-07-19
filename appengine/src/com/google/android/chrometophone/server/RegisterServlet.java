@@ -42,11 +42,11 @@ public class RegisterServlet extends HttpServlet {
 
     /**
      * Get the user using the UserService.
-     * 
+     *
      * If not logged in, return an error message.
-     * 
-     * @return user, or null if not logged in. 
-     * @throws IOException 
+     *
+     * @return user, or null if not logged in.
+     * @throws IOException
      */
     static User checkUser(HttpServletRequest req, HttpServletResponse resp,
             boolean errorIfNotLoggedIn) throws IOException {
@@ -62,7 +62,7 @@ public class RegisterServlet extends HttpServlet {
         } catch (Throwable t) {
             user = null;
         }
-        
+
         UserService userService = UserServiceFactory.getUserService();
         user = userService.getCurrentUser();
         if (user == null && errorIfNotLoggedIn) {
@@ -73,10 +73,11 @@ public class RegisterServlet extends HttpServlet {
         }
         return user;
     }
-    
+
     /**
      * @deprecated will be removed in next rel.
      */
+    @Deprecated
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doPost(req, resp);
@@ -85,6 +86,14 @@ public class RegisterServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
+
+        // Basic XSRF protection
+        if (req.getHeader("X-Same-Domain") == null) {
+            // TODO: Enable at consumer launch
+            //resp.setStatus(400);
+            //resp.getWriter().println(ERROR_STATUS + " (Missing X-Same-Domain header)");
+            //return;
+        }
 
         String deviceRegistrationID = req.getParameter("devregid");
         if (deviceRegistrationID == null) {

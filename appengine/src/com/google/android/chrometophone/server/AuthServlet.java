@@ -18,6 +18,7 @@ package com.google.android.chrometophone.server;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,61 +29,46 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
 public class AuthServlet extends HttpServlet {
+    private static final Logger log =
+        Logger.getLogger(SendServlet.class.getName());
     private static final String ERROR_STATUS = "ERROR";
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        if (req.getRequestURI().startsWith("/signin")) {
-            doSignIn(req, resp);
-        } else if (req.getRequestURI().startsWith("/signout")) {
-            doSignOut(req, resp);
-        }
-    }
+        resp.setContentType("text/html");
+        boolean signIn = req.getRequestURI().startsWith("/signin");
 
-    private void doSignIn(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         // Get the extension return URL
         String extRet = req.getParameter("extret");
         if (extRet == null) {
-            resp.setContentType("text/plain");
+            resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + " (extret parameter missing)");
             return;
         }
 
-        // If login is complete, redirect to the extension page. Otherwise, send user to login,
-        // setting the continue page back to this servlet (since UserService does not understand
-        // chrome-extension:// URLs
+        // If login/logout is complete, redirect to the extension page. Otherwise, send user to
+        // login/logout, setting the continue page back to this servlet (since UserService does
+        // not understand chrome-extension:// URLs)
         if (req.getParameter("completed") != null) {
             // Server-side redirects don't work for chrome-extension:// URLs so we do a client-
             // side redirect instead
-            resp.getWriter().println("<meta http-equiv=\"refresh\" content=\"0;url=" + extRet + "\">");
+
+            // Sanitize the extRet URL for XSS protection
+            String regEx = "chrome-extension://[a-z]+" +
+                    (signIn ? "/signed_in\\.html" : "/signed_out\\.html");
+            if (extRet.matches(regEx)) {
+                resp.getWriter().println("<meta http-equiv=\"refresh\" content=\"0;url=" + extRet + "\">");
+            } else {
+                resp.setStatus(400);
+                resp.getWriter().println(ERROR_STATUS + " (invalid redirect)");
+                log.warning("Invalid redirect " + extRet);
+            }
         } else {
             String followOnURL = req.getRequestURI() + "?completed=true&extret=" +
                     URLEncoder.encode(extRet, "UTF-8");
             UserService userService = UserServiceFactory.getUserService();
-            resp.sendRedirect(userService.createLoginURL(followOnURL));
-        }
-    }
-
-    private void doSignOut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // Get the extension return URL
-        String extRet = req.getParameter("extret");
-        if (extRet == null) {
-            resp.setContentType("text/plain");
-            resp.getWriter().println(ERROR_STATUS + " (extret parameter missing)");
-            return;
-        }
-
-        // If logout is complete, redirect to the extension page. Otherwise, send user to login,
-        // setting the continue page back to this servlet (since UserService does not understand
-        // chrome-extension:// URLs
-        if (req.getParameter("completed") != null) {
-            // Server-side redirects don't work for chrome-extension:// URLs so we do a client-
-            // side redirect instead
-            resp.getWriter().println("<meta http-equiv=\"refresh\" content=\"0;url=" + extRet + "\">");
-        } else {
-            String followOnURL = req.getRequestURI() + "?completed=true&extret=" +
-                    URLEncoder.encode(extRet, "UTF-8");
-            UserService userService = UserServiceFactory.getUserService();
-            resp.sendRedirect(userService.createLogoutURL(followOnURL));
+            resp.sendRedirect(signIn ? userService.createLoginURL(followOnURL) :
+                    userService.createLogoutURL(followOnURL));
         }
     }
 }

@@ -17,7 +17,6 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOObjectNotFoundException;
@@ -30,8 +29,6 @@ import com.google.android.c2dm.server.C2DMessaging;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
 public class SendServlet extends HttpServlet {
@@ -51,19 +48,25 @@ public class SendServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
-        // Basic XSRF protection
-        if (req.getHeader("X-Extension") == null) {
-            resp.setStatus(400);
-            resp.getWriter().println(ERROR_STATUS + " - Please upgrade your extension");
-            log.warning("Missing X-Extension header");
-            resp.setStatus(400);
-            return;
-        }
-
+        // Check API version
         String apiVersionString = req.getParameter("ver");
         if (apiVersionString == null) apiVersionString = "1";
         int apiVersion = Integer.parseInt(apiVersionString);
         log.info("Extension version: " + apiVersion);
+        if (apiVersion < 3) {
+            resp.setStatus(400);
+            resp.getWriter().println(ERROR_STATUS +
+                    " (Please remove old Chrome extension and install latest)");
+            return;
+        }
+
+        // Basic XSRF protection (TODO: remove X-Extension in a future release for consistency)
+        if (req.getHeader("X-Same-Domain") == null && req.getHeader("X-Extension") == null) {
+            resp.setStatus(400);
+            resp.getWriter().println(ERROR_STATUS + " (Missing header)");
+            log.warning("Missing header");
+            return;
+        }
 
         String sel = req.getParameter("sel");
         if (sel == null) sel = "";  // optional
@@ -78,23 +81,14 @@ public class SendServlet extends HttpServlet {
 
         User user = RegisterServlet.checkUser(req, resp, false);
         if (user != null) {
-            doSendToPhone(url, title, sel, user.getEmail(), apiVersion, resp);
+            doSendToPhone(url, title, sel, user.getEmail(), resp);
         } else {
-            if (apiVersion >= 2) {  // TODO: Make this default code path on launch
-              resp.getWriter().println(LOGIN_REQUIRED_STATUS);
-            } else {  // TODO: DEPRECATED code path. Delete on launch
-                String followOnURL = req.getRequestURI() + "?title="  +
-                        URLEncoder.encode(title, "UTF-8") +
-                        "&url=" + URLEncoder.encode(url, "UTF-8") +
-                        "&sel=" + URLEncoder.encode(sel, "UTF-8");
-                UserService userService = UserServiceFactory.getUserService();
-                resp.sendRedirect(userService.createLoginURL(followOnURL));
-            }
+            resp.getWriter().println(LOGIN_REQUIRED_STATUS);
         }
     }
 
     private boolean doSendToPhone(String url, String title, String sel,
-            String userAccount, int apiVersion, HttpServletResponse resp) throws IOException {
+            String userAccount, HttpServletResponse resp) throws IOException {
         // Get device info
         DeviceInfo deviceInfo = null;
         // Shared PMF
@@ -106,12 +100,7 @@ public class SendServlet extends HttpServlet {
                 deviceInfo = pm.getObjectById(DeviceInfo.class, key);
             } catch (JDOObjectNotFoundException e) {
                 log.warning("Device not registered");
-                if (apiVersion >= 3) {  // TODO: Make this default code path on launch
-                    resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
-                } else {  // TODO: DEPRECATED code path. Delete on launch
-                    resp.setStatus(400);
-                    resp.getWriter().println(ERROR_STATUS + " (Device not registered)");
-                }
+                resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
                 return false;
             }
         } finally {
@@ -124,16 +113,16 @@ public class SendServlet extends HttpServlet {
         String collapseKey = "" + url.hashCode();
         if (deviceInfo.getDebug()) {
             res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
-                    collapseKey, 
-                    "url", url, 
+                    collapseKey,
+                    "url", url,
                     "title", title,
                     "sel", sel,
                     "debug", "1");
-            
+
         } else {
             res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
-                    collapseKey, 
-                    "url", url, 
+                    collapseKey,
+                    "url", url,
                     "title", title,
                     "sel", sel);
         }
