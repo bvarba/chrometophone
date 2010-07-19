@@ -26,7 +26,7 @@ body {
 </style>
 
 <script type="text/javascript">
-var apiVersion = 3;
+var apiVersion = 4;
 var baseUrl = 'https://chrometophone.appspot.com';
 var sendUrl = baseUrl + '/send?ver=' + apiVersion;;
 var signInUrl = baseUrl + '/signin?extret=' +
@@ -54,7 +54,7 @@ function loadHandler() {
 function sendToPhone(title, url, selection) {
   req.open('POST', sendUrl, true);
   req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  req.setRequestHeader('X-Extension', 'true');  // XSRF protector
+  req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
 
   req.onreadystatechange = function() {
     if (this.readyState == 4) {
