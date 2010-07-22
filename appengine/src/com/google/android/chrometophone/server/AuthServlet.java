@@ -56,8 +56,8 @@ public class AuthServlet extends HttpServlet {
             // Sanitize the extRet URL for XSS protection
             String regExChrome = "chrome-extension://[a-z]+" +
                     (signIn ? "/signed_in\\.html" : "/signed_out\\.html");
-            String regExFirefox = "chrome://sendtophone" +
-                    (signIn ? "/loggedIn" : "/loggedOut");
+            String regExFirefox = "http://code\\.google\\.com/p/chrometophone/logo\\?" +
+                    (signIn ? "login" : "logout");
             if (extRet.matches(regExChrome) || extRet.matches(regExFirefox)) {
                 resp.getWriter().println("<meta http-equiv=\"refresh\" content=\"0;url=" + extRet + "\">");
             } else {
