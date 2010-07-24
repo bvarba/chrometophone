@@ -4,7 +4,7 @@
     "description": "Name of the application"
   },
   "app_desc": {
-    "message": "This extension adds a button to let you send a link to your Android phone. Requires the Google Chrome to Phone Extension app to be installed on your Android device.",
+    "message": "Google Chrome to Phone Extension enables you to send links and other information from Chrome to your Android device.",
     "description": "Description of the application."
   },
   "sending_message": {
