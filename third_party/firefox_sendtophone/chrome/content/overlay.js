@@ -2,8 +2,8 @@ var sendtophone = {
 	baseUrl : '',
 	req : null,
 	apiVersion : 3,
-	loggedInUrl : "http://code.google.com/p/chrometophone/logo?cct=1275941464",
-	loggedOutUrl : "chrome://sendtophone/loggedOut",
+	loggedInUrl : "http://code.google.com/p/chrometophone/logo?login",
+	loggedOutUrl : "http://code.google.com/p/chrometophone/logo?logout",
 	apkUrl : "http://code.google.com/p/chrometophone/downloads/detail?name=chrometophone-android-v1.1.apk",
 
 	init: function()
@@ -179,6 +179,18 @@ var sendtophone = {
 			}
 		};
 
+		// To send correctly cookies.
+    // Force the request to include cookies even though this chrome code
+    // is seen as a third-party, so the server knows the user for which we are
+    // requesting favorites (or anything else user-specific in the future).
+    // This only works in Firefox 3.6; in Firefox 3.5 the request will instead
+    // fail to send cookies if the user has disabled third-party cookies.
+    try {
+      req.channel.QueryInterface(Ci.nsIHttpChannelInternal).
+        forceAllowThirdPartyCookie = true;
+    }
+    catch(ex) { /* user is using Firefox 3.5 */ }
+
 		req.send( data );
 	},
 
@@ -243,11 +255,31 @@ var sendtophone = {
 
 	logout: function()
 	{
+		var lastTab = gBrowser.tabContainer.selectedIndex;
+		var tab = gBrowser.addTab(this.logOutUrl);
+		// Open Google logout page
+		gBrowser.selectedTab = tab;
+		var c2pTab = gBrowser.getBrowserForTab(tab);
+		//Add listener for callback URL
+		c2pTab.addEventListener("load", function () {
+			if(sendtophone.loggedOutUrl==c2pTab.currentURI.spec){
+				sendtophone.logoutSuccessful();
+
+				// Close logout tab
+				gBrowser.removeCurrentTab();
+				// ReFocus on tab being sent
+				gBrowser.selectedTab = gBrowser.tabContainer.childNodes[lastTab];
+			}
+		}, true);
+
+/*
+		// This doesn't work if third party cookies are bloqued. Why???
 		this.processXHR(this.logOutUrl, 'GET', null, function(req)
 			{
 				// This will be called only if there's a problem
 				this.alert(this.strings.getString("LogoutError") + '\r\n' + req.responseText );
 			});
+			*/
 	},
 
 	logoutSuccessful: function()
