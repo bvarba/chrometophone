@@ -2,24 +2,12 @@ content   sendtophone                 chrome/content/
 skin      sendtophone   classic/1.0   chrome/skin/
 locale	sendtophone	en		chrome/locale/en/
 locale	sendtophone	de		chrome/locale/de/
-locale	sendtophone	es-ES		chrome/locale/es-ES/
-locale	sendtophone	es-US		chrome/locale/es-ES/
-locale	sendtophone	es-CL		chrome/locale/es-ES/
-locale	sendtophone	es-BO		chrome/locale/es-ES/
-locale	sendtophone	es-CO		chrome/locale/es-ES/
+locale	sendtophone	es		chrome/locale/es/
 locale	sendtophone	ga-IE		chrome/locale/ga-IE/
-locale	sendtophone	fr-FR		chrome/locale/fr-FR/
-locale	sendtophone	fr-BE		chrome/locale/fr-FR/
-locale	sendtophone	fr-LU		chrome/locale/fr-FR/
-locale	sendtophone	fr-CH		chrome/locale/fr-FR/
-locale	sendtophone	fr-FR		chrome/locale/fr-FR/
-locale	sendtophone	fr-CA		chrome/locale/fr-FR/
+locale	sendtophone	fr		chrome/locale/fr/
 locale	sendtophone	hi-IN		chrome/locale/hi-IN/
 locale	sendtophone	ja-JP		chrome/locale/ja-JP/
-locale	sendtophone	zh-CN		chrome/locale/zh-CN/
-locale	sendtophone	zh-TW		chrome/locale/zh-CN/
-locale	sendtophone	zh-HK		chrome/locale/zh-CN/
-locale	sendtophone	zh-CHS		chrome/locale/zh-CN/
+locale	sendtophone	zh		chrome/locale/zh/
 
 overlay   chrome://browser/content/browser.xul   chrome://sendtophone/content/ff-overlay.xul
 style chrome://global/content/customizeToolbar.xul chrome://sendtophone/skin/overlay.css

@@ -2,47 +2,61 @@ var sendtophone = {
 	baseUrl : '',
 	req : null,
 
+	init: function( prefs )
+	{
+		// Each app will implement its specific initialization
+	},
+
   onLoad: function()
 	{
+    sendtophone.strings = document.getElementById("sendtophone-strings");
+
 		var prefs = Components.classes["@mozilla.org/preferences-service;1"]
 										.getService(Components.interfaces.nsIPrefService)
 										.getBranch("extensions.sendtophone.") ;
 		// Allow the people to use their own server if they prefer to not trust this server
 		sendtophone.baseUrl = prefs.getCharPref( "appUrl" ) ;
 
-		// Try to install the toolbar button, but only once
-		if (!prefs.getBoolPref("installedButton"))
-		{
-			sendtophone.installToolbarButton();
-			prefs.setBoolPref( "installedButton", true ) ;
-		}
-    sendtophone.strings = document.getElementById("sendtophone-strings");
+		sendtophone.init( prefs );
   },
 
-  onMenuItemCommand: function(e)
+  onMenuItemCommand: function(e, type)
 	{
-		var info = sendtophone.getInfo();
-
-		if (gContextMenu)
+		var title, url, selection;
+		switch(type)
 		{
-			if (gContextMenu.onLink)
-			{
-				info.title = gContextMenu.linkText();
-				info.url = gContextMenu.linkURL;
-			}
-			if (gContextMenu.onImage)
-			{
-				info.url =  gContextMenu.imageURL;
-			}
+			case 'link':
+				title = gContextMenu.linkText();
+				url = gContextMenu.linkURL;
+				selection = '';
+				break;
+			case 'image':
+				title = gContextMenu.target.title || gContextMenu.target.alt;
+				url = gContextMenu.imageURL;
+				selection = '';
+				break;
+			case 'text':
+				title = "Selection";
+				url = 'http://www.google.com/';
+				selection = content.getSelection().toString();
+				break;
+			case 'page':
+				var info = sendtophone.getInfo();
+				title = info.title;
+				url = info.url;
+				selection = info.selection;
+				break;
 		}
-
+/*
     if ((/https?:/i).test( info.url ))
 		{
+*/
 			var max_length = 256;
-			if (info.selection.length > max_length)
-				info.selection = info.selection.substring(0, max_length);
+			if (selection.length > max_length)
+				selection = selection.substring(0, max_length);
 
-			this.sendToPhone(info.title, info.url, info.selection);
+			this.sendToPhone(title, url, selection);
+/*
     }
 		else
 		{
@@ -51,7 +65,7 @@ var sendtophone = {
 	    promptService.alert(window, this.strings.getString("SendToPhoneTitle"),
                                 this.strings.getString("InvalidScheme"));
     }
-
+*/
   },
 
 	popupNotification: function(title, text)
@@ -74,7 +88,7 @@ var sendtophone = {
 
   onToolbarButtonCommand: function(e) {
     // just reuse the function above.
-    sendtophone.onMenuItemCommand(e);
+    sendtophone.onMenuItemCommand(e, 'page');
   },
 
 	getInfo: function() {
@@ -97,6 +111,7 @@ var sendtophone = {
 		var sendUrl = this.baseUrl + '?title=' + encodeURIComponent(title) +
 				'&url=' + encodeURIComponent(url) + '&sel=' + encodeURIComponent(selection);
 		req.open('GET', sendUrl, true);
+	  req.setRequestHeader('X-Extension', 'true');  // XSRF protector
 
 		req.onreadystatechange = function()
 		{
@@ -120,34 +135,8 @@ var sendtophone = {
 		};
 
 		req.send(null);
-	},
-
-	installToolbarButton: function()
-	{
-		try {
-			 var firefoxnav = document.getElementById("nav-bar");
-			 var curSet = firefoxnav.currentSet;
-			 if (curSet.indexOf("sendtophone-toolbar-button") == -1)
-			 {
-				 var set;
-				 // Place the button before the urlbar
-				 if (curSet.indexOf("urlbar-container") != -1)
-					 set = curSet.replace(/urlbar-container/, "urlbar-container,sendtophone-toolbar-button");
-				 else  // at the end
-					 set = curSet + ",sendtophone-toolbar-button";
-				 firefoxnav.setAttribute("currentset", set);
-				 firefoxnav.currentSet = set;
-				 document.persist("nav-bar", "currentset");
-				 // If you don't do the following call, funny things happen
-				 try {
-					 BrowserToolboxCustomizeDone(true);
-				 }
-				 catch (e) { }
-			 }
-		 }
-		 catch(e) { }
-
 	}
+
 };
 
 window.addEventListener("load", sendtophone.onLoad, false);

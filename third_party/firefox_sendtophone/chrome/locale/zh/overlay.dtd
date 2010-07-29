@@ -1,6 +1,6 @@
-﻿<!ENTITY sendtophoneToolbarButton.label "電話に送信">
-<!ENTITY sendtophoneToolbarButton.tooltip "送信あなたのAndroid携帯電話にこのページ">
-<!ENTITY sendtophoneContext.label "Androidへの送信このリンク">
+﻿<!ENTITY sendtophoneToolbarButton.label "发送到手机">
+<!ENTITY sendtophoneToolbarButton.tooltip "发送给你的Android手机页面">
+<!ENTITY sendtophoneContext.label "此链接发送到Android">
 <!ENTITY sendtophoneContext.accesskey "A">
 <!ENTITY sendtophoneContextImage.label "Send this image to Android">
 <!ENTITY sendtophoneContextImage.accesskey "A">

@@ -10,9 +10,18 @@
   </stringbundleset>
 
   <popup id="contentAreaContextMenu">
-    <menuitem id="context-sendtophone" label="&sendtophoneContext.label;"
+    <menuitem id="context-sendtophone-link" label="&sendtophoneContext.label;"
               accesskey="&sendtophoneContext.accesskey;"
-              oncommand="sendtophone.onMenuItemCommand(event)"/>
+              insertafter="context-sendlink"
+              oncommand="sendtophone.onMenuItemCommand(event, 'link')"/>
+    <menuitem id="context-sendtophone-image" label="&sendtophoneContextImage.label;"
+              accesskey="&sendtophoneContextImage.accesskey;"
+              insertafter="context-sendimage"
+              oncommand="sendtophone.onMenuItemCommand(event, 'image')"/>
+    <menuitem id="context-sendtophone-text" label="&sendtophoneContextText.label;"
+              accesskey="&sendtophoneContextText.accesskey;"
+              insertafter="context-searchselect"
+              oncommand="sendtophone.onMenuItemCommand(event, 'text')"/>
   </popup>
 
   <toolbarpalette id="BrowserToolbarPalette">

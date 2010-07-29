@@ -15,3 +15,12 @@
 {
   -moz-image-region: rect(24px 40px 40px 24px);
 }
+
+#context-sendtophone-link,
+#context-sendtophone-image,
+#context-sendtophone-text
+{
+  -moz-binding: url(chrome://global/content/bindings/menu.xml#menuitem-iconic) !important;
+  list-style-image: url("chrome://sendtophone/skin/toolbar-button.png") !important;
+  -moz-image-region: rect( 0px 40px 16px 24px) !important;
+}

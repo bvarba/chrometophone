@@ -2,3 +2,7 @@
 <!ENTITY sendtophoneToolbarButton.tooltip "अपने Android फोन करने के लिए इस पृष्ठ को भेजें">
 <!ENTITY sendtophoneContext.label "भेजें Android के लिए इस कड़ी">
 <!ENTITY sendtophoneContext.accesskey "A">
+<!ENTITY sendtophoneContextImage.label "Send this image to Android">
+<!ENTITY sendtophoneContextImage.accesskey "A">
+<!ENTITY sendtophoneContextText.label "Send this text to Android">
+<!ENTITY sendtophoneContextText.accesskey "A">
