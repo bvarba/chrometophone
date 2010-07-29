@@ -7,6 +7,31 @@ var sendtophone = {
 		// Each app will implement its specific initialization
 	},
 
+	initPopup: function()
+	{
+		// returning true will make the popup show
+		return true;
+	},
+
+	logout: function()
+	{
+		var cookieMgr = Components.classes["@mozilla.org/cookiemanager;1"]
+								 .getService(Components.interfaces.nsICookieManager);
+
+		// extract the domain based on the currently used one
+		// "chrometophone.appspot.com" by default
+		var domain = sendtophone.baseUrl.match(/https?:\/\/(.*)\//)[1];
+
+		for (var e = cookieMgr.enumerator; e.hasMoreElements();) {
+			var cookie = e.getNext().QueryInterface(Components.interfaces.nsICookie);
+			if (cookie.host == domain)
+			{
+				cookieMgr.remove(cookie.host, cookie.name, cookie.path, false);
+				break;
+			}
+		}
+	},
+
   onLoad: function()
 	{
     sendtophone.strings = document.getElementById("sendtophone-strings");

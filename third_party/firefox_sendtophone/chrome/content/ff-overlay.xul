@@ -9,6 +9,14 @@
     <stringbundle id="sendtophone-strings" src="chrome://sendtophone/locale/overlay.properties"/>
   </stringbundleset>
 
+  <popupset id="mainPopupSet">
+	  <popup id="sendtophoneContextMenu" onpopupshowing="sendtophone.initPopup();">
+		<menuitem label="&sendtophoneContextLogout.label;" 
+				  accesskey="&sendtophoneContextLogout.accesskey;"
+				  oncommand="sendtophone.logout()" id="sendtophoneContextMenuLogout"/>
+	  </popup>
+  </popupset>
+
   <popup id="contentAreaContextMenu">
     <menuitem id="context-sendtophone-link" label="&sendtophoneContext.label;"
               accesskey="&sendtophoneContext.accesskey;"
@@ -27,6 +35,7 @@
   <toolbarpalette id="BrowserToolbarPalette">
   <toolbarbutton id="sendtophone-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
     label="&sendtophoneToolbarButton.label;" tooltiptext="&sendtophoneToolbarButton.tooltip;"
+	context="sendtophoneContextMenu"
     oncommand="sendtophone.onToolbarButtonCommand()"/>
   </toolbarpalette>
 

@@ -6,3 +6,5 @@
 <!ENTITY sendtophoneContextImage.accesskey "A">
 <!ENTITY sendtophoneContextText.label "Send this text to Android">
 <!ENTITY sendtophoneContextText.accesskey "A">
+<!ENTITY sendtophoneContextLogout.label "Logout">
+<!ENTITY sendtophoneContextLogout.accesskey "L">

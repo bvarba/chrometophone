@@ -4,10 +4,10 @@
     <em:id>sendtophone@martinezdelizarrondo.com</em:id>
     <em:type>2</em:type>
     <em:name>Send To Phone</em:name>
-    <em:version>0.5</em:version>
+    <em:version>0.6</em:version>
     <em:creator>Alfonso Martínez de Lizarrondo</em:creator>
     <em:contributor>Patrick O'Reilly</em:contributor>
-    <em:description>Using the new APIs in Android 2.2 and based on the ChromeToPhone extension, allows to send urls from Firefox to your phone</em:description>
+    <em:description>Send links to your Android 2.2 phone using the new C2DM service. Based on the ChromeToPhone extension.</em:description>
     <em:aboutURL>chrome://sendtophone/content/about.xul</em:aboutURL>
 	<em:iconURL>chrome://sendtophone/skin/icon.png</em:iconURL>
     <em:targetApplication>
