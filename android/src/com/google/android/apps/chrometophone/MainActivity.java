@@ -27,6 +27,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -136,6 +137,7 @@ public class MainActivity extends Activity {
     private void setIntroScreenContent() {
         TextView textView = (TextView) findViewById(R.id.intro_text);
         textView.setText(Html.fromHtml(getString((R.string.intro_text))));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         Button exitButton = (Button) findViewById(R.id.exit);
         exitButton.setOnClickListener(new OnClickListener() {
