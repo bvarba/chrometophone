@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://sendtophone/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://sendtophone/locale/overlay.dtd">
+<overlay id="sendtophone-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="overlay.js"/>
+  <script src="ff-overlay.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="sendtophone-strings" src="chrome://sendtophone/locale/overlay.properties"/>
+  </stringbundleset>
+
+  <popup id="contentAreaContextMenu">
+    <menuitem id="context-sendtophone" label="&sendtophoneContext.label;"
+              accesskey="&sendtophoneContext.accesskey;"
+              oncommand="sendtophone.onMenuItemCommand(event)"/>
+  </popup>
+
+  <toolbarpalette id="BrowserToolbarPalette">
+  <toolbarbutton id="sendtophone-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
+    label="&sendtophoneToolbarButton.label;" tooltiptext="&sendtophoneToolbarButton.tooltip;"
+    oncommand="sendtophone.onToolbarButtonCommand()"/>
+  </toolbarpalette>
+
+</overlay>

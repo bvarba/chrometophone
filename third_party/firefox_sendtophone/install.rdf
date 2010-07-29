@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>sendtophone@martinezdelizarrondo.com</em:id>
+    <em:type>2</em:type>
+    <em:name>Send To Phone</em:name>
+    <em:version>0.2</em:version>
+    <em:creator>Alfonso Martínez de Lizarrondo</em:creator>
+    <em:contributor>Patrick O'Reilly</em:contributor>
+    <em:description>Using the new APIs in Android 2.2 and based on the ChromeToPhone extension, allows to send urls from Firefox to your phone</em:description>
+    <em:aboutURL>chrome://sendtophone/content/about.xul</em:aboutURL>
+	<em:iconURL>chrome://sendtophone/skin/icon.png</em:iconURL>
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>3.7a5pre</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+  </Description>
+</RDF>
