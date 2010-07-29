@@ -1,10 +1,10 @@
-sendtophone.init = function( prefs )
+sendtophone.init = function()
 {
 	// Try to install the toolbar button, but only once
-	if (!prefs.getBoolPref("installedButton"))
+	if (!this.prefs.getBoolPref("installedButton"))
 	{
 		this.installToolbarButton();
-		prefs.setBoolPref( "installedButton", true ) ;
+		this.prefs.setBoolPref( "installedButton", true ) ;
 	}
 }
 

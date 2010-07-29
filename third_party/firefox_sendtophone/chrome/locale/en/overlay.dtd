@@ -8,3 +8,11 @@
 <!ENTITY sendtophoneContextText.accesskey "A">
 <!ENTITY sendtophoneContextLogout.label "Logout">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
+<!ENTITY sendtophoneLogin.title "&sendtophoneToolbarButton.label; - Log In">
+<!ENTITY sendtophoneLoginUsername.label "Username:">
+<!ENTITY sendtophoneLoginUsername.accesskey "u">
+<!ENTITY sendtophoneLoginPassword.label "Password:">
+<!ENTITY sendtophoneLoginPassword.accesskey "p">
+<!ENTITY sendtophoneLoginRememberPassword.label "Remember password.">
+<!ENTITY sendtophoneLoginButtonLogin.label "Log in">
+
