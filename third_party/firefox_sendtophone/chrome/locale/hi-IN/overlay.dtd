@@ -1,0 +1,4 @@
+﻿<!ENTITY sendtophoneToolbarButton.label "फोन पर भेजें">
+<!ENTITY sendtophoneToolbarButton.tooltip "अपने Android फोन करने के लिए इस पृष्ठ को भेजें">
+<!ENTITY sendtophoneContext.label "भेजें Android के लिए इस कड़ी">
+<!ENTITY sendtophoneContext.accesskey "A">

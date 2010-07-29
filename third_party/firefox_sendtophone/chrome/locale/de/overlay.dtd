@@ -1,0 +1,4 @@
+<!ENTITY sendtophoneToolbarButton.label "Send to Phone">
+<!ENTITY sendtophoneToolbarButton.tooltip "Senden Sie diese Seite zu Ihren Android Phone">
+<!ENTITY sendtophoneContext.label "Schicken Sie diesen link, um Android">
+<!ENTITY sendtophoneContext.accesskey "l">

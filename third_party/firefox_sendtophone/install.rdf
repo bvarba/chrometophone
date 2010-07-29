@@ -4,7 +4,7 @@
     <em:id>sendtophone@martinezdelizarrondo.com</em:id>
     <em:type>2</em:type>
     <em:name>Send To Phone</em:name>
-    <em:version>0.2</em:version>
+    <em:version>0.3</em:version>
     <em:creator>Alfonso Martínez de Lizarrondo</em:creator>
     <em:contributor>Patrick O'Reilly</em:contributor>
     <em:description>Using the new APIs in Android 2.2 and based on the ChromeToPhone extension, allows to send urls from Firefox to your phone</em:description>
@@ -15,6 +15,34 @@
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
         <em:minVersion>3.0</em:minVersion>
         <em:maxVersion>3.7a5pre</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+	    <em:targetApplication>
+      <Description>
+        <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->
+        <em:minVersion>1.5</em:minVersion>
+        <em:maxVersion>3.2a1pre</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:targetApplication>
+      <Description>
+        <em:id>{86c18b42-e466-45a9-ae7a-9b95ba6f5640}</em:id> <!-- Mozilla -->
+        <em:minVersion>1.0</em:minVersion>
+        <em:maxVersion>1.8+</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:targetApplication>
+      <Description>
+        <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id> <!-- Sea Monkey -->
+        <em:minVersion>1.0a</em:minVersion>
+        <em:maxVersion>2.1a2</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+	<em:targetApplication>
+      <Description>
+        <em:id>{718e30fb-e89b-41dd-9da7-e25a45638b28}</em:id> <!-- Sun Bird -->
+        <em:minVersion>0.2</em:minVersion>
+        <em:maxVersion>1.0pre</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>
