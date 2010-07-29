@@ -4,7 +4,7 @@
     <em:id>sendtophone@martinezdelizarrondo.com</em:id>
     <em:type>2</em:type>
     <em:name>Send To Phone</em:name>
-    <em:version>0.9</em:version>
+    <em:version>0.9.1</em:version>
     <em:creator>Alfonso Martínez de Lizarrondo</em:creator>
     <em:contributor>Patrick O'Reilly</em:contributor>
     <em:description>Send links to your Android 2.2 phone using the new C2DM service. Based on the ChromeToPhone extension.</em:description>

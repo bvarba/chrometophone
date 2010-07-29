@@ -4,7 +4,7 @@ var sendtophone = {
 	apiVersion : 3,
 	loggedInUrl : "http://code.google.com/p/chrometophone/logo?cct=1275941464",
 	loggedOutUrl : "chrome://sendtophone/loggedOut",
-	apkUrl : "http://code.google.com/p/chrometophone/downloads/detail?name=chrometophone-android.apk&can=2",
+	apkUrl : "http://code.google.com/p/chrometophone/downloads/detail?name=chrometophone-android-v1.1.apk",
 
 	init: function()
 	{
