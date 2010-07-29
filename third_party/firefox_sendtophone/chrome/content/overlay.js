@@ -2,7 +2,7 @@ var sendtophone = {
 	baseUrl : '',
 	req : null,
 	apiVersion : 3,
-	loggedInUrl : "chrome://sendtophone/loggedIn",
+	loggedInUrl : "http://code.google.com/p/chrometophone/logo?cct=1275941464",
 	loggedOutUrl : "chrome://sendtophone/loggedOut",
 	apkUrl : "http://code.google.com/p/chrometophone/downloads/detail?name=chrometophone-android.apk&can=2",
 
@@ -15,7 +15,7 @@ var sendtophone = {
 	{
 		var me = sendtophone;
 
-    me.strings = document.getElementById("sendtophone-strings");
+ 		me.strings = document.getElementById("sendtophone-strings");
 
 		me.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 										.getService(Components.interfaces.nsIPrefService)
@@ -161,11 +161,6 @@ var sendtophone = {
 					if (redirectMatch)
 					{
 						var redirectUrl = redirectMatch[2].replace(/&amp;/g, '&');
-						if (redirectUrl == sendtophone.loggedInUrl)
-						{
-							sendtophone.loginSuccessful();
-							return;
-						}
 						if (redirectUrl == sendtophone.loggedOutUrl)
 						{
 							sendtophone.logoutSuccessful();
@@ -208,21 +203,25 @@ var sendtophone = {
 		}
 		if (body.indexOf('LOGIN_REQUIRED') == 0)
 		{
-			this.openLoginWindow();
-			return;
-/*
-			this.popupNotification(this.strings.getString("LoginRequired") );
-
-			var tab = gBrowser.addTab( this.logInUrl );
+			var me = sendtophone;
+			me.popupNotification( me.strings.getString("LoginRequired") );
+			var lastTab = gBrowser.tabContainer.selectedIndex;
+			var tab = gBrowser.addTab(me.baseUrl + '/signin?ver=' + me.apiVersion + '&extret=' +  encodeURIComponent(me.loggedInUrl));
+			//Open Google login page
 			gBrowser.selectedTab = tab;
 			var c2pTab = gBrowser.getBrowserForTab(tab);
+			//Add listener for callback URL
 			c2pTab.addEventListener("load", function () {
-				if(this.magicUrl==c2pTab.currentURI.spec){
-					c2pTab.contentDocument.location = "data:text/html;base64,PGh0bWw+PGhlYWQ+PHRpdGxlPlNlbmQgdG8gUGhvbmUgRXh0ZW5zaW9uPC90aXRsZT48c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KYm9keSB7bWluLXdpZHRoOiAzMjBweDtvdmVyZmxvdy14OiBoaWRkZW47Zm9udC1mYW1pbHk6IHZlcmRhbmE7Zm9udC1zaXplOiAxMnB4O2NvbG9yOiBibGFjazsgYmFja2dyb3VuZC1jb2xvcjogd2hpdGU7fTwvc3R5bGU+PC9oZWFkPjxib2R5PjxoMT48aW1nIHNyYz0iaHR0cDovL2NvZGUuZ29vZ2xlLmNvbS9wL2Nocm9tZXRvcGhvbmUvbG9nbz9jY3Q9MTI3NTk0MTQ2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiB2YWxpZ249ImJvdHRvbSI+U2VuZCB0byBQaG9uZSBFeHRlbnNpb248L2gxPjxoMj5TaWduZWQgSW48L2gyPjxwPkNvbmdyYXR1bGF0aW9ucy4gWW91IGFyZSBub3cgc2lnbmVkIGluIHRvIFNlbmQgdG8gUGhvbmUuPC9wPjxwPlBsZWFzZSBjbG9zZSB0aGlzIHRhYiwgdGhlbiBhdHRlbXB0IHRvIHNlbmQgeW91ciBtYWlsIGFnYWluLjwvcD48ZGl2IGFsaWduPSJjZW50ZXIiPjxicj4mY29weTsyMDEwIC0gPGEgaHJlZj0iaHR0cHM6Ly9hZGRvbnMubW96aWxsYS5vcmcvZW4tVVMvZmlyZWZveC9hZGRvbi8xNjE5NDEvIj5BYm91dCBTZW5kIHRvIFBob25lPC9hPjwvZGl2PjwvYm9keT48L2h0bWw+";
+				if(sendtophone.loggedInUrl==c2pTab.currentURI.spec){
+					//Resend URL from that Tab
+					sendtophone.loginSuccessful();
+					//Close Google login
+					gBrowser.removeCurrentTab();
+					//ReFocus on tab being sent
+					gBrowser.selectedTab = gBrowser.tabContainer.childNodes[lastTab];
 				}
 			}, true);
 			return;
-*/
 		}
 		if (body.indexOf('DEVICE_NOT_REGISTERED') == 0)
 		{
@@ -255,110 +254,14 @@ var sendtophone = {
 	{
 		this.popupNotification(this.strings.getString("LogoutSuccessful"));
 	},
-/**
- * Opens the login window and stores a reference to it
- *
- */
-	openLoginWindow: function() {
-    this.login_window = window.openDialog("chrome://sendtophone/content/login.xul", "_blank", "chrome,resizable=no,dependent=yes");
-	},
 
-/**
- * Called by the login window
- *
- * @param aUserName - the username
- * @param aPassword - the password
- */
-	initLogin: function(aUserName, aPassword)
-	{
-		this.user_name = aUserName;
-		this.password = aPassword;
-
-		this.login_window.setStatus(1);
-		this.startLoginProcess();
-	},
-
-	startLoginProcess: function()
-	{
-		this.processXHR(this.logInUrl, 'GET', null, this.processLoginStart);
-	},
-
-	processLoginStart: function(req)
-	{
-		var body = this.HTMLParser(req.responseText);
-		var form = body.getElementsByTagName('form')[0];
-		if (form && form.id=='gaia_loginform')
-		{
-			var query='';
-			var items = form.elements;
-			for (var i=0; i<items.length; i++)
-			{
-				var value='';
-				var input=items[i];
-				if (input.type=='hidden')
-					value=input.value;
-				else
-				{
-					switch (input.name)
-					{
-						case 'Email':
-							value = this.user_name;
-							break;
-						case 'Passwd':
-							value = this.password;
-							break;
-						case 'PersistentCookie':
-//								if (persistent)
-								value = input.value;
-							break;
-						case 'signIn':
-							value = input.value;
-							break;
-						default:
-							value = input.value;
-							break;
-					}
-				}
-				query += '&' + input.name + '=' + encodeURIComponent(value);
-			}
-
-			this.processXHR(form.action, 'POST', query, function(req)
-				{
-					// This will be called if the login fails
-					// Different status? 3 vs 4
-					this.login_window.setStatus(4);
-				});
-			return;
-		}
-
-		this.alert(this.strings.getString("ErrorOnSend") + '\r\n' + req.responseText );
-	},
 
 	loginSuccessful: function()
 	{
-//		this.popupNotification( this.strings.getString("LoggingStatusLoggedIn") );
-
-		// Save user and close login window
-		this.login_window.setStatus(2);
-
-		this.login_window.close();
-		delete this.login_window;
+		this.popupNotification( this.strings.getString("LoginSuccessful") );
 
 		// Send pending message
 		this.processXHR(this.sendUrl, 'POST', this.pendingMessage, this.processSentData);
-	},
-
-	// https://developer.mozilla.org/en/Code_snippets/HTML_to_DOM#Safely_parsing_simple_HTML.c2.a0to_DOM
-	HTMLParser: function(aHTMLString){
-		var html = document.implementation.createDocument("http://www.w3.org/1999/xhtml", "html", null),
-			body = document.createElementNS("http://www.w3.org/1999/xhtml", "body");
-		html.documentElement.appendChild(body);
-
-		body.appendChild(Components.classes["@mozilla.org/feed-unescapehtml;1"]
-			.getService(Components.interfaces.nsIScriptableUnescapeHTML)
-			.parseFragment(aHTMLString, false, null, body));
-
-		return body;
 	}
 };
 

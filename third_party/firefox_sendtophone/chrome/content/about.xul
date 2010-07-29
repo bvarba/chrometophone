@@ -8,10 +8,10 @@
   <groupbox align="center" orient="horizontal">
     <vbox>
       <text value="Send To Phone" style="font-weight: bold; font-size: x-large;"/>
-      <text value="&version; 1.0"/>
+      <text value="&version; 0.9"/>
       <separator class="thin"/>
       <text value="&createdBy;" style="font-weight: bold;"/>
-      <text value="Alfonso Martínez de Lizarrondo"/>
+      <text value="Alfonso Martínez de Lizarrondo &amp; Patrick O'Reilly"/>
       <separator class="thin"/>
     </vbox>
   </groupbox>
