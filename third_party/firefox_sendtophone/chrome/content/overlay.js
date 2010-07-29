@@ -74,7 +74,7 @@ var sendtophone = {
 		try {
 			Components.classes['@mozilla.org/alerts-service;1']
 								.getService(Components.interfaces.nsIAlertsService)
-								.showAlertNotification(image, title, text, false, '', null)
+								.showAlertNotification(image, title, text, false, '', null);
 		} catch(e)
 		{
 			// prevents runtime error on platforms that don't implement nsIAlertsService
@@ -94,9 +94,18 @@ var sendtophone = {
 	getInfo: function() {
 		var doc = gBrowser.contentDocument,
 			win = doc.defaultView;
+		var href = doc.location.href;
+		// Is it the Google Maps page?
+		if (/https?:\/\/maps\.google\..{2,3}\//.test(href))
+		{
+			// Then try to send the current view:
+			var link = doc.getElementById('link');
+			if (link && link.href)
+				href = link.href;
+		}
 		return {
 			"title": doc.title,
-			"url": doc.location.href,
+			"url": href,
 			"selection": win.getSelection().toString()
 		};
 	},
