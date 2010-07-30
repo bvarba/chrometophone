@@ -10,7 +10,8 @@
     <string name="connecting_text">Connecting...</string>
     <string name="disconnecting_text">Disconnecting...</string>
     <string name="connected_text">Your phone is now connected to Chrome.</string>
-    <string name="connect_error_text">Error! Unable to establish connection.</string>
+    <string name="connect_error_text">Error: Unable to connect.</string>
+    <string name="auth_error_text">Error: Google Apps accounts not supported.</string>
     <string name="finish">Finish</string>
     <string name="select_link_action_text">Please set your link action preference:</string>
     <string name="auto_launch_text">Automatically launch links</string>
@@ -18,7 +19,7 @@
     <string name="connected_with_account_text">Your phone is connected to Chrome using this account:</string>
     <string name="link_action_pref_text">Link action preference:</string>
     <string name="disconnect">Disconnect phone</string>
-    <string name="disconnect_error_text">Error! Unable to disconnect.</string>
+    <string name="disconnect_error_text">Error: Unable to disconnect.</string>
     <string name="help">Help</string>
     <string name="intro_text">
         Chrome to Phone lets you easily share links, maps, and selected phone numbers and text

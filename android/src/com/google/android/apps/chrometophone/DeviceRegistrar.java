@@ -49,6 +49,12 @@ import android.util.Log;
  * Will pass the registration id and user, authenticating with app engine.
  */
 public class DeviceRegistrar {
+    public static final String STATUS_EXTRA = "Status";
+    public static final int REGISTERED_STATUS = 1;
+    public static final int AUTH_ERROR_STATUS = 2;
+    public static final int UNREGISTERED_STATUS = 3;
+    public static final int ERROR_STATUS = 4;
+
     private static final String TAG = "DeviceRegistrar";
     static final String SENDER_ID = "stp.chrome@gmail.com";
     static final String BASE_URL = "https://chrometophone.appspot.com";
@@ -64,6 +70,7 @@ public class DeviceRegistrar {
           final String deviceRegistrationID) {
         new Thread(new Runnable() {
             public void run() {
+                Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
                 try {
                     HttpResponse res = makeRequest(context, deviceRegistrationID, REGISTER_URL);
                     if (res.getStatusLine().getStatusCode() == 200) {
@@ -71,16 +78,21 @@ public class DeviceRegistrar {
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString("deviceRegistrationID", deviceRegistrationID);
                         editor.commit();
+                        updateUIIntent.putExtra(STATUS_EXTRA, REGISTERED_STATUS);
+                    } else if (res.getStatusLine().getStatusCode() == 400) {
+                        updateUIIntent.putExtra(STATUS_EXTRA, AUTH_ERROR_STATUS);
                     } else {
                         Log.w(TAG, "Registration error " +
                                 String.valueOf(res.getStatusLine().getStatusCode()));
+                        updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
                     }
-                    context.sendBroadcast(new Intent("com.google.ctp.UPDATE_UI"));
+                    context.sendBroadcast(updateUIIntent);
                 } catch (PendingAuthException e) {
                     // Ignore - we'll reregister later
                 } catch (Exception e) {
                     Log.w(TAG, "Registration error " + e.getMessage());
-                    context.sendBroadcast(new Intent("com.google.ctp.UPDATE_UI"));
+                    updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
+                    context.sendBroadcast(updateUIIntent);
                 }
             }
         }).start();
@@ -88,6 +100,7 @@ public class DeviceRegistrar {
 
     public static void unregisterWithServer(final Context context,
             final String deviceRegistrationID) {
+        Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
         try {
             HttpResponse res = makeRequest(context, deviceRegistrationID, UNREGISTER_URL);
             if (res.getStatusLine().getStatusCode() == 200) {
@@ -95,16 +108,19 @@ public class DeviceRegistrar {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.remove("deviceRegistrationID");
                 editor.commit();
+                updateUIIntent.putExtra(STATUS_EXTRA, UNREGISTERED_STATUS);
             } else {
                 Log.w(TAG, "Unregistration error " +
                         String.valueOf(res.getStatusLine().getStatusCode()));
+                updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
             }
         } catch (Exception e) {
+            updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
             Log.w(TAG, "Unegistration error " + e.getMessage());
         }
 
         // Update dialog activity
-        context.sendBroadcast(new Intent("com.google.ctp.UPDATE_UI"));
+        context.sendBroadcast(updateUIIntent);
     }
 
     private static HttpResponse makeRequest(Context context, String deviceRegistrationID,

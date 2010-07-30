@@ -289,34 +289,28 @@ public class MainActivity extends Activity {
         return result;
     }
 
-    private void handleConnectingUpdate() {
-        SharedPreferences prefs = Prefs.get(this);
-        String deviceRegistrationID = prefs.getString("deviceRegistrationID", null);
-
-        if (deviceRegistrationID == null) {  // registration error
+    private void handleConnectingUpdate(int status) {
+        if (status == DeviceRegistrar.REGISTERED_STATUS) {
+            setScreenContent(R.layout.select_launch_mode);
+        } else {
             ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar);
             progressBar.setVisibility(ProgressBar.INVISIBLE);
             TextView textView = (TextView) findViewById(R.id.connecting_text);
-            textView.setText(R.string.connect_error_text);
+            textView.setText(status == DeviceRegistrar.AUTH_ERROR_STATUS ? R.string.auth_error_text :
+                    R.string.connect_error_text);
 
             Button prevButton = (Button) findViewById(R.id.prev);
             prevButton.setEnabled(true);
 
-            Button nextButton = (Button) findViewById(R.id.prev);
+            Button nextButton = (Button) findViewById(R.id.next);
             nextButton.setEnabled(true);
-
-        } else {  // registered successfully
-            setScreenContent(R.layout.select_launch_mode);
         }
     }
 
-    private void handleDisconnectingUpdate() {
-        SharedPreferences prefs = Prefs.get(this);
-        String deviceRegistrationID = prefs.getString("deviceRegistrationID", null);
-
-        if (deviceRegistrationID == null) {  // unregistered successfully
+    private void handleDisconnectingUpdate(int status) {
+        if (status == DeviceRegistrar.UNREGISTERED_STATUS) {
             setScreenContent(R.layout.intro);
-        } else {  // unregistration error
+        } else {
             ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar);
             progressBar.setVisibility(ProgressBar.INVISIBLE);
 
@@ -332,9 +326,11 @@ public class MainActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mScreenId == R.layout.select_account) {
-                handleConnectingUpdate();
+                handleConnectingUpdate(intent.getIntExtra(
+                        DeviceRegistrar.STATUS_EXTRA, DeviceRegistrar.ERROR_STATUS));
             } else if (mScreenId == R.layout.connected) {
-                handleDisconnectingUpdate();
+                handleDisconnectingUpdate(intent.getIntExtra(
+                        DeviceRegistrar.STATUS_EXTRA, DeviceRegistrar.ERROR_STATUS));
             }
         }
     };
