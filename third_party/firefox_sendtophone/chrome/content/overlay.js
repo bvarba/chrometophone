@@ -66,22 +66,20 @@ var sendtophone = {
 				selection = info.selection;
 				break;
 		}
-/*
-    if ((/https?:/i).test( info.url ))
+
+    if ((/^(https?|market|tel|sms|ftp):/i).test( info.url ))
 		{
-*/
 			var max_length = 1024;
 			if (selection.length > max_length)
 				selection = selection.substring(0, max_length);
 
 			sendtophoneCore.send(title, url, selection);
-/*
     }
 		else
 		{
 			this.alert(this.strings.getString("InvalidScheme"));
     }
-*/
+
   },
 
 	// Shows a message in a modal alert
