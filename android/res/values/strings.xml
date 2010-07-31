@@ -35,7 +35,7 @@
         the set up on your phone: &lt;br>&lt;br>1. Choose the Google Account to use.&lt;br>
         2. Connect your Chrome and your phone.&lt;br>3. Set your link action preference.&lt;br>&lt;br>
         By using this application, you agree to the &lt;br>
-        &lt;a href="http://m.google.com/tos">Terms of Service&lt;/a> and
+        &lt;a href="{tos_link}">Terms of Service&lt;/a> and
         &lt;a href="http://m.google.com/privacy">Privacy Policy&lt;/a>
     </string>
     <string name="help_text">
