@@ -115,22 +115,28 @@ public class MainActivity extends Activity {
         mScreenId = screenId;
         setContentView(screenId);
         switch (screenId) {
-              case R.layout.intro: {
-                  setIntroScreenContent();
-                  break;
-              }
-              case R.layout.select_account: {
-                  setSelectAccountScreenContent();
-                  break;
-              }
-              case R.layout.select_launch_mode: {
-                  setSelectLaunchModeScreenContent();
-                  break;
-              }
-              case R.layout.connected: {
-                  setConnectedScreenContent();
-                  break;
-              }
+            // Screen shown if phone is registered/connected
+            case R.layout.connected: {
+                setConnectedScreenContent();
+                break;
+            }
+            // Ordered sequence of screens for setup
+            case R.layout.intro: {
+                setIntroScreenContent();
+                break;
+            }
+            case R.layout.select_account: {
+                setSelectAccountScreenContent();
+                break;
+            }
+            case R.layout.select_launch_mode: {
+                setSelectLaunchModeScreenContent();
+                break;
+            }
+            case R.layout.setup_complete: {
+                setSetupCompleteScreenContent();
+                break;
+            }
         }
     }
 
@@ -203,12 +209,30 @@ public class MainActivity extends Activity {
         nextButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 storeLaunchModePreference();
-                setScreenContent(R.layout.connected);
+                setScreenContent(R.layout.setup_complete);
             }
         });
 
-        RadioButton manualButton = (RadioButton) findViewById(R.id.manual_launch);
-        manualButton.setChecked(true);
+        setLaunchModePreferenceUI();
+    }
+
+    private void setSetupCompleteScreenContent() {
+        TextView textView = (TextView) findViewById(R.id.setup_complete_text);
+        textView.setText(Html.fromHtml(getString((R.string.setup_complete_text))));
+
+        Button prevButton = (Button) findViewById(R.id.prev);
+        prevButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                setScreenContent(R.layout.select_launch_mode);
+            }
+        });
+
+        Button finishButton = (Button) findViewById(R.id.finish);
+        finishButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void setConnectedScreenContent() {
@@ -217,13 +241,7 @@ public class MainActivity extends Activity {
         statusText.setText(getString(R.string.connected_with_account_text) + " " +
                 prefs.getString("accountName", "error"));
 
-        if (prefs.getBoolean("launchBrowserOrMaps", false)) {
-            RadioButton automaticButton = (RadioButton) findViewById(R.id.auto_launch);
-            automaticButton.setChecked(true);
-        } else {
-            RadioButton manualButton = (RadioButton) findViewById(R.id.manual_launch);
-            manualButton.setChecked(true);
-        }
+        setLaunchModePreferenceUI();
 
         RadioGroup launchMode = (RadioGroup) findViewById(R.id.launch_mode_radio);
         launchMode.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -247,6 +265,17 @@ public class MainActivity extends Activity {
         editor.putBoolean("launchBrowserOrMaps",
                 launchMode.getCheckedRadioButtonId() == R.id.auto_launch);
         editor.commit();
+    }
+
+    private void setLaunchModePreferenceUI() {
+        SharedPreferences prefs = Prefs.get(this);
+        if (prefs.getBoolean("launchBrowserOrMaps", true)) {
+            RadioButton automaticButton = (RadioButton) findViewById(R.id.auto_launch);
+            automaticButton.setChecked(true);
+        } else {
+            RadioButton manualButton = (RadioButton) findViewById(R.id.manual_launch);
+            manualButton.setChecked(true);
+        }
     }
 
     private void register(String account) {

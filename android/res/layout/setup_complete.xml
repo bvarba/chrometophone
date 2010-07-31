@@ -4,48 +4,29 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background_gradient">
-    
+
     <ImageView
         android:id="@+id/header"
         android:background="@drawable/header"
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"/>
-        
-    <TextView
-        android:id="@+id/select_link_action_text"
+               
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_link_action_text"
-        android:textColor="#000000"
+        android:layout_above="@+id/footer"
         android:layout_below="@+id/header"
-        android:layout_margin="5dip"/>
+        android:layout_margin="5dip">
         
-    <RadioGroup
-        android:id="@+id/launch_mode_radio"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dip"
-        android:layout_below="@+id/select_link_action_text">
-        
-	    <RadioButton
-	        android:id="@+id/auto_launch"
-	        android:text="@string/auto_launch_text"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="center_vertical"
-	        android:textColor="#000000"/>
-	        
-	    <RadioButton
-	        android:id="@+id/manual_launch"
-	        android:text="@string/manual_launch_text"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="center_vertical"
-	        android:textColor="#000000"/>
-    </RadioGroup>
-              
+        <TextView
+            android:id="@+id/setup_complete_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"/>
+            
+    </ScrollView>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/footer"
         android:orientation="horizontal"
@@ -64,13 +45,12 @@
             android:drawableLeft="@drawable/ic_btn_prev"/>
     
         <Button
-            android:id="@+id/next"
-            android:text="@string/next"
+            android:id="@+id/finish"
+            android:text="@string/finish"
             android:layout_marginTop="5px"
             android:layout_weight="1"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/ic_btn_next"/>
+            android:layout_height="wrap_content"/>
             
     </LinearLayout>
     
