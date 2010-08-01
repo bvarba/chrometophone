@@ -96,8 +96,12 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                    playNotificationSound(context);
                    context.startActivity(launchIntent);
                } else {
-                   generateNotification(context, sel != null && sel.length() > 0 ? sel : url,
-                           title, launchIntent);
+                   if (sel != null && sel.length() > 0) {  // have selection
+                       generateNotification(context, sel,
+                               context.getString(R.string.copied_desktop_clipboard), launchIntent);
+                   } else {
+                       generateNotification(context, url, title, launchIntent);
+                   }
                }
            }
        }
@@ -110,6 +114,9 @@ public class C2DMReceiver extends C2DMBaseReceiver {
             intent = new Intent("android.intent.action.DIAL",
                     Uri.parse("tel:" + number));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ClipboardManager cm =
+                (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+            cm.setText(number);
         } else if (sel != null && sel.length() > 0) {
             // No intent for selection - just copy to clipboard
             ClipboardManager cm =
