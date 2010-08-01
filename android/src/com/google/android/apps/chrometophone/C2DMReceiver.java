@@ -170,7 +170,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
    private String parseTelephoneNumber(String sel) {
        String number = null;
-       if (sel != null && sel.matches("([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|-]\\)?)+")) {
+       if (sel != null && sel.matches("([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|\\-|\\.]\\)?)+")) {
            String elements[] = sel.split("([Tt]el[:]?)");
            number = elements.length > 1 ? elements[1] : elements[0];
        }
