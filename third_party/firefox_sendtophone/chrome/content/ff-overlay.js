@@ -23,8 +23,8 @@ sendtophone.init = function()
 		this.prefs.setBoolPref( "installedButton", true ) ;
 	}
 
-  document.getElementById("contentAreaContextMenu")
-          .addEventListener("popupshowing", function (e){ sendtophone.showFirefoxContextMenu(e); }, false);
+	document.getElementById("contentAreaContextMenu")
+		.addEventListener("popupshowing", function (e){ sendtophone.showFirefoxContextMenu(e); }, false);
 }
 
 sendtophone.installToolbarButton = function()

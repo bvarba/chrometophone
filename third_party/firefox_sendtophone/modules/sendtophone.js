@@ -153,18 +153,16 @@ var sendtophoneCore = {
 			this.init();
 
 		// Send the protocols that aren't currently whitelisted through a proxy server
-	    if ((/^(market|tel|sms|ftp):/i).test( url ))
-		{
-	    	var encodedUri = encodeURIComponent( url);
-	    	
+	    if (!(/^(https?):/i).test( url ))
+		{	    	
 			var prefs = Cc["@mozilla.org/preferences-service;1"]
 						.getService(Ci.nsIPrefService)
 						.getBranch("extensions.sendtophone.") ;
 	    	
+  		  	// Rewrite the URI so it's send first to the proxy
 			var proxyUrl = prefs.getCharPref( "proxyUrl" ) ; 
-
-  		  	// rewrite the URI so it's send first to the proxy
-		    url = proxyUrl + encodedUri;
+			if (proxyUrl)
+			    url = proxyUrl + encodeURIComponent( url);
 		}
 
 		var data = 'title=' + encodeURIComponent(title) +

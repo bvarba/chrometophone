@@ -14,5 +14,3 @@ locale	sendtophone	zh		chrome/locale/zh/
 overlay   chrome://browser/content/browser.xul   chrome://sendtophone/content/ff-overlay.xul
 style chrome://global/content/customizeToolbar.xul chrome://sendtophone/skin/overlay.css
 
-component {751de080-95d1-11df-981c-0800200c9a66} components/protocolHandler.js
-contract @mozilla.org/network/protocol;1?name=market {751de080-95d1-11df-981c-0800200c9a66}

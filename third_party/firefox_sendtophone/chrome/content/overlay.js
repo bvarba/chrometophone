@@ -17,6 +17,8 @@
 
 // Core functions
 Components.utils.import("resource://sendtophone/sendtophone.js");
+// Protocol handlers
+Components.utils.import("resource://sendtophone/protocolHandlers.js");
 
 var sendtophone = {
 
@@ -32,7 +34,7 @@ var sendtophone = {
  		me.strings = document.getElementById("sendtophone-strings");
 
 		me.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-										.getService(Components.interfaces.nsIPrefService)
+										.getService(Ci.nsIPrefService)
 										.getBranch("extensions.sendtophone.") ;
 
 		me.init();
@@ -67,34 +69,34 @@ var sendtophone = {
 				break;
 		}
 
-    if ((/^(https?|market|tel|sms|ftp):/i).test( info.url ))
+		if ((/^(https?|market|tel|sms|ftp):/i).test( url ))
 		{
 			var max_length = 1024;
 			if (selection.length > max_length)
 				selection = selection.substring(0, max_length);
 
 			sendtophoneCore.send(title, url, selection);
-    }
+		}
 		else
 		{
 			this.alert(this.strings.getString("InvalidScheme"));
-    }
+		}
 
-  },
+	},
 
 	// Shows a message in a modal alert
 	alert: function(text)
 	{
-			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-																		.getService(Components.interfaces.nsIPromptService);
-	    promptService.alert(window, this.strings.getString("SendToPhoneTitle"),
-                                text);
+		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+							.getService(Ci.nsIPromptService);
+		promptService.alert(window, this.strings.getString("SendToPhoneTitle"),
+			text);
 	},
 
-  onToolbarButtonCommand: function(e) {
-    // just reuse the function above.
-    sendtophone.onMenuItemCommand(e, 'page');
-  },
+	onToolbarButtonCommand: function(e) {
+		// just reuse the function above.
+		sendtophone.onMenuItemCommand(e, 'page');
+	},
 
 	getInfo: function() {
 		var doc = gBrowser.contentDocument,
