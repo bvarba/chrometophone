@@ -58,13 +58,17 @@ var sendtophone = {
 			case 'text':
 				title = "Selection";
 				url = 'http://www.google.com/';
-				if (gContextMenu.onTextInput)
+				var input = gContextMenu.target;
+				if (gContextMenu.onTextInput && input && input.value)
 				{
-					var input = gContextMenu.target;
 					selection = input.value.substring(input.selectionStart, input.selectionEnd);
 				}
 				else
-					selection = content.getSelection().toString();
+				{
+					// Get the selection from the correct iframe
+					var focusedWindow = document.commandDispatcher.focusedWindow;
+					selection = focusedWindow.getSelection().toString();
+				}
 				break;
 			case 'page':
 			default:
