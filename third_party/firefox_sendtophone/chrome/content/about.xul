@@ -8,7 +8,7 @@
   <groupbox align="center" orient="horizontal">
     <vbox>
       <text value="Send To Phone" style="font-weight: bold; font-size: x-large;"/>
-      <text value="&version; 1.0 alpha"/>
+      <text value="&version; 1.0"/>
       <separator class="thin"/>
       <text value="&createdBy;" style="font-weight: bold;"/>
       <text value="Alfonso Martínez de Lizarrondo &amp; Patrick O'Reilly"/>

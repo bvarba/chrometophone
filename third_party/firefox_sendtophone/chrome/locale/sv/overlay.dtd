@@ -1,0 +1,13 @@
+<!ENTITY sendtophoneToolbarButton.label "Skicka till Telefon">
+<!ENTITY sendtophoneToolbarButton.tooltip "Skicka denna sida till din Android Telefonerna">
+<!ENTITY sendtophoneContext.label "Skicka denna länk till Android">
+<!ENTITY sendtophoneContext.accesskey "A">
+<!ENTITY sendtophoneContextImage.label "Skicka denna bild till Android">
+<!ENTITY sendtophoneContextImage.accesskey "A">
+<!ENTITY sendtophoneContextText.label "Skicka denna text till Android">
+<!ENTITY sendtophoneContextText.accesskey "A">
+<!ENTITY sendtophoneContextPage.label "Skicka denna sida till Android">
+<!ENTITY sendtophoneContextPage.accesskey "A">
+<!ENTITY sendtophoneContextLogout.label "Logga ut">
+<!ENTITY sendtophoneContextLogout.accesskey "L">
+

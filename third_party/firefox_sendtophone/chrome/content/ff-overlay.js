@@ -54,6 +54,34 @@ sendtophone.installToolbarButton = function()
 
 }
 
+//Toggle Protocol Prefrences onFlyout Menu Click
+sendtophone.onToggleOption = function(menuitem)
+    {
+        var option = menuitem.getAttribute("option");
+        var checked = menuitem.getAttribute("checked") == "true";
+	this.prefs.setBoolPref("protocols."+option, checked );
+	if(!option.indexOf("sms")|!option.indexOf("mms")){
+		this.prefs.setBoolPref("protocols."+option+"to", checked );
+	}
+}
+
+//Set MenuItem as checked based on preferences.
+sendtophone.onOptionsShowing= function(popup)
+    {
+        for (var child = popup.firstChild; child; child = child.nextSibling)
+        {
+            if (child.localName == "menuitem")
+            {
+                var option = child.getAttribute("option");
+                if (option)
+                {
+                    var checked = this.prefs.getBoolPref("protocols."+option);	
+                    child.setAttribute("checked", checked);
+                }
+            }
+        }
+    }
+
 sendtophone.showFirefoxContextMenu = function(event) {
   // show or hide the menuitem based on what the context menu is on
   // see http://kb.mozillazine.org/Adding_items_to_menus
