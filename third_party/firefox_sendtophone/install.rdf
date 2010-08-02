@@ -10,6 +10,8 @@
     <em:description>Send links to your Android 2.2 phone using the new C2DM service. Based on the ChromeToPhone extension.</em:description>
     <em:aboutURL>chrome://sendtophone/content/about.xul</em:aboutURL>
 	<em:iconURL>chrome://sendtophone/skin/icon.png</em:iconURL>
+	<em:optionsURL>chrome://sendtophone/content/options.xul</em:optionsURL>
+
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->

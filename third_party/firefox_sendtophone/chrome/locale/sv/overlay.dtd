@@ -10,4 +10,5 @@
 <!ENTITY sendtophoneContextPage.accesskey "A">
 <!ENTITY sendtophoneContextLogout.label "Logga ut">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
-
+<!ENTITY sendtophoneOptions.title "Send to Phone Preferences">
+<!ENTITY sendtophoneProtocols.label "Protocols">

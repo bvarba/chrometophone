@@ -6,7 +6,7 @@ pref("extensions.sendtophone.proxyUrl", "http://smallroomstudios.net/s2p.php?ml=
 pref("extensions.sendtophone.protocols.market", true);
 pref("extensions.sendtophone.protocols.sms", true);
 pref("extensions.sendtophone.protocols.smsto", true);
-pref("extensions.sendtophone.protocols.mms", true);
+pref("extensions.sendtophone.protocols.mms", false); // conflicts with http://en.wikipedia.org/wiki/Microsoft_Media_Server
 pref("extensions.sendtophone.protocols.mmsto", true);
 pref("extensions.sendtophone.protocols.tel", true);
 

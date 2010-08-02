@@ -9,13 +9,22 @@
     <stringbundle id="sendtophone-strings" src="chrome://sendtophone/locale/overlay.properties"/>
   </stringbundleset>
 
-  <popupset id="mainPopupSet">
-	  <popup id="sendtophoneContextMenu" onpopupshowing="sendtophone.initPopup();">
-		<menuitem label="&sendtophoneContextLogout.label;" 
+	<popupset id="mainPopupSet">
+		<popup id="sendtophoneContextMenu" onpopupshowing="sendtophone.initPopup();">
+			<menuitem label="&sendtophoneContextLogout.label;" 
 				  accesskey="&sendtophoneContextLogout.accesskey;"
 				  oncommand="sendtophone.logout()" id="sendtophoneContextMenuLogout"/>
-	  </popup>
-  </popupset>
+			<menu label="&sendtophoneProtocols.label;">
+				<menupopup id="menu_Protocols" onpopupshowing="sendtophone.onOptionsShowing(this)"> 
+					<menuitem type="checkbox" id="marketcheck" label="market:" oncommand="sendtophone.onToggleOption(this)" option="market"/>
+					<menuitem type="checkbox" id="mmscheck" label="mms:"  oncommand="sendtophone.onToggleOption(this)" option="mms"/>
+					<menuitem type="checkbox" id="smscheck" label="sms:"  oncommand="sendtophone.onToggleOption(this)" option="sms"/>
+					<menuitem type="checkbox" id="telcheck" label="tel:"  oncommand="sendtophone.onToggleOption(this)" option="tel"/>
+				</menupopup>
+			</menu>
+		</popup>
+	  
+	</popupset>
 
   <popup id="contentAreaContextMenu">
     <menuitem id="context-sendtophone-link" label="&sendtophoneContext.label;"
@@ -36,22 +45,11 @@
               oncommand="sendtophone.onMenuItemCommand(event, 'page')"/>
   </popup>
 
-  <menupopup id="menu_ToolsPopup"> 
-	<menu label="SendToPhone Protocols" insertafter="devToolsSeparator" >
-		<menupopup id="menu_Protocols" onpopupshowing="sendtophone.onOptionsShowing(this)"> 
-			<menuitem type="checkbox" id="marketcheck" label="market://" oncommand="sendtophone.onToggleOption(this)" option="market"/>
-			<menuitem type="checkbox" id="smscheck" label="sms://"  oncommand="sendtophone.onToggleOption(this)" option="sms"/>
-			<menuitem type="checkbox" id="mmscheck" label="mms://"  oncommand="sendtophone.onToggleOption(this)" option="mms"/>
-			<menuitem type="checkbox" id="telcheck" label="tel://"  oncommand="sendtophone.onToggleOption(this)" option="tel"/>
-		</menupopup>
-	</menu>
-  </menupopup>
-
-  <toolbarpalette id="BrowserToolbarPalette">
-  <toolbarbutton id="sendtophone-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
-    label="&sendtophoneToolbarButton.label;" tooltiptext="&sendtophoneToolbarButton.tooltip;"
-	context="sendtophoneContextMenu"
-    oncommand="sendtophone.onToolbarButtonCommand()"/>
-  </toolbarpalette>
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbarbutton id="sendtophone-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
+		label="&sendtophoneToolbarButton.label;" tooltiptext="&sendtophoneToolbarButton.tooltip;"
+		context="sendtophoneContextMenu"
+		oncommand="sendtophone.onToolbarButtonCommand()"/>
+	</toolbarpalette>
 
 </overlay>
