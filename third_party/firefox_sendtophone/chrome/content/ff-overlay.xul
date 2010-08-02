@@ -30,6 +30,10 @@
               accesskey="&sendtophoneContextText.accesskey;"
               insertafter="context-searchselect"
               oncommand="sendtophone.onMenuItemCommand(event, 'text')"/>
+    <menuitem id="context-sendtophone-page" label="&sendtophoneContextPage.label;"
+              accesskey="&sendtophoneContextPage.accesskey;"
+              insertafter="context-sendpage"
+              oncommand="sendtophone.onMenuItemCommand(event, 'page')"/>
   </popup>
 
   <toolbarpalette id="BrowserToolbarPalette">

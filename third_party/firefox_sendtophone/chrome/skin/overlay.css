@@ -18,7 +18,8 @@
 
 #context-sendtophone-link,
 #context-sendtophone-image,
-#context-sendtophone-text
+#context-sendtophone-text,
+#context-sendtophone-page
 {
   -moz-binding: url(chrome://global/content/bindings/menu.xml#menuitem-iconic) !important;
   list-style-image: url("chrome://sendtophone/skin/toolbar-button.png") !important;

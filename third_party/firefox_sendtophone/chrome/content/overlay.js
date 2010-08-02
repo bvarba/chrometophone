@@ -58,7 +58,13 @@ var sendtophone = {
 			case 'text':
 				title = "Selection";
 				url = 'http://www.google.com/';
-				selection = content.getSelection().toString();
+				if (gContextMenu.onTextInput)
+				{
+					var input = gContextMenu.target;
+					selection = input.value.substring(input.selectionStart, input.selectionEnd);
+				}
+				else
+					selection = content.getSelection().toString();
 				break;
 			case 'page':
 			default:

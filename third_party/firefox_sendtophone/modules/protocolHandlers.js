@@ -1,14 +1,19 @@
-/* This js module doesn't export anything, it's meant to handle the protocol registration/unregistration*/
+/* This js module doesn't export anything, it's meant to handle the protocol registration/unregistration */
 var EXPORTED_SYMBOLS = [];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
+var manager = Components.manager.QueryInterface(Ci.nsIComponentRegistrar);
+var strings = Cc["@mozilla.org/intl/stringbundle;1"]
+				.getService(Ci.nsIStringBundleService)
+				.createBundle("chrome://sendtophone/locale/overlay.properties");
+
 // Utility function to handle the preferences
 // https://developer.mozilla.org/en/Code_snippets/Preferences
 function PrefListener(branchName, func) {
     var prefService = Components.classes["@mozilla.org/preferences-service;1"]
-                                .getService(Components.interfaces.nsIPrefService);
+                                .getService(Ci.nsIPrefService);
     var branch = prefService.getBranch(branchName);
     branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
 
@@ -67,7 +72,7 @@ function SendToPhone_ProtocolWrapper( properties )
 		{
 			var myURI = decodeURI(aURI.spec);
 		
-			// Core functions
+			// Core functions loaded on demand
 			if (typeof sendtophoneCore == "undefined")
 				Components.utils.import("resource://sendtophone/sendtophone.js");
 		
@@ -80,7 +85,7 @@ function SendToPhone_ProtocolWrapper( properties )
 		classDescription : "SendToPhone handler for " + properties.scheme,
 		classID : Components.ID( properties.ID ),
 		contractID : "@mozilla.org/network/protocol;1?name=" + properties.scheme,
-		linkTitle : properties.scheme + " link" // fixme, needs translations...
+		linkTitle : strings.GetStringFromName(  properties.scheme + "Link" ) // Translations
 	}
 	
 	return myHandler;
@@ -88,34 +93,34 @@ function SendToPhone_ProtocolWrapper( properties )
 
 // This function takes care of register/unregister the protocol handlers as requested
 // It's called when the preferences change.
-function toggleProtocolHandler(protocol, register)
+function toggleProtocolHandler(branch, name)
 {
+	// Get the value in preferences
+	var register = branch.getBoolPref(name);
 	// Retrieve the object for that protocol
-	var marketHandler = myProtocols[protocol];
-	
-	var manager = Components.manager.QueryInterface(Ci.nsIComponentRegistrar);
-	var proto = marketHandler.prototype;
+	var protocolHandler = sendToPhoneProtocols[ name ];
+	var proto = protocolHandler.prototype;
 
 	if (register)
 	{
-		if (!marketHandler.registered)
+		if (!protocolHandler.registered)
 			manager.registerFactory(proto.classID,
 							proto.classDescription,
 							proto.contractID,
 							proto._xpcom_factory);
 	
-		marketHandler.registered = true;
+		protocolHandler.registered = true;
 	}
 	else
 	{
-		if (marketHandler.registered)
+		if (protocolHandler.registered)
 		    manager.unregisterFactory(proto.classID, proto._xpcom_factory);
-		marketHandler.registered = false;
+		protocolHandler.registered = false;
 	}
 }
 
 // Each protocol handler
-var myProtocols = {
+var sendToPhoneProtocols = {
 	market:	SendToPhone_ProtocolWrapper( { scheme: "market", ID: "{751de080-95d1-11df-981c-0800200c9a66}" } ) ,
 	sms: 	SendToPhone_ProtocolWrapper( { scheme: "sms", 	 ID: "{345de080-95d1-11df-981c-0800200c9a66}" } ) ,
 	smsto: 	SendToPhone_ProtocolWrapper( { scheme: "smsto",  ID: "{854de080-95d1-11df-981c-0800200c9a66}" } ) ,
@@ -125,8 +130,5 @@ var myProtocols = {
 };
 
 // Listen for changes in the preferences and register the protocols as needed. 		
-var preferencesListener = new PrefListener("extensions.sendtophone.protocols.",
-                                  function(branch, name) {
-                                  	toggleProtocolHandler(name, branch.getBoolPref(name));
-                                  });
+var preferencesListener = new PrefListener("extensions.sendtophone.protocols.", toggleProtocolHandler);
 preferencesListener.register();

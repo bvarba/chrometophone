@@ -57,8 +57,12 @@ sendtophone.installToolbarButton = function()
 sendtophone.showFirefoxContextMenu = function(event) {
   // show or hide the menuitem based on what the context menu is on
   // see http://kb.mozillazine.org/Adding_items_to_menus
-  document.getElementById("context-sendtophone-link").hidden = !gContextMenu.onLink;
-  document.getElementById("context-sendtophone-image").hidden = !gContextMenu.onImage;
-  document.getElementById("context-sendtophone-text").hidden = !gContextMenu.isTextSelected;
+  gContextMenu.showItem("context-sendtophone-link", gContextMenu.onLink);
+  gContextMenu.showItem("context-sendtophone-image", gContextMenu.onImage);
+  gContextMenu.showItem("context-sendtophone-text", gContextMenu.isTextSelected || 
+  	(gContextMenu.onTextInput && gContextMenu.target.selectionEnd > gContextMenu.target.selectionStart) );
+
+  gContextMenu.showItem("context-sendtophone-page",  !( gContextMenu.inDirList || gContextMenu.isContentSelected || gContextMenu.onTextInput || gContextMenu.onLink || gContextMenu.onImage ));
+  
 };
 

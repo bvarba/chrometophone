@@ -25,7 +25,7 @@ var sendtophoneCore = {
 	apiVersion : 4,
 	loggedInUrl : "http://code.google.com/p/chrometophone/logo?login",
 	loggedOutUrl : "http://code.google.com/p/chrometophone/logo?logout",
-	apkUrl : "http://code.google.com/p/chrometophone/downloads/detail?name=chrometophone-android-v1.2.apk",
+	apkUrl : "http://code.google.com/p/chrometophone/wiki/AndroidApp",
 
 	init: function()
 	{
@@ -196,7 +196,7 @@ var sendtophoneCore = {
 			this.popupNotification(this.getString("DeviceNotRegistered"));
 
 			// Open tab with apk download
-			this.openTab(me.apkUrl);
+			this.openTab(this.apkUrl);
 			return;
 		}
 
