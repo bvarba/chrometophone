@@ -49,6 +49,11 @@
 		<toolbarbutton id="sendtophone-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
 		label="&sendtophoneToolbarButton.label;" tooltiptext="&sendtophoneToolbarButton.tooltip;"
 		context="sendtophoneContextMenu"
+
+		ondragenter="sendtophone.checkDrag(event)"
+		ondragover="sendtophone.checkDrag(event)"
+		ondrop="sendtophone.doDrop(event)"
+         
 		oncommand="sendtophone.onToolbarButtonCommand()"/>
 	</toolbarpalette>
 

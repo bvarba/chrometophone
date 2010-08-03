@@ -16,6 +16,10 @@
   -moz-image-region: rect(24px 40px 40px 24px);
 }
 
+#sendtophone-toolbar-button:-moz-drag-over {
+  border: 1px solid black;
+}
+
 #context-sendtophone-link,
 #context-sendtophone-image,
 #context-sendtophone-text,

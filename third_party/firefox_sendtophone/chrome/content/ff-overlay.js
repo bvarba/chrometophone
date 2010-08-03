@@ -94,3 +94,47 @@ sendtophone.showFirefoxContextMenu = function(event) {
   
 };
 
+
+
+
+// https://developer.mozilla.org/En/DragDrop/Drag_and_Drop
+sendtophone.checkDrag = function(event)
+{
+	//event.dataTransfer.dropEffect = "copy";
+	var types = event.dataTransfer.types;
+	if (types.contains("text/plain") || types.contains("text/uri-list") || types.contains("text/x-moz-url") || types.contains("application/x-moz-file"))
+		event.preventDefault();
+}
+
+sendtophone.doDrop = function(event)
+{
+	var types = event.dataTransfer.types;
+	var supportedTypes = ["application/x-moz-file", "text/uri-list", "text/x-moz-url", "text/plain"];
+	types = supportedTypes.filter(function (value) types.contains(value));
+	if (types.length)
+		var data = event.dataTransfer.getData(types[0]);
+	event.preventDefault();
+
+	switch (types[0])
+	{
+		case "text/plain":
+			sendtophoneCore.send("Selection", "http://google.com", data);
+			break;
+		case "text/uri-list":
+		case "text/x-moz-url":
+			sendtophoneCore.send("", data, "");
+			break;
+		case "application/x-moz-file":
+		  var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+		  if (file instanceof Components.interfaces.nsIFile && file.isFile)
+		  {
+			var url = Cc["@mozilla.org/network/io-service;1"]
+				.getService(Ci.nsIIOService)
+				.getProtocolHandler("file")
+				.QueryInterface(Ci.nsIFileProtocolHandler)
+				.getURLSpecFromFile(file);
+
+		  	sendtophoneCore.send("", url, "");
+		  }
+	}
+}

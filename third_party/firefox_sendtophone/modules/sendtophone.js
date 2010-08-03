@@ -152,6 +152,16 @@ var sendtophoneCore = {
 		if (!this.sendUrl)
 			this.init();
 
+		if (!(/^(https?|market|tel|sms(to)?|mms(to)?|mailto|ftp):/i).test( url ))
+		{
+			this.alert(this.getString("InvalidScheme"));
+			return;
+		}			
+	
+		var max_length = 1024;
+		if (selection.length > max_length)
+			selection = selection.substring(0, max_length);
+		
 		// Send the protocols that aren't currently whitelisted through a proxy server
 	    if (!(/^(https?):/i).test( url ))
 		{	    	

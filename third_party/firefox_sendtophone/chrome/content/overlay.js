@@ -79,19 +79,7 @@ var sendtophone = {
 				break;
 		}
 
-		if ((/^(https?|market|tel|sms|ftp):/i).test( url ))
-		{
-			var max_length = 1024;
-			if (selection.length > max_length)
-				selection = selection.substring(0, max_length);
-
-			sendtophoneCore.send(title, url, selection);
-		}
-		else
-		{
-			this.alert(this.strings.getString("InvalidScheme"));
-		}
-
+		sendtophoneCore.send(title, url, selection);
 	},
 
 	// Shows a message in a modal alert
