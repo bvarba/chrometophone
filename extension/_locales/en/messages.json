@@ -25,15 +25,19 @@
       }
     }
   },
-  "login_required_message": {
-    "message": "Chrome to Phone requires you to $link$.</a>",
-    "description": "Notice when login is required.",
+  "sign_in_required_message": {
+    "message": "Please $link$ to Chrome to Phone.</a>",
+    "description": "Notice when sign in is required.",
     "placeholders": {
       "link": {
         "content": "$1",
-        "example": "Login link."
+        "example": "Sign in link."
       }
     }
+  },
+  "sign_in_message": {
+    "message": "sign in",
+    "description": "Sign in phrase used in sign_in_required_message."
   },
   "sign_out_message": {
     "message": "Sign out",
@@ -43,9 +47,9 @@
     "message": "Only http or https pages supported.",
     "description": "Notice when user attempt to send a file link."
   },
-  "about_message": {
-    "message": "About",
-    "description": "The about message."
+  "help_message": {
+    "message": "Help",
+    "description": "The help message."
   },
   "connectivity_error_message": {
     "message": "Connection error.",

@@ -16,12 +16,17 @@
 
 <style type="text/css">
 body {
+  padding: 0px;
+  margin: 1px;
   min-width: 320px;
-  overflow-x: hidden;
+  overflow: hidden;
+  background-image: -webkit-gradient(radial, 50% 50%, 10, 50% 50%, 280, from(#EEE), to(#FFF));
+}
+
+td {
   font-family: verdana;
   font-size: 12px;
   color: black;
-  background-color: white;
 }
 </style>
 
@@ -38,7 +43,7 @@ var req = new XMLHttpRequest();
 
 function loadHandler() {
   document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sending_message');
-  document.getElementById('about').innerHTML = chrome.i18n.getMessage('about_message');
+  document.getElementById('help').innerHTML = chrome.i18n.getMessage('help_message');
   document.getElementById('signout').innerHTML = chrome.i18n.getMessage('sign_out_message');
 
   chrome.tabs.getSelected(null, function(tab) {
@@ -64,9 +69,11 @@ function sendToPhone(title, url, selection) {
           document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sent_message');
           activateSignOutLink();  
         } else if (body.indexOf('LOGIN_REQUIRED') == 0) {
-          var link = '<a href="#" onclick="chrome.tabs.create({url: \'' + signInUrl + '\'})">login</a>';
+          var link = '<a href="#" onclick="chrome.tabs.create({url: \'' + signInUrl + '\'})">' +
+              chrome.i18n.getMessage('sign_in_message') + '</a>';
           document.getElementById('msg').innerHTML =
-              chrome.i18n.getMessage('login_required_message', link);
+              chrome.i18n.getMessage('sign_in_required_message', link);
+          setSignOutVisibility(false);
         } else if (body.indexOf('DEVICE_NOT_REGISTERED') == 0) {
           document.getElementById('msg').innerHTML = chrome.i18n.getMessage('device_not_registered_message');
           activateSignOutLink();
@@ -98,17 +105,33 @@ chrome.extension.onConnect.addListener(function(port) {
 });
 
 function activateSignOutLink() {
+  setSignOutVisibility(true);
   var signOutLink = document.getElementById('signout');
   signOutLink.style.color = 'blue';
   signOutLink.onclick = function() {
     chrome.tabs.create({url: signOutUrl});
-  }  
+  }
+}
+
+function setSignOutVisibility(visible) {
+  var signOutLink = document.getElementById('signout');
+  signOutLink.style.visibility = visible ? 'visible' : 'hidden';
+  var sep = document.getElementById('sep');
+  sep.style.visibility = visible ? 'visible' : 'hidden';
 }
 
 </script>
 
 <body onload="loadHandler()">
-<b><div id="msg"></div></b>
-<p><a id="about" href="#" onclick="chrome.tabs.create({url: 'about.html'})"></a> |
-<a id="signout" href="#" style="color:gray"></a></p> 
+<table>
+  <tr>
+    <td><img src="icon_48.png" style="margin-right: 4px;"/></td>
+    <td width="100%" valign="middle">
+      <b><div id="msg"></div></b>
+      <p><a id="help" href="#" onclick="chrome.tabs.create({url: 'help.html'})"></a> <span id="sep">|</span>
+      <a id="signout" href="#" style="color: gray;"></a></p>
+    </td>
+    <td valign="top"><a href="#" onclick="window.close()"><img src="popup_close.png" style="margin: 2px;"></a></td>
+  </tr>
+</table> 
 </body>
