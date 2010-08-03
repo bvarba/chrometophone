@@ -36,13 +36,13 @@
         android:background="#FF707070">
         
         <Button
-            android:id="@+id/prev"
-            android:text="@string/prev"
+            android:id="@+id/back"
+            android:text="@string/back"
             android:layout_marginTop="5px"
             android:layout_weight="1"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_btn_prev"/>
+            android:drawableLeft="@drawable/ic_btn_back"/>
     
         <Button
             android:id="@+id/finish"

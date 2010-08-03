@@ -16,7 +16,6 @@
 package com.google.android.apps.chrometophone;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -142,7 +141,8 @@ public class MainActivity extends Activity {
     }
 
     private void setIntroScreenContent() {
-        String introText = getString(R.string.intro_text).replace("{tos_link}", getTosLink());
+        String introText =
+                getString(R.string.intro_text).replace("{tos_link}", HelpActivity.getTosLink());
         TextView textView = (TextView) findViewById(R.id.intro_text);
         textView.setText(Html.fromHtml(introText));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -163,8 +163,8 @@ public class MainActivity extends Activity {
     }
 
     private void setSelectAccountScreenContent() {
-        final Button prevButton = (Button) findViewById(R.id.prev);
-        prevButton.setOnClickListener(new OnClickListener() {
+        final Button backButton = (Button) findViewById(R.id.back);
+        backButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 setScreenContent(R.layout.intro);
             }
@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
                 ListView listView = (ListView) findViewById(R.id.select_account);
                 TextView account =
                         (TextView) listView.getChildAt(listView.getCheckedItemPosition());
-                prevButton.setEnabled(false);
+                backButton.setEnabled(false);
                 nextButton.setEnabled(false);
                 register((String) account.getText());
             }
@@ -200,8 +200,8 @@ public class MainActivity extends Activity {
     }
 
     private void setSelectLaunchModeScreenContent() {
-        Button prevButton = (Button) findViewById(R.id.prev);
-        prevButton.setOnClickListener(new OnClickListener() {
+        Button backButton = (Button) findViewById(R.id.back);
+        backButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 setScreenContent(R.layout.select_account);
             }
@@ -222,8 +222,8 @@ public class MainActivity extends Activity {
         TextView textView = (TextView) findViewById(R.id.setup_complete_text);
         textView.setText(Html.fromHtml(getString((R.string.setup_complete_text))));
 
-        Button prevButton = (Button) findViewById(R.id.prev);
-        prevButton.setOnClickListener(new OnClickListener() {
+        Button backButton = (Button) findViewById(R.id.back);
+        backButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 setScreenContent(R.layout.select_launch_mode);
             }
@@ -330,8 +330,8 @@ public class MainActivity extends Activity {
             textView.setText(status == DeviceRegistrar.AUTH_ERROR_STATUS ? R.string.auth_error_text :
                     R.string.connect_error_text);
 
-            Button prevButton = (Button) findViewById(R.id.prev);
-            prevButton.setEnabled(true);
+            Button backButton = (Button) findViewById(R.id.back);
+            backButton.setEnabled(true);
 
             Button nextButton = (Button) findViewById(R.id.next);
             nextButton.setEnabled(true);
@@ -351,20 +351,6 @@ public class MainActivity extends Activity {
             Button disconnectButton = (Button) findViewById(R.id.disconnect);
             disconnectButton.setEnabled(true);
         }
-    }
-
-    private String getTosLink() {
-        String link = "http://m.google.com/toscountry";  // default
-
-        String country = Locale.getDefault().getCountry();
-        if (country.equals("US")) {
-            link = "http://m.google.com/tospage";
-        } else if (country.equals("GB")) {
-            link = "http://m.google.co.uk/tospage";
-        } else if (country.equals("CA")) {
-            link = "http://m.google.ca/tospage";
-        }
-        return link;
     }
 
     private final BroadcastReceiver mUpdateUIReceiver = new BroadcastReceiver() {
