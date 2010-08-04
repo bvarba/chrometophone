@@ -11,9 +11,9 @@
 
 	<popupset id="mainPopupSet">
 		<popup id="sendtophoneContextMenu" onpopupshowing="sendtophone.initPopup();">
-			<menuitem label="&sendtophoneContextLogout.label;" 
-				  accesskey="&sendtophoneContextLogout.accesskey;"
-				  oncommand="sendtophone.logout()" id="sendtophoneContextMenuLogout"/>
+			<menuitem label="&sendtophoneContextSendFile.label;" 
+				  accesskey="&sendtophoneContextSendFile.accesskey;"
+				  oncommand="sendtophone.sendFile()" id="sendtophoneContextMenuSendFile"/>
 			<menu label="&sendtophoneProtocols.label;">
 				<menupopup id="menu_Protocols" onpopupshowing="sendtophone.onOptionsShowing(this)"> 
 					<menuitem type="checkbox" id="marketcheck" label="market:" oncommand="sendtophone.onToggleOption(this)" option="market"/>
@@ -22,6 +22,9 @@
 					<menuitem type="checkbox" id="telcheck" label="tel:"  oncommand="sendtophone.onToggleOption(this)" option="tel"/>
 				</menupopup>
 			</menu>
+			<menuitem label="&sendtophoneContextLogout.label;" 
+				  accesskey="&sendtophoneContextLogout.accesskey;"
+				  oncommand="sendtophone.logout()" id="sendtophoneContextMenuLogout"/>
 		</popup>
 	  
 	</popupset>

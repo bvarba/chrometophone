@@ -33,12 +33,12 @@ var sendtophoneCore = {
 						.getService(Ci.nsIStringBundleService)
 						.createBundle("chrome://sendtophone/locale/overlay.properties");
 
-		var prefs = Cc["@mozilla.org/preferences-service;1"]
+		this.prefs = Cc["@mozilla.org/preferences-service;1"]
 						.getService(Ci.nsIPrefService)
 						.getBranch("extensions.sendtophone.") ;
 
 		// Allow the people to use their own server if they prefer to not trust this server
-		var baseUrl = prefs.getCharPref( "appUrl" ) ;
+		var baseUrl = this.prefs.getCharPref( "appUrl" ) ;
 
 		this.sendUrl = baseUrl + '/send?ver=' + this.apiVersion;
 		this.logInUrl = baseUrl + '/signin?ver=' + this.apiVersion + '&extret=' + encodeURIComponent(this.loggedInUrl);
@@ -89,15 +89,15 @@ var sendtophoneCore = {
 	{
 		if (!this.req)
 			this.req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-										.createInstance(Ci.nsIXMLHttpRequest);
+						.createInstance(Ci.nsIXMLHttpRequest);
 
 		var req = this.req;
 
 		req.open(method, url, true);
-	  req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
+		req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
 
-	  if (method=='POST')
-		  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		if (method=='POST')
+			req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
 		req.onreadystatechange = function()
 		{
@@ -151,7 +151,14 @@ var sendtophoneCore = {
 	{
 		if (!this.sendUrl)
 			this.init();
-
+			
+		// Local files: upload them to a web server
+		if ((/^file:/i).test(url))
+		{
+			this.sendFile(url);
+			return;
+		}
+		
 		if (!(/^(https?|market|tel|sms(to)?|mms(to)?|mailto|ftp):/i).test( url ))
 		{
 			this.alert(this.getString("InvalidScheme"));
@@ -165,12 +172,8 @@ var sendtophoneCore = {
 		// Send the protocols that aren't currently whitelisted through a proxy server
 	    if (!(/^(https?):/i).test( url ))
 		{	    	
-			var prefs = Cc["@mozilla.org/preferences-service;1"]
-						.getService(Ci.nsIPrefService)
-						.getBranch("extensions.sendtophone.") ;
-	    	
   		  	// Rewrite the URI so it's send first to the proxy
-			var proxyUrl = prefs.getCharPref( "proxyUrl" ) ; 
+			var proxyUrl = this.prefs.getCharPref( "proxyUrl" ) ; 
 			if (proxyUrl)
 			    url = proxyUrl + encodeURIComponent( url);
 		}
@@ -267,5 +270,100 @@ var sendtophoneCore = {
 
 		// Send pending message
 		this.processXHR(this.sendUrl, 'POST', this.pendingMessage, this.processSentData);
+	},
+	
+	toUTF8: function(str)
+	{
+		var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"]
+			.createInstance(Ci.nsIScriptableUnicodeConverter);
+		converter.charset = "utf-8";
+		var data = converter.ConvertFromUnicode(str);
+		return data + converter.Finish();
+	},
+		
+	sendFile: function(fileURL)
+	{
+		var nsFile = Cc["@mozilla.org/network/io-service;1"]
+			.getService(Ci.nsIIOService)
+			.getProtocolHandler("file")
+			.QueryInterface(Ci.nsIFileProtocolHandler)
+			.getFileFromURLSpec(fileURL);
+	
+		if (!nsFile.isFile())
+			return;
+	
+	   var uploadName = nsFile.leafName;
+		// Try to determine the MIME type of the file  
+		var mimeType = "text/plain";  
+		try {  
+		var mimeService = Cc["@mozilla.org/mime;1"]  
+			.getService(Ci.nsIMIMEService);  
+		mimeType = mimeService.getTypeFromFile(nsFile); // nsFile is an nsIFile instance  
+		}  
+		catch(e) { /* eat it; just use text/plain */ }  
+	
+		// Buffer the upload file
+		var inStream = Cc["@mozilla.org/network/file-input-stream;1"]
+			.createInstance(Ci.nsIFileInputStream);
+		inStream.init(nsFile, 1, 1, inStream.CLOSE_ON_EOF);
+		var bufInStream = Cc["@mozilla.org/network/buffered-input-stream;1"]
+			.createInstance(Ci.nsIBufferedInputStream);
+		bufInStream.init(inStream, 4096);
+	   
+	   //Setup the boundary start stream
+		var boundary = "--SendToPhone-------------" + Math.random();
+		var startBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
+			.createInstance(Ci.nsIStringInputStream);
+		startBoundryStream.setData("\r\n--"+boundary+"\r\n",-1);
+	   
+	   // Setup the boundary end stream
+	   var endBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"].createInstance(Ci.nsIStringInputStream);
+		endBoundryStream.setData("\r\n--"+boundary+"--",-1);
+	   
+	   // Setup the mime-stream - the 'part' of a multi-part mime type
+	   var mimeStream = Cc["@mozilla.org/network/mime-input-stream;1"].createInstance(Ci.nsIMIMEInputStream);
+	   mimeStream.addContentLength = false;
+	   mimeStream.addHeader("Content-disposition","form-data; charset: utf-8; name=\"upload\"; filename=\"" + this.toUTF8(uploadName) + "\"");
+	   mimeStream.addHeader("Content-type", mimeType);
+	   mimeStream.setData(bufInStream);
+	
+		// Setup a multiplex stream
+		var multiStream = Cc["@mozilla.org/io/multiplex-input-stream;1"]
+			.createInstance(Ci.nsIMultiplexInputStream);
+		multiStream.appendStream(startBoundryStream);
+		multiStream.appendStream(mimeStream);
+		multiStream.appendStream(endBoundryStream);
+		var size = Math.round(nsFile.fileSize / 1024);
+	 
+		var uri = this.prefs.getCharPref( "fileServerUrl" );
+		
+		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
+				.createInstance(Ci.nsIXMLHttpRequest);
+		
+		req.open('POST', uri, false);
+		req.setRequestHeader("Content-length",multiStream.available());
+		req.setRequestHeader("Content-type","multipart/form-data; charset: utf-8; boundary="+boundary);
+		req.onload = function(event)
+		{
+			var body = event.target.responseXML;
+			var uploads;
+			if (body && (uploads = body.documentElement.getElementsByTagName("upload")))
+			{
+				sendtophoneCore.send(uploadName, uploads[0].firstChild.data, "");
+				return
+			}
+			// error.
+			sendtophoneCore.alert(event.target.responseText);
+		}
+	   /*
+		try {
+		  req.channel.QueryInterface(Ci.nsIHttpChannelInternal).
+			forceAllowThirdPartyCookie = true;
+		}
+		catch(ex) {}
+	   */
+		req.send(multiStream);
 	}
+
+	
 };

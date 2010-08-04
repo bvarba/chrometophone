@@ -125,16 +125,31 @@ sendtophone.doDrop = function(event)
 			sendtophoneCore.send("", data, "");
 			break;
 		case "application/x-moz-file":
-		  var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
-		  if (file instanceof Components.interfaces.nsIFile && file.isFile)
-		  {
-			var url = Cc["@mozilla.org/network/io-service;1"]
-				.getService(Ci.nsIIOService)
-				.getProtocolHandler("file")
-				.QueryInterface(Ci.nsIFileProtocolHandler)
-				.getURLSpecFromFile(file);
+			var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+			if (file instanceof Components.interfaces.nsIFile && file.isFile() )
+			{
+				var url = Cc["@mozilla.org/network/io-service;1"]
+					.getService(Ci.nsIIOService)
+					.getProtocolHandler("file")
+					.QueryInterface(Ci.nsIFileProtocolHandler)
+					.getURLSpecFromFile(file);
 
-		  	sendtophoneCore.send("", url, "");
-		  }
+			  	sendtophoneCore.send("", url, "");
+			}
+			else
+				this.alert(this.strings.getString("InvalidFile"));
 	}
+}
+
+sendtophone.sendFile = function()
+{
+	var fp = Cc["@mozilla.org/filepicker;1"]
+				.createInstance(Ci.nsIFilePicker);
+
+	fp.init(window, this.strings.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpen);
+	fp.appendFilters(Ci.nsIFilePicker.filterAll | Ci.nsIFilePicker.filterImages);
+	
+	var rv = fp.show();
+	if (rv == Ci.nsIFilePicker.returnOK) 
+		sendtophoneCore.send('', fp.fileURL.spec, '');
 }
