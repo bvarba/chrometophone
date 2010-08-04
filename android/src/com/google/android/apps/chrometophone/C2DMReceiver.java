@@ -125,14 +125,11 @@ public class C2DMReceiver extends C2DMBaseReceiver {
         } else {
             final String GMM_PACKAGE_NAME = "com.google.android.apps.maps";
             final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
-            final String YT_PACKAGE_NAME = "com.google.android.youtube";
 
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (isMapsURL(url)) {
                 intent.setClassName(GMM_PACKAGE_NAME, GMM_CLASS_NAME);
-            } else if (isYouTubeURL(url)) {
-                intent.setPackage(YT_PACKAGE_NAME);
             }
 
             // Fall back if we can't resolve intent (i.e. app missing)
@@ -187,9 +184,5 @@ public class C2DMReceiver extends C2DMBaseReceiver {
    private boolean isMapsURL(String url) {
        return url.matches("http://maps\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?[/?].*") ||
                url.matches("http://www\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?/maps.*");
-   }
-
-   private boolean isYouTubeURL(String url) {
-       return url.matches("http://www\\.youtube\\.com/watch\\?v=.*");
    }
 }
