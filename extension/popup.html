@@ -35,7 +35,7 @@ var apiVersion = 4;
 var baseUrl = 'https://chrometophone.appspot.com';
 var sendUrl = baseUrl + '/send?ver=' + apiVersion;;
 var signInUrl = baseUrl + '/signin?extret=' +
-    encodeURIComponent(chrome.extension.getURL('signed_in.html')) + '&ver=' + apiVersion;
+    encodeURIComponent(chrome.extension.getURL('help.html')) + '%23signed_in&ver=' + apiVersion;
 var signOutUrl = baseUrl + '/signout?extret=' +
     encodeURIComponent(chrome.extension.getURL('signed_out.html')) + '&ver=' + apiVersion;
 

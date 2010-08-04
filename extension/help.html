@@ -16,30 +16,38 @@
 
 <html>
 <head>
-<title>About Google Chrome to Phone Extension</title>
+<title>Google Chrome to Phone Extension</title>
 <style type="text/css">
 body {
   min-width: 320px;
   overflow-x: hidden;
   font-family: verdana;
-  font-size: 12px;
+  font-size: 14px;
   color: black;
   background-color: white;
 }
 </style>
 
+<script type="text/javascript">
+  function signInAction() {
+    if (document.location.hash == '#signed_in') {
+      document.getElementById('signed_in').innerHTML =
+          '<p><b><font color="#00A000">Signed in. You are now ready to send links to your phone.</font></b></p>';
+    }
+  }
+</script>
 </head>
 
-<body onload="loadHandler()">
+<body onload="signInAction()">
 <h1><img src="icon_128.png" width="64" height="64" valign="bottom">&nbsp;Google Chrome to Phone Extension</h1>
 
+<div id="signed_in"></div>
+
 <h2>About</h2>
-<p>Google Chrome to Phone Extension enables you to send links and other information from Chrome to your Android device. Simply<br>
-click on the phone icon and the link will be pushed to your device. You will be required to log in with the same account used by<br>
-your Android device.</p>
+<p>Chrome to Phone, from Google, enables you to send links and other information from Chrome to your Android device. <br>
+Chrome to Phone is comprised of a Chrome browser extension and an Android application.</p>
 
 <h2>Features</h2>
-<p>
 <ul>
   <li>Send browser links from Chrome to your phone.</li>
   <li>Google Maps links launch the Google Maps application on Android.</li>
@@ -47,15 +55,8 @@ your Android device.</p>
   <li>Selecting a phone number will automatically launch the dialer with the number populated.</li>
   <li>Selecting text on a Web page will copy the clipboard to Android (long press a text box to paste on Android).</li>
 </ul>
-</p>
 
-<h2>Android Setup Instructions</h2>
-<p>
-<ol>
-<li>Download the Google Chrome to Phone Extension application to your Android device from Android Market. Note that this application requires Android 2.2 ("Froyo") or later. <br><img src="qr.png"></li>
-<li>Start the application and follow the instructions, choosing the account to use (this must match the account you sign in to with Google Chrome to Phone Extension on the desktop). Note that Google Apps accounts are not supported at this time.</li>
-</ol>
-</p>
+<img src="comic.png" alt="Setup instructions"/>
 
 <div align="center"><br>&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html">About Google</a> - 
 <a href="http://www.google.com/privacy.html">Privacy</a> - <a href="http://chrome.google.com/extensions/intl/en/gallery_tos.html">Terms of Service</a></div>
