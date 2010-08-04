@@ -112,18 +112,21 @@ sendtophone.doDrop = function(event)
 	var supportedTypes = ["application/x-moz-file", "text/uri-list", "text/x-moz-url", "text/plain"];
 	types = supportedTypes.filter(function (value) types.contains(value));
 	if (types.length)
-		var data = event.dataTransfer.getData(types[0]);
+		var plainText = event.dataTransfer.getData(types[0]);
+		var mozUrlArray = event.dataTransfer.getData(types[1]).split("\n");
+		var mozUrl = mozUrlArray[0];
+		var mozTitle = mozUrlArray[1];
 	event.preventDefault();
-
 	switch (types[0])
 	{
 		case "text/plain":
-			sendtophoneCore.send("Selection", "http://google.com", data);
+			sendtophoneCore.send("Selection", "http://google.com", plainText);
 			break;
 		case "text/uri-list":
 		case "text/x-moz-url":
-			sendtophoneCore.send("", data, "");
+			sendtophoneCore.send(mozTitle, mozUrl, "");
 			break;
+
 		case "application/x-moz-file":
 			var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
 			if (file instanceof Components.interfaces.nsIFile && file.isFile() )
