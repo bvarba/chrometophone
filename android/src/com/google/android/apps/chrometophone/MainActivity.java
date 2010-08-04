@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
 
     private boolean mPendingAuth = false;
     private int mScreenId = -1;
+    private int mAccountSelectedPosition = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -174,8 +175,8 @@ public class MainActivity extends Activity {
         nextButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 ListView listView = (ListView) findViewById(R.id.select_account);
-                TextView account =
-                        (TextView) listView.getChildAt(listView.getCheckedItemPosition());
+                mAccountSelectedPosition = listView.getCheckedItemPosition();
+                TextView account = (TextView) listView.getChildAt(mAccountSelectedPosition);
                 backButton.setEnabled(false);
                 nextButton.setEnabled(false);
                 register((String) account.getText());
@@ -195,7 +196,7 @@ public class MainActivity extends Activity {
             listView.setAdapter(new ArrayAdapter<String>(this,
                     R.layout.account, accounts));
             listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            listView.setItemChecked(0, true);
+            listView.setItemChecked(mAccountSelectedPosition, true);
         }
     }
 
