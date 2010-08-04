@@ -177,7 +177,17 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        if (sel != null && sel.matches("([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|\\-|\\.]\\)?)+")) {
            String elements[] = sel.split("([Tt]el[:]?)");
            number = elements.length > 1 ? elements[1] : elements[0];
+           number = number.replace(" ", "");
+
+           // Remove option (0) in international numbers, e.g. +44 (0)20 ...
+           if (number.matches("\\+[0-9]{2,3}\\(0\\).*")) {
+               int openBracket = number.indexOf('(');
+               int closeBracket = number.indexOf(')');
+               number = number.substring(0, openBracket) +
+                       number.substring(closeBracket + 1);
+           }
        }
+
        return number;
    }
 
