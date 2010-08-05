@@ -108,51 +108,67 @@ sendtophone.checkDrag = function(event)
 
 sendtophone.doDrop = function(event)
 {
-	var types = event.dataTransfer.types;
-	var supportedTypes = ["application/x-moz-file", "text/uri-list", "text/x-moz-url", "text/plain"];
+	var dt = event.dataTransfer
+	var types = dt.types;
+	var supportedTypes = ["application/x-moz-file", "text/x-moz-url", "text/uri-list", "text/plain"];
 	types = supportedTypes.filter(function (value) types.contains(value));
-	if (types.length)
-		var plainText = event.dataTransfer.getData(types[0]);
-		var mozUrlArray = event.dataTransfer.getData(types[1]).split("\n");
-		var mozUrl = mozUrlArray[0];
-		var mozTitle = mozUrlArray[1];
+		
 	event.preventDefault();
 	switch (types[0])
 	{
 		case "text/plain":
+			var plainText = dt.getData(types[0]);
 			sendtophoneCore.send("Selection", "http://google.com", plainText);
 			break;
-		case "text/uri-list":
+			
 		case "text/x-moz-url":
+			var mozUrlArray = dt.getData(types[1]).split("\n");
+			var mozUrl = mozUrlArray[0];
+			var mozTitle = mozUrlArray[1] || '';
 			sendtophoneCore.send(mozTitle, mozUrl, "");
 			break;
 
-		case "application/x-moz-file":
-			var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
-			if (file instanceof Components.interfaces.nsIFile && file.isFile() )
-			{
-				var url = Cc["@mozilla.org/network/io-service;1"]
-					.getService(Ci.nsIIOService)
-					.getProtocolHandler("file")
-					.QueryInterface(Ci.nsIFileProtocolHandler)
-					.getURLSpecFromFile(file);
+		case "text/uri-list":
+			var mozUrl = dt.getData(types[0]);
+			sendtophoneCore.send("", mozUrl, "");
+			break;
 
-			  	sendtophoneCore.send("", url, "");
+		case "application/x-moz-file":
+			for (var i = 0; i < dt.mozItemCount; i++)
+			{
+				var file = dt.mozGetDataAt("application/x-moz-file", i);
+				if (file instanceof Components.interfaces.nsIFile )
+				{	
+					sendtophoneCore.sendFile(file);
+				}
+				else
+					this.alert(this.strings.getString("InvalidFile"));
 			}
-			else
-				this.alert(this.strings.getString("InvalidFile"));
+			break;
 	}
 }
 
-sendtophone.sendFile = function()
+sendtophone.pickFile = function(folder)
 {
 	var fp = Cc["@mozilla.org/filepicker;1"]
 				.createInstance(Ci.nsIFilePicker);
 
-	fp.init(window, this.strings.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpen);
+	if (folder)
+		fp.init(window, this.strings.getString("SendFolderToPhone"), Ci.nsIFilePicker.modeGetFolder);
+	else
+		fp.init(window, this.strings.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpenMultiple); 
 	fp.appendFilters(Ci.nsIFilePicker.filterAll | Ci.nsIFilePicker.filterImages);
 	
 	var rv = fp.show();
+
 	if (rv == Ci.nsIFilePicker.returnOK) 
-		sendtophoneCore.send('', fp.fileURL.spec, '');
+	{
+		var files = fp.files;
+		while (files.hasMoreElements()) 
+		{
+			var file = files.getNext().QueryInterface(Ci.nsILocalFile);
+			sendtophoneCore.sendFile( file );
+		}
+	}
+
 }

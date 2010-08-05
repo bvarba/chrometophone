@@ -12,5 +12,7 @@
 <!ENTITY sendtophoneContextLogout.accesskey "L">
 <!ENTITY sendtophoneOptions.title "Opciones de Send to Phone">
 <!ENTITY sendtophoneProtocols.label "Protocolos">
-<!ENTITY sendtophoneContextSendFile.label "Enviar fichero...">
+<!ENTITY sendtophoneContextSendFile.label "Enviar ficheros...">
 <!ENTITY sendtophoneContextSendFile.accesskey "E">
+<!ENTITY sendtophoneContextSendFolder.label "Enviar carpeta...">
+<!ENTITY sendtophoneContextSendFolder.accesskey "C">

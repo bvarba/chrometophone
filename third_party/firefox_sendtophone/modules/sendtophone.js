@@ -87,11 +87,8 @@ var sendtophoneCore = {
 
 	processXHR: function(url, method, data, callback)
 	{
-		if (!this.req)
-			this.req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
+		var req =  Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
 						.createInstance(Ci.nsIXMLHttpRequest);
-
-		var req = this.req;
 
 		req.open(method, url, true);
 		req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
@@ -155,7 +152,12 @@ var sendtophoneCore = {
 		// Local files: upload them to a web server
 		if ((/^file:/i).test(url))
 		{
-			this.sendFile(url);
+			var nsFile = Cc["@mozilla.org/network/io-service;1"]
+				.getService(Ci.nsIIOService)
+				.getProtocolHandler("file")
+				.QueryInterface(Ci.nsIFileProtocolHandler)
+				.getFileFromURLSpec(url);
+			this.sendFile(nsFile);
 			return;
 		}
 		
@@ -281,16 +283,28 @@ var sendtophoneCore = {
 		return data + converter.Finish();
 	},
 		
-	sendFile: function(fileURL)
+	sendFile: function( nsFile, callback )
 	{
-		var nsFile = Cc["@mozilla.org/network/io-service;1"]
-			.getService(Ci.nsIIOService)
-			.getProtocolHandler("file")
-			.QueryInterface(Ci.nsIFileProtocolHandler)
-			.getFileFromURLSpec(fileURL);
+		if (!this.prefs)
+			this.init();
 	
-		if (!nsFile.isFile())
+		if (nsFile.isDirectory())
+		{
+			// Compress the contents to a zip file
+			zipFolder(nsFile, function(nsZip)
+				{
+					// Send the zip and delete it afterwards
+					sendtophoneCore.sendFile(nsZip, function() {/* nsZip.remove(false)*/ });
+				}
+			)
 			return;
+		}
+		
+		if (!nsFile.isFile())
+		{
+			this.alert(this.getString("InvalidFile"));
+			return;
+		}
 	
 	   var uploadName = nsFile.leafName;
 		// Try to determine the MIME type of the file  
@@ -350,12 +364,16 @@ var sendtophoneCore = {
 			if (body && (uploads = body.documentElement.getElementsByTagName("upload")))
 			{
 				sendtophoneCore.send(uploadName, uploads[0].firstChild.data, "");
-				return
+				// If there's a callback (to delete temporary files) we call it now
+				if (callback)
+					callback();
+				return;
 			}
 			// error.
-			sendtophoneCore.alert(event.target.responseText);
+			sendtophoneCore.alert(uri + "\r\n" + event.target.responseText);
 		}
 	   /*
+	   if required for cookies... don't think so.
 		try {
 		  req.channel.QueryInterface(Ci.nsIHttpChannelInternal).
 			forceAllowThirdPartyCookie = true;
@@ -367,3 +385,69 @@ var sendtophoneCore = {
 
 	
 };
+
+/* Zipping functions */
+const PR_RDONLY      = 0x01;
+const PR_WRONLY      = 0x02;
+const PR_RDWR        = 0x04;
+const PR_CREATE_FILE = 0x08;
+const PR_APPEND      = 0x10;
+const PR_TRUNCATE    = 0x20;
+const PR_SYNC        = 0x40;
+const PR_EXCL        = 0x80;
+
+/**
+* folder is a nsFile pointing to a folder
+* callback is a function that it's called after the zip is created. It has one parameter: the nsFile created
+*/
+function zipFolder(folder, callback)
+{
+	// get TMP directory  
+	var nsFile = Components.classes["@mozilla.org/file/directory_service;1"].  
+			getService(Ci.nsIProperties).  
+			get("TmpD", Ci.nsIFile); 
+
+	// Create a new file
+	nsFile.append( folder.leafName  + ".zip");
+	nsFile.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);  
+	
+	var zipWriter = Components.Constructor("@mozilla.org/zipwriter;1", "nsIZipWriter");
+	var zipW = new zipWriter();
+	
+	zipW.open(nsFile, PR_RDWR | PR_CREATE_FILE | PR_TRUNCATE);
+	
+	addFolderContentsToZip(zipW, folder, "");
+	
+	// We don't want to block the main thread, so the zipping is done asynchronously
+	// and here we get the notification that it has finished
+	var observer = {
+		onStartRequest: function(request, context) {},
+		onStopRequest: function(request, context, status)
+		{
+			zipW.close();
+			// Notify that we're done. Now it must be sent and deleted afterwards
+			callback(nsFile);
+		}
+	}
+
+	zipW.processQueue(observer, null);
+}
+
+/**
+* function to add the contents of a folder recursively
+* zipW a nsIZipWriter object
+* folder a nsFile object pointing to a folder
+* root a string defining the relative path for this folder in the zip
+*/
+function addFolderContentsToZip(zipW, folder, root)
+{
+	var entries = folder.directoryEntries;  
+	while(entries.hasMoreElements())  
+	{  
+		var entry = entries.getNext();  
+		entry.QueryInterface(Ci.nsIFile);  
+		zipW.addEntryFile(root + entry.leafName, Ci.nsIZipWriter.COMPRESSION_DEFAULT, entry, true);
+		if (entry.isDirectory())
+			addFolderContentsToZip(zipW, entry, root + entry.leafName + "/");
+	} 
+}

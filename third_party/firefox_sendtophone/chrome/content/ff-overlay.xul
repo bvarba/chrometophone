@@ -13,7 +13,10 @@
 		<popup id="sendtophoneContextMenu" onpopupshowing="sendtophone.initPopup();">
 			<menuitem label="&sendtophoneContextSendFile.label;" 
 				  accesskey="&sendtophoneContextSendFile.accesskey;"
-				  oncommand="sendtophone.sendFile()" id="sendtophoneContextMenuSendFile"/>
+				  oncommand="sendtophone.pickFile(false)" id="sendtophoneContextMenuSendFile"/>
+			<menuitem label="&sendtophoneContextSendFolder.label;" 
+				  accesskey="&sendtophoneContextSendFolder.accesskey;"
+				  oncommand="sendtophone.pickFile(true)" id="sendtophoneContextMenuSendFolder"/>
 			<menu label="&sendtophoneProtocols.label;">
 				<menupopup id="menu_Protocols" onpopupshowing="sendtophone.onOptionsShowing(this)"> 
 					<menuitem type="checkbox" id="marketcheck" label="market:" oncommand="sendtophone.onToggleOption(this)" option="market"/>
