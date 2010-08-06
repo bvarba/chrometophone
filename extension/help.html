@@ -31,8 +31,8 @@ body,td {
 <script type="text/javascript">
   function signInAction() {
     if (document.location.hash == '#signed_in') {
-      document.getElementById('signed_in').innerHTML =
-          '<p><b><font color="#00A000">Signed in. You are now ready to send links to your phone.</font></b></p>';
+      document.getElementById('signed_in').innerHTML = '<p><b><font color="#00A000">' +
+          chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
     }
   }
 </script>
@@ -43,19 +43,12 @@ body,td {
 
 <div id="signed_in"></div>
 
-<h2 style="padding-left: 10px">About</h2>
-<p style="padding-left: 10px">Chrome to Phone, from Google, enables you to send links and other information from Chrome to your Android device. <br>
-Chrome to Phone is comprised of a Chrome browser extension and an Android application.</p>
+<h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_title_message'));</script></h2>
+<p style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_message'));</script></p>
 
-<h2 style="padding-left: 10px">Features</h2>
+<h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('features_title_message'));</script></h2>
 
-<ul>
-  <li>Send browser links from Chrome to your phone.</li>
-  <li>Google Maps links launch the Google Maps application on Android.</li>
-  <li>YouTube links launch the YouTube application on Android.</li>
-  <li>Selecting a phone number will automatically launch the dialer with the number populated.</li>
-  <li>Selecting text on a Web page will copy the clipboard to Android (long press a text box to paste on Android).</li>
-</ul>
+<script>document.write(chrome.i18n.getMessage('features_message'));</script>
 
 <table width="1131px">
   <tr>
@@ -65,8 +58,8 @@ Chrome to Phone is comprised of a Chrome browser extension and an Android applic
   </tr>
   <tr>
     <td></td>
-    <td style="padding-left: 10px">Search for 'Chrome to Phone' at chrome.google.com/extensions.</td>
-    <td style="padding-left: 10px">Install the Chrome to Phone extension and click on the toolbar icon to sign in.</td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step2_message'));</script></td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step3_message'));</script></td>
   </tr>
   <tr>
     <td width="33%"><img src="comic4.png"></td>
@@ -74,14 +67,15 @@ Chrome to Phone is comprised of a Chrome browser extension and an Android applic
     <td width="33%"><img src="comic6.png"></td>
   </tr>
   <tr>
-    <td style="padding-left: 10px">Search for 'Chrome to Phone' in Market on your Android device.</td>
-    <td style="padding-left: 10px">Install the Chrome to Phone Android app and complete the simple set-up process.</td>
-    <td style="padding-left: 10px">Click the toolbar icon to send the link or currently selected text to your phone.</td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step4_message'));</script></td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step5_message'));</script></td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step6_message'));</script></td>
   </tr>
 </table>
 <br>
-<div align="center"><br>&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html">About Google</a> - 
-<a href="http://www.google.com/privacy.html">Privacy</a> - <a href="http://chrome.google.com/extensions/intl/en/gallery_tos.html">Terms of Service</a></div>
+<div align="center"><br>&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html"><script>document.write(chrome.i18n.getMessage('about_google_message'));</script></a> - 
+<a href="http://www.google.com/privacy.html"><script>document.write(chrome.i18n.getMessage('privacy_message'));</script></a> -
+<a href="http://chrome.google.com/extensions/intl/en/gallery_tos.html"><script>document.write(chrome.i18n.getMessage('tos_message'));</script></a></div>
 
 </body>
 </html>

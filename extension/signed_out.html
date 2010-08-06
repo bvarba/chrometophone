@@ -32,10 +32,12 @@ body {
 <body>
 <h1><img src="icon_128.png" width="64" height="64" valign="bottom">&nbsp;Google Chrome to Phone Extension</h1>
 
-<h2>Signed out</h2>
-<p>You are now signed out of Chrome to Phone.</p>
+<h2><script>document.write(chrome.i18n.getMessage('signed_out_title_message'));</script></h2>
+<p><script>document.write(chrome.i18n.getMessage('signed_out_message'));</script></p>
 
-<div align="center"><br>&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html">About Google</a> - 
-<a href="http://www.google.com/privacy.html">Privacy</a> - <a href="http://chrome.google.com/extensions/intl/en/gallery_tos.html">Terms of Service</a></div>
+<div align="center"><br>&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html"><script>document.write(chrome.i18n.getMessage('about_google_message'));</script></a> -
+<a href="http://www.google.com/privacy.html"><script>document.write(chrome.i18n.getMessage('privacy_message'));</script></a> -
+<a href="http://chrome.google.com/extensions/intl/en/gallery_tos.html"><script>document.write(chrome.i18n.getMessage('tos_message'));</script></a></div>
+
 </body>
 </html>
