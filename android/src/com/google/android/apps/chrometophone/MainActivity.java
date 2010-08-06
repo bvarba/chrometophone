@@ -142,8 +142,9 @@ public class MainActivity extends Activity {
     }
 
     private void setIntroScreenContent() {
-        String introText =
-                getString(R.string.intro_text).replace("{tos_link}", HelpActivity.getTosLink());
+        String introText = getString(R.string.intro_text)
+                .replace("{tos_link}", HelpActivity.getTOSLink())
+                .replace("{pp_link}", HelpActivity.getPPLink());
         TextView textView = (TextView) findViewById(R.id.intro_text);
         textView.setText(Html.fromHtml(introText));
         textView.setMovementMethod(LinkMovementMethod.getInstance());

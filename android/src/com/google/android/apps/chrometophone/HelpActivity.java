@@ -15,12 +15,14 @@ public class HelpActivity extends Activity {
         setContentView(R.layout.help);
 
         TextView textView = (TextView) findViewById(R.id.help_text);
-        String helpText = getString(R.string.help_text).replace("{tos_link}", getTosLink());
+        String helpText = getString(R.string.help_text)
+                .replace("{tos_link}", getTOSLink())
+                .replace("{pp_link}", getPPLink());
         textView.setText(Html.fromHtml(helpText));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    public static String getTosLink() {
+    public static String getTOSLink() {
         String link = "http://m.google.com/toscountry";  // default
 
         String country = Locale.getDefault().getCountry();
@@ -30,6 +32,20 @@ public class HelpActivity extends Activity {
             link = "http://m.google.co.uk/tospage";
         } else if (country.equals("CA")) {
             link = "http://m.google.ca/tospage";
+        }
+        return link;
+    }
+
+    public static String getPPLink() {
+        String link = "http://m.google.com/privacy";  // default
+
+        String country = Locale.getDefault().getCountry();
+        if (country.equals("US")) {
+            link = "http://m.google.com/privacy";
+        } else if (country.equals("GB")) {
+            link = "http://m.google.co.uk/privacy";
+        } else if (country.equals("CA")) {
+            link = "http://m.google.ca/privacy";
         }
         return link;
     }

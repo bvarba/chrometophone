@@ -39,7 +39,7 @@
         2. Connect your Chrome and your phone.&lt;br>3. Set your link action preference.&lt;br>&lt;br>
         By using this application, you agree to the &lt;br>
         &lt;a href="{tos_link}">Terms of Service&lt;/a> and
-        &lt;a href="http://m.google.com/privacy">Privacy Policy&lt;/a>
+        &lt;a href="{pp_link}">Privacy Policy&lt;/a>.
     </string>
     <string name="help_text">
         Chrome to Phone lets you easily share links, maps, and currently selected phone numbers and text
@@ -52,6 +52,6 @@
         in the status bar which you can action manually. &lt;br>&lt;br>
         By using this application, you agree to the &lt;br>
         &lt;a href="{tos_link}">Terms of Service&lt;/a> and
-        &lt;a href="http://m.google.com/privacy">Privacy Policy&lt;/a>
+        &lt;a href="{pp_link}">Privacy Policy&lt;/a>.
     </string>
 </resources>
