@@ -1,10 +1,10 @@
 {
   "app_name": {
-    "message": "Extension 'Chrome to Phone' par Google",
+    "message": "Extension Chrome to Phone par Google",
     "description": "Name of the application"
   },
   "app_desc": {
-    "message": "L’extension 'Chrome to Phone' par Google vous permet d’envoyer des liens et autres informations depuis Chrome vers votre appareil Android.",
+    "message": "L’extension Chrome to Phone par Google vous permet d’envoyer des liens et autres informations depuis Chrome vers votre appareil Android.",
     "description": "Description of the application."
   },
   "sending_message": {
@@ -64,7 +64,7 @@
     "description": "Section title in help."
   },
   "about_message": {
-    "message": "'Chrome to Phone', par Google, vous permet d'envoyer des liens et autres informations depuis Chrome vers votre appareil Android.<br>'Chrome to Phone' consiste d'une extension au navigateur Chrome et d'une application Android.",
+    "message": "Chrome to Phone, par Google, vous permet d'envoyer des liens et autres informations depuis Chrome vers votre appareil Android.<br>Chrome to Phone consiste d'une extension au navigateur Chrome et d'une application Android.",
     "description": "About message in help."
   },
   "features_title_message": {
@@ -76,19 +76,19 @@
     "description": "Features message in help."
   },
   "step2_message": {
-    "message": "Recherchez 'Chrome to Phone' à chrome.google.com/extensions.",
+    "message": "Recherchez Chrome to Phone à chrome.google.com/extensions.",
     "description": "Comic step 2 in help."
   },
   "step3_message": {
-    "message": "Installez l'extension 'Chrome to Phone' et cliquez sur l'icône de la barre d'outils pour vous connecter.",
+    "message": "Installez l'extension Chrome to Phone et cliquez sur l'icône de la barre d'outils pour vous connecter.",
     "description": "Comic step 3 in help."
   },
   "step4_message": {
-    "message": "Recherchez 'Chrome to Phone' sur le Market depuis votre appareil Android.",
+    "message": "Recherchez Chrome to Phone sur le Market depuis votre appareil Android.",
     "description": "Comic step 4 in help."
   },
   "step5_message": {
-    "message": "Installez l'application Android 'Chrome to Phone' et suivez les instructions de configuration.",
+    "message": "Installez l'application Android Chrome to Phone et suivez les instructions de configuration.",
     "description": "Comic step 5 in help."
   },
   "step6_message": {
@@ -116,7 +116,7 @@
     "description": "Signed out section title."
   },
   "signed_out_message": {
-    "message": "Vous êtes désormais déconnecté de 'Chrome to Phone'.",
+    "message": "Vous êtes désormais déconnecté de Chrome to Phone.",
     "description": "Signed out message."
   }
 }

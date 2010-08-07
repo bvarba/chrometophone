@@ -25,13 +25,17 @@ public class HelpActivity extends Activity {
     public static String getTOSLink() {
         String link = "http://m.google.com/toscountry";  // default
 
-        String country = Locale.getDefault().getCountry();
-        if (country.equals("US")) {
+        String locale = Locale.getDefault().toString();
+        if (locale.equals(Locale.US.toString())) {
             link = "http://m.google.com/tospage";
-        } else if (country.equals("GB")) {
+        } else if (locale.equals(Locale.UK.toString())) {
             link = "http://m.google.co.uk/tospage";
-        } else if (country.equals("CA")) {
+        } else if (locale.equals(Locale.CANADA.toString())) {
             link = "http://m.google.ca/tospage";
+        } else if (locale.equals(Locale.CANADA_FRENCH.toString())) {
+            link = "http://m.google.ca/tospage?hl=fr";
+        } else if (locale.equals(Locale.FRANCE.toString())) {
+            link = "http://m.google.fr/tospage";
         }
         return link;
     }
@@ -39,13 +43,17 @@ public class HelpActivity extends Activity {
     public static String getPPLink() {
         String link = "http://m.google.com/privacy";  // default
 
-        String country = Locale.getDefault().getCountry();
-        if (country.equals("US")) {
+        String locale = Locale.getDefault().toString();
+        if (locale.toString().equals(Locale.US.toString())) {
             link = "http://m.google.com/privacy";
-        } else if (country.equals("GB")) {
+        } else if (locale.toString().equals(Locale.UK.toString())) {
             link = "http://m.google.co.uk/privacy";
-        } else if (country.equals("CA")) {
+        } else if (locale.toString().equals(Locale.CANADA.toString())) {
             link = "http://m.google.ca/privacy";
+        } else if (locale.toString().equals(Locale.CANADA_FRENCH.toString())) {
+            link = "http://m.google.ca/privacy?hl=fr";
+        } else if (locale.toString().equals(Locale.FRANCE.toString())) {
+            link = "http://m.google.fr/privacy";
         }
         return link;
     }

@@ -92,7 +92,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                SharedPreferences settings = Prefs.get(context);
                Intent launchIntent = getLaunchIntent(context, url, title, sel);
 
-               if (settings.getBoolean("launchBrowserOrMaps", false) && launchIntent != null) {
+               if (settings.getBoolean("launchBrowserOrMaps", true) && launchIntent != null) {
                    playNotificationSound(context);
                    context.startActivity(launchIntent);
                } else {
