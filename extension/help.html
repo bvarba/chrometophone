@@ -75,7 +75,7 @@ body,td {
 <br>
 <div align="center"><br>&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html"><script>document.write(chrome.i18n.getMessage('about_google_message'));</script></a> - 
 <a href="http://www.google.com/privacy.html"><script>document.write(chrome.i18n.getMessage('privacy_message'));</script></a> -
-<a href="http://chrome.google.com/extensions/intl/en/gallery_tos.html"><script>document.write(chrome.i18n.getMessage('tos_message'));</script></a></div>
+<script>document.write('<a href="http://chrome.google.com/extensions/intl/' + window.navigator.language.substring(0, 2) + '/gallery_tos.html">' + chrome.i18n.getMessage('tos_message') + '</a>');</script></div>
 
 </body>
 </html>
