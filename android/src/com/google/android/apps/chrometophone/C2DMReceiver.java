@@ -173,13 +173,15 @@ public class C2DMReceiver extends C2DMBaseReceiver {
    }
 
    private String parseTelephoneNumber(String sel) {
+       if (sel == null || sel.length() == 0) return null;
+
        // Hack: Remove trailing left-to-right mark (Google Maps adds this)
        if (sel.codePointAt(sel.length() - 1) == 8206) {
            sel = sel.substring(0, sel.length() - 1);
        }
 
        String number = null;
-       if (sel != null && sel.matches("([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|\\-|\\.]\\)?)+")) {
+       if (sel.matches("([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|\\-|\\.]\\)?)+")) {
            String elements[] = sel.split("([Tt]el[:]?)");
            number = elements.length > 1 ? elements[1] : elements[0];
            number = number.replace(" ", "");
@@ -192,7 +194,6 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                        number.substring(closeBracket + 1);
            }
        }
-
        return number;
    }
 
