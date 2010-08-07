@@ -76,7 +76,7 @@
     "description": "Features message in help."
   },
   "step2_message": {
-    "message": "Recherchez Chrome to Phone à chrome.google.com/extensions.",
+    "message": "Recherchez 'Chrome to Phone' à chrome.google.com/extensions.",
     "description": "Comic step 2 in help."
   },
   "step3_message": {
@@ -84,7 +84,7 @@
     "description": "Comic step 3 in help."
   },
   "step4_message": {
-    "message": "Recherchez Chrome to Phone sur le Market depuis votre appareil Android.",
+    "message": "Recherchez 'Chrome to Phone' sur le Market depuis votre appareil Android.",
     "description": "Comic step 4 in help."
   },
   "step5_message": {
