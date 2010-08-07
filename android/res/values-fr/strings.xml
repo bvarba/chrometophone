@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chrome to Phone</string>
+    <string name="back">Précédent</string>
+    <string name="next">Suivant</string>
+    <string name="exit">Sortie</string>
+    <string name="select_text">Sélectionnez le compte à utiliser:</string>
+    <string name="no_accounts">Aucun compte n’est configuré sur ce téléphone.</string>
+    <string name="click_next_text">Appuyez sur ‘Suivant’ pour établir la connexion entre Chrome et ce téléphone.</string>
+    <string name="google_apps_warning_text">(A noter: Chrome to Phone n’est à présent pas compatible avec les comptes Google Apps).</string>
+    <string name="connecting_text">Connexion...</string>
+    <string name="disconnect_text">Si vous ne souhaitez plus envoyer de liens vers ce téléphone, appuyez ci-dessous.</string>
+    <string name="disconnecting_text">Déconnexion...</string>
+    <string name="connect_error_text">Erreur: Incapable de se connecter.</string>
+    <string name="auth_error_text">Erreur: Les comptes Google Apps ne sont pas compatibles avec cette application.</string>
+    <string name="finish">Terminer</string>
+    <string name="select_link_action_text">Veuillez spécifier l’action préférentielle pour les liens:</string>
+    <string name="auto_launch_text">Lancement automatique des liens</string>
+    <string name="manual_launch_text">Me laisser lancer les liens manuellement</string>
+    <string name="setup_complete_text">
+        Configuration terminée. Votre téléphone est désormais connecté et prêt à recevoir des liens depuis Chrome. &lt;br>&lt;br>
+    	Si vous ne l’avez pas déjà fait, vous devez maintenant installer l’extension Chrome, en allant sur la galerie d’extension
+        de Chrome sur votre ordinateur http://chrome.google.com/extensions/ et en cherchant pour Chrome to Phone.
+    </string>
+    <string name="connected_with_account_text">Votre téléphone est connecté à Chrome pour le compte:</string>
+    <string name="link_action_pref_text">Action préférentielle pour les liens:</string>
+    <string name="disconnect">Déconnecter le téléphone</string>
+    <string name="disconnect_error_text">Erreur: Impossible de se déconnecter.</string>
+    <string name="help">Aide</string>
+    <string name="copied_desktop_clipboard">Copié le presse-papier</string>
+    <string name="intro_text">
+        Chrome to Phone vous permet de partager des liens, cartes, et votre sélection contenant du texte
+        ou des numéros de téléphone entre votre ordinateur et votre téléphone. &lt;br>&lt;br>Vous devez
+        installer l’extension pour le navigateur Chrome sur votre ordinateur pour envoyer des liens vers
+        votre téléphone. L’extension du navigateur est téléchargeable depuis la galerie d’extensions de
+        Chrome à http://chrome.google.com/extensions/. Faites une recherche pour "Chrome to Phone".&lt;br>&lt;br>
+        La configuration de votre téléphone consiste en 3 étapes simples: &lt;br>1. Choisissez le compte Google
+        à utiliser.&lt;br>2. Connectez Chrome à votre téléphone.&lt;br>3. Choisissez l’action préférentielle pour
+        les liens.&lt;br>&lt;br>Par votre utilisation de cette application, vous acceptez
+        les &lt;a href="{tos_link}">Conditions d’Utilisation&lt;/a> et
+    	les &lt;a href="{pp_link}">Règles de Confidentialité&lt;/a>.&lt;br>
+    </string>
+    <string name="help_text">
+        Chrome to Phone vous permet de partager facilement des liens, cartes, et votre sélection contenant du texte
+        ou des numéros de téléphone entre votre ordinateur et votre téléphone. &lt;br>&lt;br>L’application consiste de
+        deux composants: une application Android et une extension pour le navigateur Chrome. L’extension du navigateur
+        peut être téléchargée depuis la galerie d’extensions de Chrome à http://chrome.google.com/extensions/
+    	&lt;br>&lt;br>Dès que l’extension de Chrome est installée sur votre ordinateur, vous pouvez connecter votre téléphone
+        Android.&lt;br>&lt;br>Vous pouvez choisir si les liens envoyés vers votre téléphone sont ouverts automatiquement
+        par l’application appropriée, ou bien sont déposés sur la barre d’état de façon à pouvoir être activés manuellement. &lt;br>&lt;br>
+    	Par votre utilisation de cette application, vous acceptez &lt;br>
+    	les &lt;a href="{tos_link}">Conditions d’Utilisation&lt;/a> et
+    	les &lt;a href="{pp_link}">Règles de Confidentialité&lt;/a>.&lt;br>
+    </string>
+</resources>
