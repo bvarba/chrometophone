@@ -96,7 +96,7 @@
     "description": "Comic step 6 in help."
   },
   "signed_in_message": {
-    "message": "Signed in. You are now ready to send links to your phone.",
+    "message": "Connecté. Vous pouvez désormais envoyer des liens vers votre téléphone.",
     "description": "Signed in message."
   },
   "about_google_message": {
