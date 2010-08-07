@@ -26,7 +26,7 @@
     }
   },
   "sign_in_required_message": {
-    "message": "Please $link$ to Chrome to Phone.</a>",
+    "message": "Please $link$ to Chrome to Phone.",
     "description": "Notice when sign in is required.",
     "placeholders": {
       "link": {
