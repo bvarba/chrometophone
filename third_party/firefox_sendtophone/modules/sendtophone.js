@@ -85,6 +85,15 @@ var sendtophoneCore = {
 		}
 	},
 
+	// For use while debugging
+	toConsole: function(text)
+	{
+		var aConsoleService = Cc["@mozilla.org/consoleservice;1"]
+				.getService(Ci.nsIConsoleService);
+
+		aConsoleService.logStringMessage( text );
+	},
+	
 	processXHR: function(url, method, data, callback)
 	{
 		var req =  Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
@@ -143,7 +152,8 @@ var sendtophoneCore = {
 	},
 
 	// Main function
-	// This is the only method that has to be called from outside this module
+	// This is method that has to be called from outside this module
+	// The other available method is sendFile
 	send: function(title, url, selection)
 	{
 		if (!this.sendUrl)
@@ -235,12 +245,12 @@ var sendtophoneCore = {
 
 	openTab: function(url, successUrl, callback)
 	{
-		var gBrowser =  Cc["@mozilla.org/embedcomp/window-watcher;1"]
-					.getService(Components.interfaces.nsIWindowWatcher)
-					.activeWindow
-					.gBrowser;
+		var gBrowser = Cc["@mozilla.org/appshell/window-mediator;1"]
+			.getService(Ci.nsIWindowMediator)
+			.getMostRecentWindow("navigator:browser")
+			.gBrowser;
 
-		var lastTab = gBrowser.tabContainer.selectedIndex;
+		var lastTabIndex = gBrowser.tabContainer.selectedIndex;
 		var tab = gBrowser.addTab(url);
 		gBrowser.selectedTab = tab;
 
@@ -253,9 +263,9 @@ var sendtophoneCore = {
 					callback();
 
 					// Close tab
-					gBrowser.removeCurrentTab();
+					gBrowser.removeTab(c2pTab);
 					// ReFocus on tab being sent
-					gBrowser.selectedTab = gBrowser.tabContainer.childNodes[lastTab];
+					gBrowser.selectedTab = gBrowser.tabContainer.childNodes[lastTabIndex];
 				}
 			}, true);
 		}
@@ -288,13 +298,20 @@ var sendtophoneCore = {
 		if (!this.prefs)
 			this.init();
 	
+		if (typeof sendtophoneUploadsManager == "undefined")
+			Components.utils.import("resource://sendtophone/uploadsManager.js");
+	
 		if (nsFile.isDirectory())
 		{
+			// There's no progress notification while compressing, only on end.
+			var progressId = sendtophoneUploadsManager.addZip(nsFile);
 			// Compress the contents to a zip file
 			zipFolder(nsFile, function(nsZip)
 				{
+					sendtophoneUploadsManager.finishedUpload( progressId );
+					
 					// Send the zip and delete it afterwards
-					sendtophoneCore.sendFile(nsZip, function() {/* nsZip.remove(false)*/ });
+					sendtophoneCore.sendFile(nsZip, function() { nsZip.remove(false) });
 				}
 			)
 			return;
@@ -353,25 +370,46 @@ var sendtophoneCore = {
 		
 		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
 				.createInstance(Ci.nsIXMLHttpRequest);
-		
-		req.open('POST', uri, false);
+
+		// Show the progress of uploads
+		sendtophoneUploadsManager.addUpload(nsFile, req);
+
+		req.open('POST', uri, true);
+
 		req.setRequestHeader("Content-length",multiStream.available());
 		req.setRequestHeader("Content-type","multipart/form-data; charset: utf-8; boundary="+boundary);
-		req.onload = function(event)
+		req.addEventListener("load", function(event)
 		{
+			// If there's a callback (to delete temporary files) we call it now
+			if (callback)
+				callback();
+				
 			var body = event.target.responseXML;
 			var uploads;
 			if (body && (uploads = body.documentElement.getElementsByTagName("upload")))
 			{
-				sendtophoneCore.send(uploadName, uploads[0].firstChild.data, "");
-				// If there's a callback (to delete temporary files) we call it now
-				if (callback)
-					callback();
+				var data = uploads[0].firstChild.data;
+//				sendtophoneCore.toConsole(data);
+				sendtophoneCore.send(uploadName, data, "");
 				return;
 			}
 			// error.
 			sendtophoneCore.alert(uri + "\r\n" + event.target.responseText);
-		}
+		}, false);
+		// Handle errors or aborted uploads
+		req.addEventListener("error", function(evt)
+		{
+			// If there's a callback (to delete temporary files) we call it now
+			if (callback)
+				callback();
+		}, false);
+		req.addEventListener("abort", function(evt)
+		{
+			// If there's a callback (to delete temporary files) we call it now
+			if (callback)
+				callback();
+		}, false);
+		
 	   /*
 	   if required for cookies... don't think so.
 		try {
@@ -403,7 +441,7 @@ const PR_EXCL        = 0x80;
 function zipFolder(folder, callback)
 {
 	// get TMP directory  
-	var nsFile = Components.classes["@mozilla.org/file/directory_service;1"].  
+	var nsFile = Cc["@mozilla.org/file/directory_service;1"].  
 			getService(Ci.nsIProperties).  
 			get("TmpD", Ci.nsIFile); 
 

@@ -108,7 +108,7 @@ sendtophone.checkDrag = function(event)
 
 sendtophone.doDrop = function(event)
 {
-	var dt = event.dataTransfer
+	var dt = event.dataTransfer;
 	var types = dt.types;
 	var supportedTypes = ["application/x-moz-file", "text/x-moz-url", "text/uri-list", "text/plain"];
 	types = supportedTypes.filter(function (value) types.contains(value));
@@ -137,10 +137,8 @@ sendtophone.doDrop = function(event)
 			for (var i = 0; i < dt.mozItemCount; i++)
 			{
 				var file = dt.mozGetDataAt("application/x-moz-file", i);
-				if (file instanceof Components.interfaces.nsIFile )
-				{	
+				if (file instanceof Ci.nsIFile )
 					sendtophoneCore.sendFile(file);
-				}
 				else
 					this.alert(this.strings.getString("InvalidFile"));
 			}
@@ -172,3 +170,4 @@ sendtophone.pickFile = function(folder)
 	}
 
 }
+

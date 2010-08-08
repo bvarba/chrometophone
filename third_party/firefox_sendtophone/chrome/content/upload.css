@@ -1,0 +1,16 @@
+
+richlistitem[type="upload"][state="0"] {
+  -moz-binding: url('chrome://sendtophone/content/upload.xml#uploading');
+  -moz-box-orient: vertical;
+}
+
+richlistitem[type="upload"][state="1"] {
+  -moz-binding: url('chrome://sendtophone/content/upload.xml#compressing');
+  -moz-box-orient: vertical;
+}
+
+/* Only focus buttons in the selected item*/
+richlistitem[type="upload"]:not([selected="true"]) button {
+  -moz-user-focus: none;
+}
+

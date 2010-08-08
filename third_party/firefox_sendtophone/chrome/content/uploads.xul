@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://sendtophone/content/upload.css"?>
+<?xml-stylesheet href="chrome://sendtophone/skin/uploads.css"?>
+
+<!DOCTYPE window SYSTEM "chrome://sendtophone/locale/overlay.dtd">
+
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	 id="sendtophoneUploadsWindow"
+        onload="Startup();" onunload="Shutdown();"
+        onclose="return closeWindow(false);">
+
+<!--
+<window xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        id="downloadManager" windowtype="Download:Manager"
+        orient="vertical" title="&downloads.title;" statictitle="&downloads.title;"
+        width="&window.width2;" height="&window.height;" screenX="10" screenY="10"
+        persist="width height screenX screenY sizemode"
+        onload="Startup();" onunload="Shutdown();"
+        onclose="return closeWindow(false);">
+ <script type="application/javascript" src="chrome://mozapps/content/downloads/downloads.js"/>
+  <script type="application/javascript" src="chrome://mozapps/content/downloads/DownloadProgressListener.js"/>
+-->
+
+ <script type="application/javascript" src="chrome://sendtophone/content/uploads.js"/>
+
+    <richlistbox id="UploadsBox" flex="1">
+    </richlistbox>
+
+</window>
