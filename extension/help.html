@@ -31,7 +31,7 @@ body,td {
 <script type="text/javascript">
   function signInAction() {
     if (document.location.hash == '#signed_in') {
-      document.getElementById('signed_in').innerHTML = '<p><b><font color="#00A000">' +
+      document.getElementById('signed_in_div').innerHTML = '<p><b><font color="#00A000">' +
           chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
     }
   }
@@ -41,7 +41,7 @@ body,td {
 <body onload="signInAction()">
 <h1><img src="icon_128.png" width="64" height="64" valign="bottom">&nbsp;Google Chrome to Phone Extension</h1>
 
-<div id="signed_in"></div>
+<div id="signed_in_div"></div>
 
 <h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_title_message'));</script></h2>
 <p style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_message'));</script></p>
