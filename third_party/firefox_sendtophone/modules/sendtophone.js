@@ -43,7 +43,7 @@ var sendtophoneCore = {
 		this.sendUrl = baseUrl + '/send?ver=' + this.apiVersion;
 		this.logInUrl = baseUrl + '/signin?ver=' + this.apiVersion + '&extret=' + encodeURIComponent(this.loggedInUrl);
 		this.logOutUrl = baseUrl + '/signout?ver=' + this.apiVersion + '&extret=' + encodeURIComponent(this.loggedOutUrl);
-  },
+	},
 
 	getString: function(name)
 	{
@@ -53,10 +53,10 @@ var sendtophoneCore = {
 	// Shows a message in a modal alert
 	alert: function(text)
 	{
-			var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
-															.getService(Ci.nsIPromptService);
-	    promptService.alert(null, this.getString("SendToPhoneTitle"),
-                                text);
+		var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
+							.getService(Ci.nsIPromptService);
+		promptService.alert(null, this.getString("SendToPhoneTitle"),
+			text);
 	},
 
 	// Shows a message in a growl-like notification
@@ -96,7 +96,7 @@ var sendtophoneCore = {
 	
 	processXHR: function(url, method, data, callback)
 	{
-		var req =  Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
+		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
 						.createInstance(Ci.nsIXMLHttpRequest);
 
 		req.open(method, url, true);
@@ -137,16 +137,16 @@ var sendtophoneCore = {
 		};
 
 		// To send correctly cookies.
-    // Force the request to include cookies even though this chrome code
-    // is seen as a third-party, so the server knows the user for which we are
-    // requesting favorites (or anything else user-specific in the future).
-    // This only works in Firefox 3.6; in Firefox 3.5 the request will instead
-    // fail to send cookies if the user has disabled third-party cookies.
-    try {
-      req.channel.QueryInterface(Ci.nsIHttpChannelInternal).
-        forceAllowThirdPartyCookie = true;
-    }
-    catch(ex) { /* user is using Firefox 3.5 */ }
+		// Force the request to include cookies even though this chrome code
+		// is seen as a third-party, so the server knows the user for which we are
+		// requesting favorites (or anything else user-specific in the future).
+		// This only works in Firefox 3.6; in Firefox 3.5 the request will instead
+		// fail to send cookies if the user has disabled third-party cookies.
+		try {
+			req.channel.QueryInterface(Ci.nsIHttpChannelInternal).
+				forceAllowThirdPartyCookie = true;
+		}
+		catch(ex) { /* user is using Firefox 3.5 */ }
 
 		req.send( data );
 	},
@@ -182,12 +182,12 @@ var sendtophoneCore = {
 			selection = selection.substring(0, max_length);
 		
 		// Send the protocols that aren't currently whitelisted through a proxy server
-	    if (!(/^(https?):/i).test( url ))
-		{	    	
-  		  	// Rewrite the URI so it's send first to the proxy
-			var proxyUrl = this.prefs.getCharPref( "proxyUrl" ) ; 
+		if (!(/^(https?):/i).test( url ))
+		{
+			// Rewrite the URI so it's send first to the proxy
+			var proxyUrl = this.prefs.getCharPref( "proxyUrl" );
 			if (proxyUrl)
-			    url = proxyUrl + encodeURIComponent( url);
+				url = proxyUrl + encodeURIComponent( url);
 		}
 
 		var data = 'title=' + encodeURIComponent(title) +
@@ -230,6 +230,9 @@ var sendtophoneCore = {
 
 	logout: function()
 	{
+		if (!this.prefs)
+			this.init();
+			
 		// Open Google logout page, and close tab when finished
 		this.openTab(this.logOutUrl, this.loggedOutUrl, function() {sendtophoneCore.logoutSuccessful();} );
 
@@ -263,7 +266,7 @@ var sendtophoneCore = {
 					callback();
 
 					// Close tab
-					gBrowser.removeTab(c2pTab);
+					gBrowser.removeTab(tab);
 					// ReFocus on tab being sent
 					gBrowser.selectedTab = gBrowser.tabContainer.childNodes[lastTabIndex];
 				}
@@ -297,6 +300,13 @@ var sendtophoneCore = {
 	{
 		if (!this.prefs)
 			this.init();
+
+		let uri = this.prefs.getCharPref( "fileServerUrl" );
+		if (!uri)
+		{
+			this.alert( this.getString("FileUploadsDisabled") );
+			return;
+		}
 	
 		if (typeof sendtophoneUploadsManager == "undefined")
 			Components.utils.import("resource://sendtophone/uploadsManager.js");
@@ -304,7 +314,7 @@ var sendtophoneCore = {
 		if (nsFile.isDirectory())
 		{
 			// There's no progress notification while compressing, only on end.
-			var progressId = sendtophoneUploadsManager.addZip(nsFile);
+			let progressId = sendtophoneUploadsManager.addZip(nsFile);
 			// Compress the contents to a zip file
 			zipFolder(nsFile, function(nsZip)
 				{
@@ -322,8 +332,16 @@ var sendtophoneCore = {
 			this.alert(this.getString("InvalidFile"));
 			return;
 		}
-	
-	   var uploadName = nsFile.leafName;
+
+		let size = Math.round(nsFile.fileSize / 1024);	 
+		let maxSize = this.prefs.getIntPref( "fileUploadMaxKb" );
+		if (maxSize>0 && size>maxSize)
+		{
+			this.alert( this.getString("FileTooBig") );
+			return;
+		}
+		
+		let uploadName = nsFile.leafName;
 		// Try to determine the MIME type of the file  
 		var mimeType = "text/plain";  
 		try {  
@@ -340,23 +358,24 @@ var sendtophoneCore = {
 		var bufInStream = Cc["@mozilla.org/network/buffered-input-stream;1"]
 			.createInstance(Ci.nsIBufferedInputStream);
 		bufInStream.init(inStream, 4096);
-	   
-	   //Setup the boundary start stream
+
+		//Setup the boundary start stream
 		var boundary = "--SendToPhone-------------" + Math.random();
 		var startBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
 			.createInstance(Ci.nsIStringInputStream);
 		startBoundryStream.setData("\r\n--"+boundary+"\r\n",-1);
-	   
-	   // Setup the boundary end stream
-	   var endBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"].createInstance(Ci.nsIStringInputStream);
+
+		// Setup the boundary end stream
+		var endBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
+				.createInstance(Ci.nsIStringInputStream);
 		endBoundryStream.setData("\r\n--"+boundary+"--",-1);
-	   
-	   // Setup the mime-stream - the 'part' of a multi-part mime type
-	   var mimeStream = Cc["@mozilla.org/network/mime-input-stream;1"].createInstance(Ci.nsIMIMEInputStream);
-	   mimeStream.addContentLength = false;
-	   mimeStream.addHeader("Content-disposition","form-data; charset: utf-8; name=\"upload\"; filename=\"" + this.toUTF8(uploadName) + "\"");
-	   mimeStream.addHeader("Content-type", mimeType);
-	   mimeStream.setData(bufInStream);
+
+		// Setup the mime-stream - the 'part' of a multi-part mime type
+		var mimeStream = Cc["@mozilla.org/network/mime-input-stream;1"].createInstance(Ci.nsIMIMEInputStream);
+		mimeStream.addContentLength = false;
+		mimeStream.addHeader("Content-disposition","form-data; charset: utf-8; name=\"upload\"; filename=\"" + this.toUTF8(uploadName) + "\"");
+		mimeStream.addHeader("Content-type", mimeType);
+		mimeStream.setData(bufInStream);
 	
 		// Setup a multiplex stream
 		var multiStream = Cc["@mozilla.org/io/multiplex-input-stream;1"]
@@ -364,9 +383,6 @@ var sendtophoneCore = {
 		multiStream.appendStream(startBoundryStream);
 		multiStream.appendStream(mimeStream);
 		multiStream.appendStream(endBoundryStream);
-		var size = Math.round(nsFile.fileSize / 1024);
-	 
-		var uri = this.prefs.getCharPref( "fileServerUrl" );
 		
 		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
 				.createInstance(Ci.nsIXMLHttpRequest);
@@ -399,25 +415,29 @@ var sendtophoneCore = {
 		// Handle errors or aborted uploads
 		req.addEventListener("error", function(evt)
 		{
+			sendtophoneCore.alert("Error while sending the file to the server:\r\n" + uri);
+			
 			// If there's a callback (to delete temporary files) we call it now
 			if (callback)
 				callback();
 		}, false);
 		req.addEventListener("abort", function(evt)
 		{
+			// Silent.
+			
 			// If there's a callback (to delete temporary files) we call it now
 			if (callback)
 				callback();
 		}, false);
 		
-	   /*
-	   if required for cookies... don't think so.
+		/*
+		if required for cookies... don't think so.
 		try {
 		  req.channel.QueryInterface(Ci.nsIHttpChannelInternal).
 			forceAllowThirdPartyCookie = true;
 		}
 		catch(ex) {}
-	   */
+		*/
 		req.send(multiStream);
 	}
 

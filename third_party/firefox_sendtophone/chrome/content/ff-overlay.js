@@ -102,8 +102,11 @@ sendtophone.checkDrag = function(event)
 {
 	//event.dataTransfer.dropEffect = "copy";
 	var types = event.dataTransfer.types;
-	if (types.contains("text/plain") || types.contains("text/uri-list") || types.contains("text/x-moz-url") || types.contains("application/x-moz-file"))
+	if (types.contains("text/plain") || types.contains("text/uri-list") || types.contains("text/x-moz-url"))
 		event.preventDefault();
+		
+	if (this.prefs.getCharPref( "fileServerUrl" ) && types.contains("application/x-moz-file") )
+		event.preventDefault();	
 }
 
 sendtophone.doDrop = function(event)
@@ -154,8 +157,10 @@ sendtophone.pickFile = function(folder)
 	if (folder)
 		fp.init(window, this.strings.getString("SendFolderToPhone"), Ci.nsIFilePicker.modeGetFolder);
 	else
+	{
 		fp.init(window, this.strings.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpenMultiple); 
-	fp.appendFilters(Ci.nsIFilePicker.filterAll | Ci.nsIFilePicker.filterImages);
+		fp.appendFilters(Ci.nsIFilePicker.filterAll | Ci.nsIFilePicker.filterImages);
+	}
 	
 	var rv = fp.show();
 

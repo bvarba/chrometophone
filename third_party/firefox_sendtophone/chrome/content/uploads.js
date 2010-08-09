@@ -65,8 +65,8 @@ let gUploadListener = {
 		gUploadsView.removeChild(item);
 	
 		// If no more pending uploads, close the tab.
-		//		Use a 100ms timeout to avoid flicker while compress -> upload a folder
-		window.setTimeout( checkPendingUploads, 100);
+		//		Use a 0 ms timeout to avoid flicker while compress -> upload a folder
+		window.setTimeout( checkPendingUploads, 0);
 	}
 };
 

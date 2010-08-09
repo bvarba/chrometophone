@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 
-
 <!DOCTYPE bindings [
-  <!ENTITY % downloadDTD SYSTEM "chrome://sendtophone/locale/uploads.dtd" >
-  %downloadDTD;
+	<!ENTITY % downloadManagerDTD SYSTEM "chrome://mozapps/locale/downloads/downloads.dtd">
+	%downloadManagerDTD;
+	<!ENTITY % uploadDTD SYSTEM "chrome://sendtophone/locale/uploads.dtd" >
+	%uploadDTD;
 ]>
 
 <bindings id="uploadBindings"
@@ -54,7 +55,6 @@
           <xul:label xbl:inherits="value=target,tooltiptext=file"
                        crop="center" flex="2" class="name"/>
           <xul:hbox>
-
             <xul:vbox flex="1">
               <xul:progressmeter mode="normal" value="0" flex="1"
                                  anonid="progressmeter"
@@ -83,7 +83,6 @@
         <xul:vbox pack="start" flex="1">
           <xul:label xbl:inherits="value=target,tooltiptext=file"
                        crop="center" flex="2" class="name"/>
-
           <xul:hbox>
             <xul:vbox flex="1">
               <xul:progressmeter mode="undetermined" flex="1" />

@@ -149,6 +149,12 @@ var sendtophone = {
 
 	initPopup: function()
 	{
+		var fileServerUrl = this.prefs.getCharPref( "fileServerUrl" );
+		if (!fileServerUrl)
+		{
+			document.getElementById("sendtophoneContextMenuSendFiles").hidden = true;
+			document.getElementById("sendtophoneContextMenuSendFolder").hidden = true;
+		}
 		// returning true will make the popup show
 		return true;
 	},

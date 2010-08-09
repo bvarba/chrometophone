@@ -10,10 +10,10 @@
   </stringbundleset>
 
 	<popupset id="mainPopupSet">
-		<popup id="sendtophoneContextMenu" onpopupshowing="sendtophone.initPopup();">
+		<menupopup id="sendtophoneContextMenu" onpopupshowing="sendtophone.initPopup();">
 			<menuitem label="&sendtophoneContextSendFile.label;" 
 				  accesskey="&sendtophoneContextSendFile.accesskey;"
-				  oncommand="sendtophone.pickFile(false)" id="sendtophoneContextMenuSendFile"/>
+				  oncommand="sendtophone.pickFile(false)" id="sendtophoneContextMenuSendFiles"/>
 			<menuitem label="&sendtophoneContextSendFolder.label;" 
 				  accesskey="&sendtophoneContextSendFolder.accesskey;"
 				  oncommand="sendtophone.pickFile(true)" id="sendtophoneContextMenuSendFolder"/>
@@ -28,11 +28,11 @@
 			<menuitem label="&sendtophoneContextLogout.label;" 
 				  accesskey="&sendtophoneContextLogout.accesskey;"
 				  oncommand="sendtophone.logout()" id="sendtophoneContextMenuLogout"/>
-		</popup>
+		</menupopup>
 	  
 	</popupset>
 
-  <popup id="contentAreaContextMenu">
+  <menupopup id="contentAreaContextMenu">
     <menuitem id="context-sendtophone-link" label="&sendtophoneContext.label;"
               accesskey="&sendtophoneContext.accesskey;"
               insertafter="context-sendlink"
@@ -49,7 +49,7 @@
               accesskey="&sendtophoneContextPage.accesskey;"
               insertafter="context-sendpage"
               oncommand="sendtophone.onMenuItemCommand(event, 'page')"/>
-  </popup>
+  </menupopup>
 
 	<toolbarpalette id="BrowserToolbarPalette">
 		<toolbarbutton id="sendtophone-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"

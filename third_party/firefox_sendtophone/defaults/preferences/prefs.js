@@ -3,6 +3,7 @@ pref("extensions.sendtophone.appUrl", "https://chrometophone.appspot.com");
 
 pref("extensions.sendtophone.proxyUrl", "http://smallroomstudios.net/s2p.php?ml=");
 pref("extensions.sendtophone.fileServerUrl", "http://martinezdelizarrondo.com/sendtophone.php");
+pref("extensions.sendtophone.fileUploadMaxKb", 50000);
 
 pref("extensions.sendtophone.protocols.market", true);
 pref("extensions.sendtophone.protocols.sms", true);

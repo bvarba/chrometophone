@@ -36,7 +36,7 @@ var sendtophoneUploadsManager = {
 	addUpload: function(nsFile, req)
 	{
 		let id = this._addToUploads( {file:nsFile, req:req, state:0, percent:0,
-			startTime: Date.now(), currBytes: 0, maxBytes: nsFile.fileSize} );
+			startTime: Date.now() - 100, currBytes: 0, maxBytes: nsFile.fileSize} );
 
 		req.upload.addEventListener("progress", function(evt)
 			{
@@ -79,7 +79,7 @@ var sendtophoneUploadsManager = {
 	
 	_addToUploads: function( obj )
 	{
-		this.init();
+		initShowTest();
 
 		// Creates a counter to automatically assign new ids to each upload	
 		let id = this._counter++;
@@ -92,7 +92,7 @@ var sendtophoneUploadsManager = {
 		return id;
 	},
 		
-	init: function()
+	showWindow: function()
 	{
 		// Open the tab
 		openAndReuseOneTabPerURL("chrome://sendtophone/content/uploads.xul");
@@ -101,6 +101,23 @@ var sendtophoneUploadsManager = {
 	updateProgress: function(id, loaded, total)
 	{
 		let upload = this.uploads[id];
+
+		// The progress events are fired when the data is sent,  
+		// but that leads to wrong speed because we don't know how long
+		//  it has really taken to process the packet
+		// As long as the upload progress the speed converges to a more correct value
+		// But here we will try to adjust it (fake it) sooner
+		if (!upload.firstPacket)
+			upload.firstPacket = Date.now();
+		else
+		if (!upload.adjusted)
+		{
+			upload.adjusted = true;
+//			let elapsed = Date.now() - upload.firstPacket; // time to send a packet to the server and get back
+			let elapsed = Date.now() - upload.startTime; // 
+			upload.startTime = upload.startTime - elapsed;
+		}
+
 		upload.currBytes = loaded;
 		upload.maxBytes = total;
 
@@ -114,6 +131,14 @@ var sendtophoneUploadsManager = {
 		let upload = this.uploads[id];
 		delete this.uploads[id];
 
+		// Review if there are pending files to cancel the show timer
+		let count = 0;
+		for(let id in this.uploads)
+			count++;
+		if (count == 0)
+			cancelShowTimer();
+		
+		// Notify the listeners
 		this._listeners.forEach( function( listener ) {  
 			listener.fileFinished( upload );
 		});
@@ -124,7 +149,88 @@ var sendtophoneUploadsManager = {
 		let upload = this.uploads[id];
 		upload.req.abort();	
 	
+	},
+
+	// For use while debugging
+	toConsole: function(text)
+	{
+		var aConsoleService = Cc["@mozilla.org/consoleservice;1"]
+				.getService(Ci.nsIConsoleService);
+
+		aConsoleService.logStringMessage( text );
+	},
+	
+ 	// Check if we might need to show the window.
+  	// Either some folder is being compressed, 
+  	// or there's some file that might take longer than 2 seconds.
+  	// If there's some file that we still don't know the speed
+  	// then consider it also as needed.
+	isWindowNeeded: function()
+	{
+		for (let id in this.uploads)
+		{
+			let upload = this.uploads[id] ;
+			
+			// zipping folder: if takes so long to compress it, it will also take some time to upload it
+			if (upload.state==1)
+				return true;
+				
+			// If it still hasn't uploaded anything then something might be wrong
+			if (upload.currBytes==0)
+				return true;
+				
+			let elapsedTime = (Date.now() - upload.startTime) / 1000;			
+			let speed = upload.currBytes/elapsedTime;
+			let remainingSecs = (upload.maxBytes - upload.currBytes) / speed;
+//			this.toConsole(elapsedTime + " " + speed + " " + remainingSecs);
+			
+			if (remainingSecs > 2)
+				return true;
+
+//			if (remainingSecs > 1 && elapsedTime> 2)
+//				return true;
+		}
 	}
+}
+
+/**
+* Internal function
+* Instead of poping up the uploads window inmediately wait a little
+* trying to avoid flicker for small files
+*/
+let showTimer = null;
+
+// we need a nsITimerCallback compatible...
+// ... interface for the callbacks.
+var showTimerEvent = 
+{
+	notify: function(timer) 
+	{
+		if (sendtophoneUploadsManager.isWindowNeeded())
+		{
+			cancelShowTimer();
+			sendtophoneUploadsManager.showWindow();
+		}
+	}
+}
+ 
+function initShowTest()
+{
+	if (showTimer)
+		return;
+		
+	// Now it is time to create the timer...  
+	showTimer = Components.classes["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+ 	showTimer.initWithCallback(showTimerEvent, 400, Ci.nsITimer.TYPE_REPEATING_SLACK);
+}
+
+function cancelShowTimer()
+{
+	if (!showTimer)
+		return;
+
+	showTimer.cancel();
+	showTimer = null
 }
 
 // https://developer.mozilla.org/en/Code_snippets/Tabbed_browser#Reusing_tabs
