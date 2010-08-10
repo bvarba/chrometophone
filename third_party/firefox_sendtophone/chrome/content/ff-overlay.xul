@@ -32,24 +32,28 @@
 	  
 	</popupset>
 
-  <menupopup id="contentAreaContextMenu">
-    <menuitem id="context-sendtophone-link" label="&sendtophoneContext.label;"
-              accesskey="&sendtophoneContext.accesskey;"
-              insertafter="context-sendlink"
-              oncommand="sendtophone.onMenuItemCommand(event, 'link')"/>
-    <menuitem id="context-sendtophone-image" label="&sendtophoneContextImage.label;"
-              accesskey="&sendtophoneContextImage.accesskey;"
-              insertafter="context-sendimage"
-              oncommand="sendtophone.onMenuItemCommand(event, 'image')"/>
-    <menuitem id="context-sendtophone-text" label="&sendtophoneContextText.label;"
-              accesskey="&sendtophoneContextText.accesskey;"
-              insertafter="context-searchselect"
-              oncommand="sendtophone.onMenuItemCommand(event, 'text')"/>
-    <menuitem id="context-sendtophone-page" label="&sendtophoneContextPage.label;"
-              accesskey="&sendtophoneContextPage.accesskey;"
-              insertafter="context-sendpage"
-              oncommand="sendtophone.onMenuItemCommand(event, 'page')"/>
-  </menupopup>
+	<menupopup id="contentAreaContextMenu">
+		<menuitem id="context-sendtophone-link" label="&sendtophoneContext.label;"
+			class="menuitem-iconic"
+			accesskey="&sendtophoneContext.accesskey;"
+			insertafter="context-sendlink"
+			oncommand="sendtophone.onMenuItemCommand(event, 'link')"/>
+		<menuitem id="context-sendtophone-image" label="&sendtophoneContextImage.label;"
+			class="menuitem-iconic"
+			accesskey="&sendtophoneContextImage.accesskey;"
+			insertafter="context-sendimage"
+			oncommand="sendtophone.onMenuItemCommand(event, 'image')"/>
+		<menuitem id="context-sendtophone-text" label="&sendtophoneContextText.label;"
+			class="menuitem-iconic"
+			accesskey="&sendtophoneContextText.accesskey;"
+			insertafter="context-searchselect"
+			oncommand="sendtophone.onMenuItemCommand(event, 'text')"/>
+		<menuitem id="context-sendtophone-page" label="&sendtophoneContextPage.label;"
+			class="menuitem-iconic"
+			accesskey="&sendtophoneContextPage.accesskey;"
+			insertafter="context-sendpage"
+			oncommand="sendtophone.onMenuItemCommand(event, 'page')"/>
+	</menupopup>
 
 	<toolbarpalette id="BrowserToolbarPalette">
 		<toolbarbutton id="sendtophone-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
