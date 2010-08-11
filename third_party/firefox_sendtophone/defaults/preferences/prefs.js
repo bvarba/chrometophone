@@ -12,7 +12,5 @@ pref("extensions.sendtophone.protocols.mms", false); // conflicts with http://en
 pref("extensions.sendtophone.protocols.mmsto", true);
 pref("extensions.sendtophone.protocols.tel", true);
 
-pref("extensions.sendtophone.qrlink", true);
-
 // https://developer.mozilla.org/en/Localizing_extension_descriptions
 pref("extensions.sendtophone@martinezdelizarrondo.com.description", "chrome://sendtophone/locale/overlay.properties");

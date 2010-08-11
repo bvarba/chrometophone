@@ -12,5 +12,9 @@
 <!ENTITY sendtophoneContextLogout.accesskey "L">
 <!ENTITY sendtophoneOptions.title "Send to Phone Preferences">
 <!ENTITY sendtophoneProtocols.label "Protocols">
-<!ENTITY sendtophoneContextSendFile.label "Send file...">
+<<!ENTITY sendtophoneContextSendFile.label "Send files...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
+<!ENTITY sendtophoneContextSendFolder.label "Send folder...">
+<!ENTITY sendtophoneContextSendFolder.accesskey "F">
+<!ENTITY sendtophoneContextQrImage.label "Send decoded QR Link to Android">
+<!ENTITY sendtophoneContextQrImage.accesskey "Q">

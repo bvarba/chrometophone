@@ -3,7 +3,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>sendtophone@martinezdelizarrondo.com</em:id>
     <em:type>2</em:type>
-    <em:name>Send To Phone</em:name>
+    <em:name>Fox To Phone</em:name>
     <em:version>1.1</em:version>
     <em:creator>Alfonso &amp; Patrick</em:creator>
     <em:description>Send links to your Android 2.2 phone using the new C2DM service. Based on the ChromeToPhone extension.</em:description>

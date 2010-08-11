@@ -16,3 +16,5 @@
 <!ENTITY sendtophoneContextSendFile.accesskey "E">
 <!ENTITY sendtophoneContextSendFolder.label "Enviar carpeta...">
 <!ENTITY sendtophoneContextSendFolder.accesskey "C">
+<!ENTITY sendtophoneContextQrImage.label "Enviar imagen QR a Android">
+<!ENTITY sendtophoneContextQrImage.accesskey "Q">

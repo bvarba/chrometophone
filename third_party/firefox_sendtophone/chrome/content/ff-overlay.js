@@ -87,6 +87,9 @@ sendtophone.showFirefoxContextMenu = function(event) {
   // see http://kb.mozillazine.org/Adding_items_to_menus
   gContextMenu.showItem("context-sendtophone-link", gContextMenu.onLink);
   gContextMenu.showItem("context-sendtophone-image", gContextMenu.onImage);
+	var qrPat1=/^http:\/\/chart.apis.google.com\/chart\?/;
+	var qrPat2=/cht=qr/;
+  gContextMenu.showItem("context-sendtophone-qrimage", (gContextMenu.onImage & qrPat1.test(gContextMenu.imageURL) && qrPat2.test(gContextMenu.imageURL)));
   gContextMenu.showItem("context-sendtophone-text", gContextMenu.isTextSelected || 
   	(gContextMenu.onTextInput && gContextMenu.target.selectionEnd > gContextMenu.target.selectionStart) );
 

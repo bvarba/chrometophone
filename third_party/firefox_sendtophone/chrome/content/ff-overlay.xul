@@ -43,6 +43,12 @@
 			accesskey="&sendtophoneContextImage.accesskey;"
 			insertafter="context-sendimage"
 			oncommand="sendtophone.onMenuItemCommand(event, 'image')"/>
+		<menuitem id="context-sendtophone-qrimage" label="&sendtophoneContextQrImage.label;"
+			class="menuitem-iconic"
+			accesskey="&sendtophoneContextQrImage.accesskey;"
+			insertafter="context-sendimage"
+			oncommand="sendtophone.onMenuItemCommand(event, 'qr')"/>
+
 		<menuitem id="context-sendtophone-text" label="&sendtophoneContextText.label;"
 			class="menuitem-iconic"
 			accesskey="&sendtophoneContextText.accesskey;"

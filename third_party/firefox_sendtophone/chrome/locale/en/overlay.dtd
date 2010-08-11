@@ -1,4 +1,4 @@
-<!ENTITY sendtophoneToolbarButton.label "Send to Phone">
+<!ENTITY sendtophoneToolbarButton.label "Fox to Phone">
 <!ENTITY sendtophoneToolbarButton.tooltip "Send this page to your Android Phone">
 <!ENTITY sendtophoneContext.label "Send this link to Android">
 <!ENTITY sendtophoneContext.accesskey "A">
@@ -16,3 +16,5 @@
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
 <!ENTITY sendtophoneContextSendFolder.label "Send folder...">
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
+<!ENTITY sendtophoneContextQrImage.label "Send decoded QR Link to Android">
+<!ENTITY sendtophoneContextQrImage.accesskey "Q">
