@@ -86,10 +86,23 @@ sendtophone.showFirefoxContextMenu = function(event) {
   // show or hide the menuitem based on what the context menu is on
   // see http://kb.mozillazine.org/Adding_items_to_menus
   gContextMenu.showItem("context-sendtophone-link", gContextMenu.onLink);
-  gContextMenu.showItem("context-sendtophone-image", gContextMenu.onImage);
-	var qrPat1=/^http:\/\/chart.apis.google.com\/chart\?/;
-	var qrPat2=/cht=qr/;
-  gContextMenu.showItem("context-sendtophone-qrimage", (gContextMenu.onImage & qrPat1.test(gContextMenu.imageURL) && qrPat2.test(gContextMenu.imageURL)));
+
+	gContextMenu.showItem("context-sendtophone-image", false);
+	gContextMenu.showItem("context-sendtophone-qrimage", false);
+	if (gContextMenu.onImage)
+	{
+		var data = this.detectQR( gContextMenu.imageURL );
+		if (data)
+		{
+			gContextMenu.showItem("context-sendtophone-qrimage", true);
+			var label = this.strings.getString("qrContextMenu");
+			label = label.replace("%s", data.substring(0, 20) + "..." );
+			document.getElementById("context-sendtophone-qrimage").setAttribute("label", label);
+		}
+		else
+			gContextMenu.showItem("context-sendtophone-image", true);
+	}
+
   gContextMenu.showItem("context-sendtophone-text", gContextMenu.isTextSelected || 
   	(gContextMenu.onTextInput && gContextMenu.target.selectionEnd > gContextMenu.target.selectionStart) );
 
