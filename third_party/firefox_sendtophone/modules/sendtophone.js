@@ -131,7 +131,10 @@ var sendtophoneCore = {
 				}
 				else
 				{
-					sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
+					if (req.status==500 && body.substr(0,27) =="ERROR (Unable to send link)")
+						sendtophoneCore.openTab( "http://www.foxtophone.com/status500/" );
+					else
+						sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
 				}
 			}
 		};
@@ -171,7 +174,7 @@ var sendtophoneCore = {
 			return;
 		}
 		
-		if (!(/^(https?|market|tel|sms(to)?|mms(to)?|mailto|ftp):/i).test( url ))
+		if (!(/^(https?|market|tel|sms(to)?|mailto|ftp):/i).test( url ))
 		{
 			this.alert(this.getString("InvalidScheme"));
 			return;

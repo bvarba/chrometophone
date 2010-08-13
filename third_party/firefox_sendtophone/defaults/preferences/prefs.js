@@ -4,12 +4,11 @@ pref("extensions.sendtophone.appUrl", "https://chrometophone.appspot.com");
 pref("extensions.sendtophone.proxyUrl", "http://smallroomstudios.net/s2p.php?ml=");
 pref("extensions.sendtophone.fileServerUrl", "http://martinezdelizarrondo.com/sendtophone.php");
 pref("extensions.sendtophone.fileUploadMaxKb", 50000);
+pref("extensions.sendtophone.SearchQR", 0);  // 0: search and prompt, 1: search and launch automatically, 2: don't search
 
 pref("extensions.sendtophone.protocols.market", true);
 pref("extensions.sendtophone.protocols.sms", true);
 pref("extensions.sendtophone.protocols.smsto", true);
-pref("extensions.sendtophone.protocols.mms", false); // conflicts with http://en.wikipedia.org/wiki/Microsoft_Media_Server
-pref("extensions.sendtophone.protocols.mmsto", true);
 pref("extensions.sendtophone.protocols.tel", true);
 
 // https://developer.mozilla.org/en/Localizing_extension_descriptions

@@ -11,8 +11,6 @@
 			<preference id="extensions.sendtophone.protocols.market" name="extensions.sendtophone.protocols.market" type="bool"/>
 			<preference id="extensions.sendtophone.protocols.sms" name="extensions.sendtophone.protocols.sms" type="bool"/>
 			<preference id="extensions.sendtophone.protocols.smsto" name="extensions.sendtophone.protocols.smsto" type="bool"/>
-			<preference id="extensions.sendtophone.protocols.mms" name="extensions.sendtophone.protocols.mms" type="bool"/>
-			<preference id="extensions.sendtophone.protocols.mmsto" name="extensions.sendtophone.protocols.mmsto" type="bool"/>
 			<preference id="extensions.sendtophone.protocols.tel" name="extensions.sendtophone.protocols.tel" type="bool"/>
 		</preferences>
 		
@@ -21,12 +19,7 @@
 		
 				<checkbox preference="extensions.sendtophone.protocols.market"
 					label="market:" />
-					
-				<checkbox preference="extensions.sendtophone.protocols.mms"
-					label="mms:" oncommand="var o = document.getElementById('mmsto'); o.checked=this.checked; o.doCommand();" />
-				<checkbox id="mmsto" preference="extensions.sendtophone.protocols.mmsto"
-					label="mmsto:" style="display:none" />
-					
+										
 				<checkbox id="sms" preference="extensions.sendtophone.protocols.sms"
 					label="sms:" oncommand="var o = document.getElementById('smsto'); o.checked=this.checked; o.doCommand();"  />
 				<checkbox id="smsto" preference="extensions.sendtophone.protocols.smsto"

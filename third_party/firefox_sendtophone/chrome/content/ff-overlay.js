@@ -56,13 +56,12 @@ sendtophone.installToolbarButton = function()
 
 //Toggle Protocol Prefrences onFlyout Menu Click
 sendtophone.onToggleOption = function(menuitem)
-    {
-        var option = menuitem.getAttribute("option");
-        var checked = menuitem.getAttribute("checked") == "true";
+{
+	var option = menuitem.getAttribute("option");
+	var checked = menuitem.getAttribute("checked") == "true";
 	this.prefs.setBoolPref("protocols."+option, checked );
-	if(!option.indexOf("sms")|!option.indexOf("mms")){
+	if (!option.indexOf("sms"))
 		this.prefs.setBoolPref("protocols."+option+"to", checked );
-	}
 }
 
 //Set MenuItem as checked based on preferences.
@@ -83,9 +82,9 @@ sendtophone.onOptionsShowing= function(popup)
     }
 
 sendtophone.showFirefoxContextMenu = function(event) {
-  // show or hide the menuitem based on what the context menu is on
-  // see http://kb.mozillazine.org/Adding_items_to_menus
-  gContextMenu.showItem("context-sendtophone-link", gContextMenu.onLink);
+	// show or hide the menuitem based on what the context menu is on
+	// see http://kb.mozillazine.org/Adding_items_to_menus
+	gContextMenu.showItem("context-sendtophone-link", gContextMenu.onLink);
 
 	gContextMenu.showItem("context-sendtophone-image", false);
 	gContextMenu.showItem("context-sendtophone-qrimage", false);
@@ -95,7 +94,7 @@ sendtophone.showFirefoxContextMenu = function(event) {
 		if (data)
 		{
 			gContextMenu.showItem("context-sendtophone-qrimage", true);
-			var label = this.strings.getString("qrContextMenu");
+			var label = this.getString("qrContextMenu");
 			label = label.replace("%s", data.substring(0, 20) + "..." );
 			document.getElementById("context-sendtophone-qrimage").setAttribute("label", label);
 		}
@@ -159,7 +158,7 @@ sendtophone.doDrop = function(event)
 				if (file instanceof Ci.nsIFile )
 					sendtophoneCore.sendFile(file);
 				else
-					this.alert(this.strings.getString("InvalidFile"));
+					this.alert(this.getString("InvalidFile"));
 			}
 			break;
 	}
@@ -171,10 +170,10 @@ sendtophone.pickFile = function(folder)
 				.createInstance(Ci.nsIFilePicker);
 
 	if (folder)
-		fp.init(window, this.strings.getString("SendFolderToPhone"), Ci.nsIFilePicker.modeGetFolder);
+		fp.init(window, this.getString("SendFolderToPhone"), Ci.nsIFilePicker.modeGetFolder);
 	else
 	{
-		fp.init(window, this.strings.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpenMultiple); 
+		fp.init(window, this.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpenMultiple); 
 		fp.appendFilters(Ci.nsIFilePicker.filterAll | Ci.nsIFilePicker.filterImages);
 	}
 	
@@ -191,4 +190,3 @@ sendtophone.pickFile = function(folder)
 	}
 
 }
-

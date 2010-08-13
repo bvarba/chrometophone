@@ -124,8 +124,6 @@ var sendToPhoneProtocols = {
 	market:	SendToPhone_ProtocolWrapper( { scheme: "market", ID: "{751de080-95d1-11df-981c-0800200c9a66}" } ) ,
 	sms: 	SendToPhone_ProtocolWrapper( { scheme: "sms", 	 ID: "{345de080-95d1-11df-981c-0800200c9a66}" } ) ,
 	smsto: 	SendToPhone_ProtocolWrapper( { scheme: "smsto",  ID: "{854de080-95d1-11df-981c-0800200c9a66}" } ) ,
-	mms: 	SendToPhone_ProtocolWrapper( { scheme: "mms", 	 ID: "{457de080-95d1-11df-981c-0800200c9a66}" } ) ,
-	mmsto: 	SendToPhone_ProtocolWrapper( { scheme: "mmsto",  ID: "{331de080-95d1-11df-981c-0800200c9a66}" } ) ,
 	tel: 	SendToPhone_ProtocolWrapper( { scheme: "tel", 	 ID: "{948de080-95d1-11df-981c-0800200c9a66}" } ) 
 };
 
