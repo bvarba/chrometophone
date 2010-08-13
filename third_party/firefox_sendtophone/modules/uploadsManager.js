@@ -220,7 +220,7 @@ function initShowTest()
 		return;
 		
 	// Now it is time to create the timer...  
-	showTimer = Components.classes["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+	showTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
  	showTimer.initWithCallback(showTimerEvent, 400, Ci.nsITimer.TYPE_REPEATING_SLACK);
 }
 
@@ -235,9 +235,9 @@ function cancelShowTimer()
 
 // https://developer.mozilla.org/en/Code_snippets/Tabbed_browser#Reusing_tabs
 function openAndReuseOneTabPerURL(url) {
-  var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                     .getService(Components.interfaces.nsIWindowMediator);
-  var browserEnumerator = wm.getEnumerator("navigator:browser");
+	var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
+			.getService(Ci.nsIWindowMediator);
+	var browserEnumerator = wm.getEnumerator("navigator:browser");
 
   // Check each browser instance for our URL
   var found = false;

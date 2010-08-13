@@ -1,4 +1,4 @@
-/*
+﻿/*
     Copyright 2010 Alfonso Martínez de Lizarrondo & Patrick O'Reilly
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ var sendtophone = {
 		var match = url.match(/^http:\/\/chart.apis.google.com\/chart\?(.*)/i);
 		if (!match)
 			return false;
-		
+
 		var chartLink=/^chl=/;
 		var qrArray = match[0].split("&");
 		for(var qrI=0; qrI<qrArray.length; qrI++){
@@ -84,7 +84,7 @@ var sendtophone = {
 					url = data;
 				else
 					selection = data;
-				
+
 				//If the QR Image has no title text, give it one.
 				if (!title)
 					title=this.getString("qrTitle");
@@ -109,18 +109,19 @@ var sendtophone = {
 			case 'pageButton':
 				// Check if there's a single image with a QR code in the contents
 				var images = gBrowser.contentDocument.getElementsByTagName( "img" );
-				
+
 				// 0: search and prompt, 1: search and launch automatically, 2: don't search
-				var pref = this.prefs.getIntPref("SearchQR")
+				var pref = this.prefs.getIntPref("SearchQR");
 				if (pref!=2)
 				{
 					var QRs = [];
 					for( var i=0; i<images.length; i++)
 					{
-						var data = this.detectQR( images[i].src );
-						if (data) 
+						var imgData = this.detectQR( images[i].src );
+						if (imgData)
 							QRs.push({data: data, img: images[i]});
 					}
+
 					if (QRs.length==1)
 					{
 						var data = QRs[0].data;
@@ -132,25 +133,25 @@ var sendtophone = {
 							if (answer.remember)
 								this.prefs.setIntPref("SearchQR", pref);
 						}
-						
+
 						if ( pref!=2 )
 						{
 							title = QRs[0].img.title || QRs[0].img.alt;
-			
+
 							if (this.validURI(data))
 								url = data;
 							else
 								selection = data;
-							
+
 							if (!title)
 								title=this.getString("qrTitle");
-	
+
 							// We got the data, break out of the select
 							break;
 						}
 					}
 				} // pref != 2
-				
+
 				// fall through
 			case 'page':
 			default:
@@ -178,10 +179,10 @@ var sendtophone = {
 	{
 		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 							.getService(Ci.nsIPromptService);
-							
+
 		// https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIPromptService#confirmEx
 		var check = {value: false};
-		
+
 		var button =  promptService.confirmEx(window, this.getString("SendToPhoneTitle"),
 			text, promptService.STD_YES_NO_BUTTONS, "", "", "", this.getString("RememberMyDecision"), check);
 		// confirmEx returns the pressed button, and Yes it's the first one.
@@ -196,7 +197,7 @@ var sendtophone = {
 	getInfo: function() {
 		var doc = gBrowser.contentDocument,
 			href = doc.location.href;
-		
+
 		// Is it the Google Maps page?
 		if (this.isMapsURL(href))
 		{
@@ -204,7 +205,7 @@ var sendtophone = {
 			var link = doc.getElementById('link');
 			if (link && link.href)
 				href = link.href;
-		}		
+		}
 
 		var focusedWindow = document.commandDispatcher.focusedWindow;
 		var selection = focusedWindow.getSelection().toString();
@@ -236,7 +237,7 @@ var sendtophone = {
 			document.getElementById("sendtophoneContextMenuSendFolder").hidden = true;
 		}
 		document.getElementById("sendtophoneContextMenuSendClipboard").disabled = !this.clipboardHasText();
-		
+
 		// returning true will make the popup show
 		return true;
 	},
@@ -251,39 +252,39 @@ var sendtophone = {
 
 		return true;
 	},
-	
+
 	sendClipboard : function()
 	{
 		// https://developer.mozilla.org/en/using_the_clipboard
 		// Access Clipboard
 		var clip = Cc["@mozilla.org/widget/clipboard;1"].getService(Ci.nsIClipboard);
-		if (!clip) return false;
-	
+		if (!clip) return;
+
 		if (!clip.hasDataMatchingFlavors(["text/unicode"], 1, clip.kGlobalClipboard))
-			return false;
-		  
+			return;
+
 		var trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
-		if (!trans) return false;
+		if (!trans) return;
 		trans.addDataFlavor("text/unicode");
-		
+
 		// Get the data
 		clip.getData(trans, clip.kGlobalClipboard);
-	
+
 		var str       = new Object();
 		var strLength = new Object();
 		var pastetext;
-	
+
 		trans.getTransferData("text/unicode", str, strLength);
-		
+
 		// Convert to js string
 		if (str) str       = str.value.QueryInterface(Components.interfaces.nsISupportsString);
 		if (str) pastetext = str.data.substring(0, strLength.value / 2);
-		
+
 		// Send it.
 		if (pastetext)
 			sendtophoneCore.send("Clipboard", "http://google.com", pastetext);
 	},
-	
+
 	logout: function()
 	{
 		sendtophoneCore.logout();

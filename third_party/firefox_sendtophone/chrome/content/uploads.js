@@ -31,10 +31,16 @@ function addFile(upload)
 	gUploadsView.appendChild( dl );
 }
 
-function checkPendingUploads()
+var checkTimerEvent =
 {
-	if (gUploadsView.children.length==0)
-		window.close();
+	notify: function(timer)
+	{
+		if (sendtophoneUploadsManager.isWindowNeeded())
+		{
+			if (gUploadsView.children.length==0)
+				window.close();
+		}
+	}
 }
 
 function cancelUpload(item)
@@ -52,7 +58,7 @@ let gUploadListener = {
 		let item = document.getElementById( "upl" + data.id);
 		item.setAttribute("currBytes", data.currBytes);
 		item.setAttribute("maxBytes", data.maxBytes);
-		
+
 		let percentComplete = Math.round(100 * data.currBytes / data.maxBytes);
 		item.setAttribute("progress", percentComplete);
 
@@ -63,10 +69,12 @@ let gUploadListener = {
 	{
 		let item = document.getElementById("upl" + data.id);
 		gUploadsView.removeChild(item);
-	
+
 		// If no more pending uploads, close the tab.
 		//		Use a 0 ms timeout to avoid flicker while compress -> upload a folder
-		window.setTimeout( checkPendingUploads, 0);
+		let checkTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+	 	checkTimer.initWithCallback(checkTimerEvent, 0, Ci.nsITimer.TYPE_ONE_SHOT);
+
 	}
 };
 
@@ -139,22 +147,22 @@ function performCommand(aCmd, aItem)
   gUploadViewController.doCommand(aCmd, elm);
 }
 
-function updateStatus(aItem) 
+function updateStatus(aItem)
 {
 	let currBytes = Number(aItem.getAttribute("currBytes"));
 	let maxBytes = Number(aItem.getAttribute("maxBytes"));
-	
+
 	let elapsedTime = (Date.now() - Number(aItem.getAttribute("startTime"))) / 1000;
 	// If we don't have an active upload, assume 0 bytes/sec
 	let speed = (currBytes>0) ? currBytes/elapsedTime : 0;
 	let lastSec = Number(aItem.getAttribute("lastSeconds"));
-	
+
 	let status, newLast;
 	[status, newLast] =
 	DownloadUtils.getDownloadStatus(currBytes, maxBytes, speed, lastSec);
-	
+
 	// Update lastSeconds to be the new value
 	aItem.setAttribute("lastSeconds", newLast);
-	
+
 	aItem.setAttribute("status", status);
 }

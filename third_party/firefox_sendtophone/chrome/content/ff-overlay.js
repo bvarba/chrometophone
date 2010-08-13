@@ -1,4 +1,4 @@
-/*
+﻿/*
     Copyright 2010 Alfonso Martínez de Lizarrondo & Patrick O'Reilly
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,8 +23,8 @@ sendtophone.init = function()
 		this.prefs.setBoolPref( "installedButton", true ) ;
 	}
 
-	document.getElementById("contentAreaContextMenu")
-		.addEventListener("popupshowing", function (e){ sendtophone.showFirefoxContextMenu(e); }, false);
+	document.getElementById("contentAreaContextMenu").
+		addEventListener("popupshowing", function (e){ sendtophone.showFirefoxContextMenu(e); }, false);
 }
 
 sendtophone.installToolbarButton = function()
@@ -74,7 +74,7 @@ sendtophone.onOptionsShowing= function(popup)
                 var option = child.getAttribute("option");
                 if (option)
                 {
-                    var checked = this.prefs.getBoolPref("protocols."+option);	
+                    var checked = this.prefs.getBoolPref("protocols."+option);
                     child.setAttribute("checked", checked);
                 }
             }
@@ -102,11 +102,11 @@ sendtophone.showFirefoxContextMenu = function(event) {
 			gContextMenu.showItem("context-sendtophone-image", true);
 	}
 
-  gContextMenu.showItem("context-sendtophone-text", gContextMenu.isTextSelected || 
+  gContextMenu.showItem("context-sendtophone-text", gContextMenu.isTextSelected ||
   	(gContextMenu.onTextInput && gContextMenu.target.selectionEnd > gContextMenu.target.selectionStart) );
 
   gContextMenu.showItem("context-sendtophone-page",  !( gContextMenu.inDirList || gContextMenu.isContentSelected || gContextMenu.onTextInput || gContextMenu.onLink || gContextMenu.onImage ));
-  
+
 };
 
 
@@ -119,9 +119,9 @@ sendtophone.checkDrag = function(event)
 	var types = event.dataTransfer.types;
 	if (types.contains("text/plain") || types.contains("text/uri-list") || types.contains("text/x-moz-url"))
 		event.preventDefault();
-		
+
 	if (this.prefs.getCharPref( "fileServerUrl" ) && types.contains("application/x-moz-file") )
-		event.preventDefault();	
+		event.preventDefault();
 }
 
 sendtophone.doDrop = function(event)
@@ -129,8 +129,8 @@ sendtophone.doDrop = function(event)
 	var dt = event.dataTransfer;
 	var types = dt.types;
 	var supportedTypes = ["application/x-moz-file", "text/x-moz-url", "text/uri-list", "text/plain"];
-	types = supportedTypes.filter(function (value) types.contains(value));
-		
+	types = supportedTypes.filter(function (value) {return types.contains(value)});
+
 	event.preventDefault();
 	switch (types[0])
 	{
@@ -138,7 +138,7 @@ sendtophone.doDrop = function(event)
 			var plainText = dt.getData(types[0]);
 			sendtophoneCore.send("Selection", "http://google.com", plainText);
 			break;
-			
+
 		case "text/x-moz-url":
 			var mozUrlArray = dt.getData(types[1]).split("\n");
 			var mozUrl = mozUrlArray[0];
@@ -173,16 +173,16 @@ sendtophone.pickFile = function(folder)
 		fp.init(window, this.getString("SendFolderToPhone"), Ci.nsIFilePicker.modeGetFolder);
 	else
 	{
-		fp.init(window, this.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpenMultiple); 
+		fp.init(window, this.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpenMultiple);
 		fp.appendFilters(Ci.nsIFilePicker.filterAll | Ci.nsIFilePicker.filterImages);
 	}
-	
+
 	var rv = fp.show();
 
-	if (rv == Ci.nsIFilePicker.returnOK) 
+	if (rv == Ci.nsIFilePicker.returnOK)
 	{
 		var files = fp.files;
-		while (files.hasMoreElements()) 
+		while (files.hasMoreElements())
 		{
 			var file = files.getNext().QueryInterface(Ci.nsILocalFile);
 			sendtophoneCore.sendFile( file );
