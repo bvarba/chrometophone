@@ -119,7 +119,7 @@ var sendtophone = {
 					{
 						var imgData = this.detectQR( images[i].src );
 						if (imgData)
-							QRs.push({data: data, img: images[i]});
+							QRs.push({data: imgData, img: images[i]});
 					}
 
 					if (QRs.length==1)
