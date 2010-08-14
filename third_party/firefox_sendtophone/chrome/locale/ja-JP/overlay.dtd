@@ -10,7 +10,7 @@
 <!ENTITY sendtophoneContextPage.accesskey "A">
 <!ENTITY sendtophoneContextLogout.label "Logout">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Send to Phone Preferences">
+<!ENTITY sendtophoneOptions.title "Fox to Phone Preferences">
 <!ENTITY sendtophoneProtocols.label "Protocols">
 <!ENTITY sendtophoneContextSendFile.label "Send files...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
@@ -18,3 +18,7 @@
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
 <!ENTITY sendtophoneContextQrImage.label "Send decoded QR Link to Android">
 <!ENTITY sendtophoneContextQrImage.accesskey "Q">
+<!ENTITY sendtophoneContextSendClipboard.label "Send Clipboard">
+<!ENTITY sendtophoneContextSendClipboard.accesskey "C">
+<!ENTITY sendtophoneContextVideo.label "Send Video to Android">
+<!ENTITY sendtophoneContextVideo.accesskey "V">

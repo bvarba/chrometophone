@@ -73,7 +73,13 @@ var sendtophone = {
 				break;
 			case 'image':
 				title = gContextMenu.target.title || gContextMenu.target.alt;
-				url = gContextMenu.imageURL;
+				url = gContextMenu.imageURL || gContextMenu.mediaURL;
+				break;
+			case 'video':
+				title = gContextMenu.target.title || gContextMenu.target.alt;
+				url = gContextMenu.imageURL || gContextMenu.mediaURL;
+				if(!title)
+					title=this.getString("videoTitle");
 				break;
 			case 'qr':
 				title = gContextMenu.target.title || gContextMenu.target.alt;

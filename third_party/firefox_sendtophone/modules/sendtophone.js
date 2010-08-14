@@ -131,8 +131,12 @@ var sendtophoneCore = {
 				}
 				else
 				{
-					if (req.status==500 && body.substr(0,27) =="ERROR (Unable to send link)")
+					if (req.status==500 && body.substr(0,27) =="ERROR (Unable to send link)"){
 						sendtophoneCore.openTab( "http://www.foxtophone.com/status500/" );
+					}
+					else if (req.status==400){
+						this.processXHR(this.sendUrl, 'POST', this.pendingMessage, this.processSentData);
+					}
 					else
 						sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
 				}

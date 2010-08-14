@@ -1,4 +1,4 @@
-﻿<!ENTITY sendtophoneToolbarButton.label "Send to Phone">
+﻿<!ENTITY sendtophoneToolbarButton.label "Fox to Phone">
 <!ENTITY sendtophoneToolbarButton.tooltip "Enviar página a Android">
 <!ENTITY sendtophoneContext.label "Enviar enlace a Android">
 <!ENTITY sendtophoneContext.accesskey "A">
@@ -10,7 +10,7 @@
 <!ENTITY sendtophoneContextPage.accesskey "A">
 <!ENTITY sendtophoneContextLogout.label "Salir">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Opciones de Send to Phone">
+<!ENTITY sendtophoneOptions.title "Opciones de Fox to Phone">
 <!ENTITY sendtophoneProtocols.label "Protocolos">
 <!ENTITY sendtophoneContextSendFile.label "Enviar ficheros...">
 <!ENTITY sendtophoneContextSendFile.accesskey "E">
@@ -20,3 +20,5 @@
 <!ENTITY sendtophoneContextQrImage.accesskey "Q">
 <!ENTITY sendtophoneContextSendClipboard.label "Enviar el portapapeles">
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
+<!ENTITY sendtophoneContextVideo.label "Enviar video a Android">
+<!ENTITY sendtophoneContextVideo.accesskey "V">

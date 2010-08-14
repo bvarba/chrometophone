@@ -1,0 +1,24 @@
+<!ENTITY sendtophoneToolbarButton.label "Fox to Phone">
+<!ENTITY sendtophoneToolbarButton.tooltip "Ezt az oldalt elküldi az Android telefonodra">
+<!ENTITY sendtophoneContext.label "Link küldése az Androidra">
+<!ENTITY sendtophoneContext.accesskey "A">
+<!ENTITY sendtophoneContextImage.label "Kép küldése az Androidra">
+<!ENTITY sendtophoneContextImage.accesskey "A">
+<!ENTITY sendtophoneContextText.label "Szöveg küldése az Androidra">
+<!ENTITY sendtophoneContextText.accesskey "A">
+<!ENTITY sendtophoneContextPage.label "Oldal küldése az Androidra">
+<!ENTITY sendtophoneContextPage.accesskey "A">
+<!ENTITY sendtophoneContextLogout.label "Kijelentkezés">
+<!ENTITY sendtophoneContextLogout.accesskey "L">
+<!ENTITY sendtophoneOptions.title "Küldés a Telefon beállításaiba">
+<!ENTITY sendtophoneProtocols.label "Protocols">
+<!ENTITY sendtophoneContextSendFile.label "Fájlok küldése...">
+<!ENTITY sendtophoneContextSendFile.accesskey "S">
+<!ENTITY sendtophoneContextSendFolder.label "Mappa küldése...">
+<!ENTITY sendtophoneContextSendFolder.accesskey "F">
+<!ENTITY sendtophoneContextQrImage.label "Dekódolt QR link küldése az Androidra">
+<!ENTITY sendtophoneContextQrImage.accesskey "Q">
+<!ENTITY sendtophoneContextSendClipboard.label "Vágólap küldése">
+<!ENTITY sendtophoneContextSendClipboard.accesskey "C">
+<!ENTITY sendtophoneContextVideo.label "Videó küldése az Androidra">
+<!ENTITY sendtophoneContextVideo.accesskey "V">
