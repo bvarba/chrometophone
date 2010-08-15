@@ -84,7 +84,7 @@ sendtophone.onOptionsShowing= function(popup)
 sendtophone.showFirefoxContextMenu = function(event) {
 	// show or hide the menuitem based on what the context menu is on
 	// see http://kb.mozillazine.org/Adding_items_to_menus
-	var mediaURL = gContextMenu.imageURL || gContextMenu.mediaURL;
+	var mediaURL = gContextMenu.mediaURL;
 
 	gContextMenu.showItem("context-sendtophone-link", gContextMenu.onLink);
 	gContextMenu.showItem("context-sendtophone-image", false);
@@ -103,10 +103,11 @@ sendtophone.showFirefoxContextMenu = function(event) {
 		else
 			gContextMenu.showItem("context-sendtophone-image", true);
 	}
-
-	if(mediaURL.match(/.(webm|mp4|m4v)$/i)){
+	/* TBC
+	if(mediaURL.match(/.webm$/i)){
 		gContextMenu.showItem("context-sendtophone-video", true);
 	}
+	*/
 
   gContextMenu.showItem("context-sendtophone-text", gContextMenu.isTextSelected ||
   	(gContextMenu.onTextInput && gContextMenu.target.selectionEnd > gContextMenu.target.selectionStart) );

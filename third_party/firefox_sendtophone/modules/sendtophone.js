@@ -26,6 +26,7 @@ var sendtophoneCore = {
 	loggedInUrl : "http://code.google.com/p/chrometophone/logo?login",
 	loggedOutUrl : "http://code.google.com/p/chrometophone/logo?logout",
 	apkUrl : "http://code.google.com/p/chrometophone/wiki/AndroidApp",
+	retryCount : 0,
 
 	init: function()
 	{
@@ -134,7 +135,8 @@ var sendtophoneCore = {
 					if (req.status==500 && body.substr(0,27) =="ERROR (Unable to send link)"){
 						sendtophoneCore.openTab( "http://www.foxtophone.com/status500/" );
 					}
-					else if (req.status==400){
+					else if (req.status==400&&this.retryCount<4){
+						this.retryCount++;
 						this.processXHR(this.sendUrl, 'POST', this.pendingMessage, this.processSentData);
 					}
 					else
@@ -192,9 +194,10 @@ var sendtophoneCore = {
 		if (!(/^(https?):/i).test( url ))
 		{
 			// Rewrite the URI so it's send first to the proxy
-			var proxyUrl = this.prefs.getCharPref( "proxyUrl" );
+			var proxyUrl;
+			this.prefs.getCharPref( "fileServerUrl" ) ? proxyUrl = this.prefs.getCharPref( "fileServerUrl" ) :proxyUrl = this.prefs.getCharPref( "proxyUrl" );
 			if (proxyUrl)
-				url = proxyUrl + encodeURIComponent( url);
+				url = proxyUrl + "?ml=" + encodeURIComponent( url);
 		}
 
 		var data = 'title=' + encodeURIComponent(title) +
@@ -211,6 +214,7 @@ var sendtophoneCore = {
 		if (body.substring(0, 2) == 'OK')
 		{
 			delete this.pendingMessage;
+			this.retryCount=0;
 			this.popupNotification(this.getString("InfoSent"));
 			return;
 		}
