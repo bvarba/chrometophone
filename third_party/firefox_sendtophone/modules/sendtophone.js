@@ -94,7 +94,7 @@ var sendtophoneCore = {
 
 		aConsoleService.logStringMessage( text );
 	},
-	
+
 	processXHR: function(url, method, data, callback)
 	{
 		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
@@ -167,7 +167,7 @@ var sendtophoneCore = {
 	{
 		if (!this.sendUrl)
 			this.init();
-			
+
 		// Local files: upload them to a web server
 		if ((/^file:/i).test(url))
 		{
@@ -179,25 +179,25 @@ var sendtophoneCore = {
 			this.sendFile(nsFile);
 			return;
 		}
-		
+
 		if (!(/^(https?|market|tel|sms(to)?|mailto|ftp):/i).test( url ))
 		{
 			this.alert(this.getString("InvalidScheme"));
 			return;
-		}			
-	
+		}
+
 		var max_length = 1024;
 		if (selection.length > max_length)
 			selection = selection.substring(0, max_length);
-		
+
 		// Send the protocols that aren't currently whitelisted through a proxy server
 		if (!(/^(https?):/i).test( url ))
 		{
 			// Rewrite the URI so it's send first to the proxy
 			var proxyUrl;
-			this.prefs.getCharPref( "fileServerUrl" ) ? proxyUrl = this.prefs.getCharPref( "fileServerUrl" ) :proxyUrl = this.prefs.getCharPref( "proxyUrl" );
+			proxyUrl = this.prefs.getCharPref( "proxyUrl" );
 			if (proxyUrl)
-				url = proxyUrl + "?ml=" + encodeURIComponent( url);
+				url = proxyUrl + encodeURIComponent( url);
 		}
 
 		var data = 'title=' + encodeURIComponent(title) +
@@ -243,7 +243,7 @@ var sendtophoneCore = {
 	{
 		if (!this.prefs)
 			this.init();
-			
+
 		// Open Google logout page, and close tab when finished
 		this.openTab(this.logOutUrl, this.loggedOutUrl, function() {sendtophoneCore.logoutSuccessful();} );
 
@@ -297,7 +297,7 @@ var sendtophoneCore = {
 		// Send pending message
 		this.processXHR(this.sendUrl, 'POST', this.pendingMessage, this.processSentData);
 	},
-	
+
 	toUTF8: function(str)
 	{
 		var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"]
@@ -306,7 +306,7 @@ var sendtophoneCore = {
 		var data = converter.ConvertFromUnicode(str);
 		return data + converter.Finish();
 	},
-		
+
 	sendFile: function( nsFile, callback )
 	{
 		if (!this.prefs)
@@ -318,10 +318,10 @@ var sendtophoneCore = {
 			this.alert( this.getString("FileUploadsDisabled") );
 			return;
 		}
-	
+
 		if (typeof sendtophoneUploadsManager == "undefined")
 			Components.utils.import("resource://sendtophone/uploadsManager.js");
-	
+
 		if (nsFile.isDirectory())
 		{
 			// There's no progress notification while compressing, only on end.
@@ -330,38 +330,38 @@ var sendtophoneCore = {
 			zipFolder(nsFile, function(nsZip)
 				{
 					sendtophoneUploadsManager.finishedUpload( progressId );
-					
+
 					// Send the zip and delete it afterwards
 					sendtophoneCore.sendFile(nsZip, function() { nsZip.remove(false) });
 				}
 			)
 			return;
 		}
-		
+
 		if (!nsFile.isFile())
 		{
 			this.alert(this.getString("InvalidFile"));
 			return;
 		}
 
-		let size = Math.round(nsFile.fileSize / 1024);	 
+		let size = Math.round(nsFile.fileSize / 1024);
 		let maxSize = this.prefs.getIntPref( "fileUploadMaxKb" );
 		if (maxSize>0 && size>maxSize)
 		{
 			this.alert( this.getString("FileTooBig") );
 			return;
 		}
-		
+
 		let uploadName = nsFile.leafName;
-		// Try to determine the MIME type of the file  
-		var mimeType = "text/plain";  
-		try {  
-		var mimeService = Cc["@mozilla.org/mime;1"]  
-			.getService(Ci.nsIMIMEService);  
-		mimeType = mimeService.getTypeFromFile(nsFile); // nsFile is an nsIFile instance  
-		}  
-		catch(e) { /* eat it; just use text/plain */ }  
-	
+		// Try to determine the MIME type of the file
+		var mimeType = "text/plain";
+		try {
+		var mimeService = Cc["@mozilla.org/mime;1"]
+			.getService(Ci.nsIMIMEService);
+		mimeType = mimeService.getTypeFromFile(nsFile); // nsFile is an nsIFile instance
+		}
+		catch(e) { /* eat it; just use text/plain */ }
+
 		// Buffer the upload file
 		var inStream = Cc["@mozilla.org/network/file-input-stream;1"]
 			.createInstance(Ci.nsIFileInputStream);
@@ -387,14 +387,14 @@ var sendtophoneCore = {
 		mimeStream.addHeader("Content-disposition","form-data; charset: utf-8; name=\"upload\"; filename=\"" + this.toUTF8(uploadName) + "\"");
 		mimeStream.addHeader("Content-type", mimeType);
 		mimeStream.setData(bufInStream);
-	
+
 		// Setup a multiplex stream
 		var multiStream = Cc["@mozilla.org/io/multiplex-input-stream;1"]
 			.createInstance(Ci.nsIMultiplexInputStream);
 		multiStream.appendStream(startBoundryStream);
 		multiStream.appendStream(mimeStream);
 		multiStream.appendStream(endBoundryStream);
-		
+
 		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
 				.createInstance(Ci.nsIXMLHttpRequest);
 
@@ -410,7 +410,7 @@ var sendtophoneCore = {
 			// If there's a callback (to delete temporary files) we call it now
 			if (callback)
 				callback();
-				
+
 			var body = event.target.responseXML;
 			var uploads;
 			if (body && (uploads = body.documentElement.getElementsByTagName("upload")))
@@ -427,7 +427,7 @@ var sendtophoneCore = {
 		req.addEventListener("error", function(evt)
 		{
 			sendtophoneCore.alert("Error while sending the file to the server:\r\n" + uri);
-			
+
 			// If there's a callback (to delete temporary files) we call it now
 			if (callback)
 				callback();
@@ -435,12 +435,12 @@ var sendtophoneCore = {
 		req.addEventListener("abort", function(evt)
 		{
 			// Silent.
-			
+
 			// If there's a callback (to delete temporary files) we call it now
 			if (callback)
 				callback();
 		}, false);
-		
+
 		/*
 		if required for cookies... don't think so.
 		try {
@@ -452,7 +452,7 @@ var sendtophoneCore = {
 		req.send(multiStream);
 	}
 
-	
+
 };
 
 /* Zipping functions */
@@ -471,22 +471,22 @@ const PR_EXCL        = 0x80;
 */
 function zipFolder(folder, callback)
 {
-	// get TMP directory  
-	var nsFile = Cc["@mozilla.org/file/directory_service;1"].  
-			getService(Ci.nsIProperties).  
-			get("TmpD", Ci.nsIFile); 
+	// get TMP directory
+	var nsFile = Cc["@mozilla.org/file/directory_service;1"].
+			getService(Ci.nsIProperties).
+			get("TmpD", Ci.nsIFile);
 
 	// Create a new file
 	nsFile.append( folder.leafName  + ".zip");
-	nsFile.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);  
-	
+	nsFile.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
+
 	var zipWriter = Components.Constructor("@mozilla.org/zipwriter;1", "nsIZipWriter");
 	var zipW = new zipWriter();
-	
+
 	zipW.open(nsFile, PR_RDWR | PR_CREATE_FILE | PR_TRUNCATE);
-	
+
 	addFolderContentsToZip(zipW, folder, "");
-	
+
 	// We don't want to block the main thread, so the zipping is done asynchronously
 	// and here we get the notification that it has finished
 	var observer = {
@@ -510,13 +510,13 @@ function zipFolder(folder, callback)
 */
 function addFolderContentsToZip(zipW, folder, root)
 {
-	var entries = folder.directoryEntries;  
-	while(entries.hasMoreElements())  
-	{  
-		var entry = entries.getNext();  
-		entry.QueryInterface(Ci.nsIFile);  
+	var entries = folder.directoryEntries;
+	while(entries.hasMoreElements())
+	{
+		var entry = entries.getNext();
+		entry.QueryInterface(Ci.nsIFile);
 		zipW.addEntryFile(root + entry.leafName, Ci.nsIZipWriter.COMPRESSION_DEFAULT, entry, true);
 		if (entry.isDirectory())
 			addFolderContentsToZip(zipW, entry, root + entry.leafName + "/");
-	} 
+	}
 }
