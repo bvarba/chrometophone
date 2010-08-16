@@ -1,17 +1,17 @@
 ﻿<!ENTITY sendtophoneToolbarButton.label "Envoyer vers un téléphone">
-<!ENTITY sendtophoneToolbarButton.tooltip "Envoyer cette page à votre Android Phone">
-<!ENTITY sendtophoneContext.label "Envoyer ce lien à Android">
+<!ENTITY sendtophoneToolbarButton.tooltip "Envoyer cette page à votre portable Android">
+<!ENTITY sendtophoneContext.label "Envoyer ce lien vers Android">
 <!ENTITY sendtophoneContext.accesskey "A">
-<!ENTITY sendtophoneContextImage.label "Send this image to Android">
-<!ENTITY sendtophoneContextImage.accesskey "A">
-<!ENTITY sendtophoneContextText.label "Send this text to Android">
-<!ENTITY sendtophoneContextText.accesskey "A">
-<!ENTITY sendtophoneContextPage.label "Send this page to Android">
-<!ENTITY sendtophoneContextPage.accesskey "A">
-<!ENTITY sendtophoneContextLogout.label "Logout">
-<!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Fox To Phone Preferences">
-<!ENTITY sendtophoneProtocols.label "Protocols">
+<!ENTITY sendtophoneContextImage.label "Envoyer cette image vers Android">
+<!ENTITY sendtophoneContextImage.accesskey "i">
+<!ENTITY sendtophoneContextText.label "Envoyer ce texte vers Android">
+<!ENTITY sendtophoneContextText.accesskey "t">
+<!ENTITY sendtophoneContextPage.label "Envoyer cette page vers Android">
+<!ENTITY sendtophoneContextPage.accesskey "e">
+<!ENTITY sendtophoneContextLogout.label "Déconnexion">
+<!ENTITY sendtophoneContextLogout.accesskey "D">
+<!ENTITY sendtophoneOptions.title "Envoyer vers les préférences du portable">
+<!ENTITY sendtophoneProtocols.label "Protocoles">
 <!ENTITY sendtophoneContextSendFile.label "Send files...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
 <!ENTITY sendtophoneContextSendFolder.label "Send folder...">

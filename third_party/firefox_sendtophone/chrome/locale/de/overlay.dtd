@@ -1,17 +1,17 @@
 <!ENTITY sendtophoneToolbarButton.label "Fox to Phone">
-<!ENTITY sendtophoneToolbarButton.tooltip "Senden Sie diese Seite zu Ihren Android Phone">
-<!ENTITY sendtophoneContext.label "Schicken Sie diesen link, um Android">
+<!ENTITY sendtophoneToolbarButton.tooltip "Diese Seite auf Ihr Android Gerät schicken.">
+<!ENTITY sendtophoneContext.label "Link auf Android senden">
 <!ENTITY sendtophoneContext.accesskey "A">
-<!ENTITY sendtophoneContextImage.label "Send this image to Android">
+<!ENTITY sendtophoneContextImage.label "Grafik auf Android senden">
 <!ENTITY sendtophoneContextImage.accesskey "A">
-<!ENTITY sendtophoneContextText.label "Send this text to Android">
+<!ENTITY sendtophoneContextText.label "Markierten Text auf Android senden">
 <!ENTITY sendtophoneContextText.accesskey "A">
-<!ENTITY sendtophoneContextPage.label "Send this page to Android">
+<!ENTITY sendtophoneContextPage.label "Seite auf Android senden">
 <!ENTITY sendtophoneContextPage.accesskey "A">
-<!ENTITY sendtophoneContextLogout.label "Logout">
+<!ENTITY sendtophoneContextLogout.label "Abmelden">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Fox to Phone Preferences">
-<!ENTITY sendtophoneProtocols.label "Protocols">
+<!ENTITY sendtophoneOptions.title "Send To Phone Einstellungen">
+<!ENTITY sendtophoneProtocols.label "Protokolle">
 <!ENTITY sendtophoneContextSendFile.label "Send files...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
 <!ENTITY sendtophoneContextSendFolder.label "Send folder...">
