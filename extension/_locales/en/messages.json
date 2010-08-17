@@ -17,7 +17,7 @@
   },
   "error_sending_message": {
     "message": "Error sending to phone: $details$",
-    "description": "Notice when link cannot be sent.",
+    "description": "Notice when link cannot be sent. $details$ is automatically replaced with the error text.",
     "placeholders": {
       "details": {
         "content": "$1",
@@ -27,7 +27,7 @@
   },
   "sign_in_required_message": {
     "message": "Please $link$ to Chrome to Phone.",
-    "description": "Notice when sign in is required.",
+    "description": "Notice when sign in is required. $link$ is automatically replaced with 'sign in'.",
     "placeholders": {
       "link": {
         "content": "$1",
@@ -37,7 +37,7 @@
   },
   "sign_in_message": {
     "message": "sign in",
-    "description": "Sign in phrase used in sign_in_required_message."
+    "description": "Sign in phrase used in the context of 'Please sign in to Chrome to Phone'."
   },
   "sign_out_message": {
     "message": "Sign out",
@@ -64,16 +64,32 @@
     "description": "Section title in help."
   },
   "about_message": {
-    "message": "Chrome to Phone, from Google, enables you to send links and other information from Chrome to your Android device.<br>Chrome to Phone is comprised of a Chrome browser extension and an Android application.",
+    "message": "Chrome to Phone, from Google, enables you to send links and other information from Chrome to your Android device. Chrome to Phone is comprised of a Chrome browser extension and an Android application.",
     "description": "About message in help."
   },
   "features_title_message": {
     "message": "Features",
     "description": "Section title in help."
   },
-  "features_message": {
-    "message": "<ul><li>Send browser links from Chrome to your phone.</li><li>Google Maps links launch the Google Maps application on Android.</li><li>YouTube links launch the YouTube application on Android.</li><li>Selecting a phone number will automatically launch the dialer with the number populated.</li><li>Selecting text on a Web page will copy the clipboard to Android (long press a text box to paste on Android).</li></ul>",
-    "description": "Features message in help."
+  "features_message1": {
+    "message": "Send browser links from Chrome to your phone.",
+    "description": "Feature message in help."
+  },
+  "features_message2": {
+    "message": "Google Maps links launch the Google Maps application on Android.",
+    "description": "Feature message in help."
+  },
+  "features_message3": {
+    "message": "YouTube links launch the YouTube application on Android.",
+    "description": "Feature message in help."
+  },
+  "features_message4": {
+    "message": "Selecting a phone number will automatically launch the dialer with the number populated.",
+    "description": "Feature message in help."
+  },
+  "features_message5": {
+    "message": "Selecting text on a Web page will copy the clipboard to Android (long press a text box to paste on Android).",
+    "description": "Feature message in help."
   },
   "step2_message": {
     "message": "Search for 'Chrome to Phone' at chrome.google.com/extensions.",

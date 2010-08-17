@@ -17,7 +17,7 @@
   },
   "error_sending_message": {
     "message": "Erreur pendant l’envoi au téléphone: $details$",
-    "description": "Notice when link cannot be sent.",
+    "description": "Notice when link cannot be sent. $details$ is automatically replaced with the error text.",
     "placeholders": {
       "details": {
         "content": "$1",
@@ -27,7 +27,7 @@
   },
   "sign_in_required_message": {
     "message": "Veuillez $link$ à Chrome to Phone",
-    "description": "Notice when sign in is required.",
+    "description": "Notice when sign in is required. $link$ is automatically replaced with 'sign in'.",
     "placeholders": {
       "link": {
         "content": "$1",
@@ -37,7 +37,7 @@
   },
   "sign_in_message": {
     "message": "vous connecter",
-    "description": "Sign in phrase used in sign_in_required_message."
+    "description": "Sign in phrase used in the context of 'Please sign in to Chrome to Phone'."
   },
   "sign_out_message": {
     "message": "Déconnexion",
@@ -64,16 +64,33 @@
     "description": "Section title in help."
   },
   "about_message": {
-    "message": "Chrome to Phone, par Google, vous permet d'envoyer des liens et autres informations depuis Chrome vers votre appareil Android.<br>Chrome to Phone consiste d'une extension au navigateur Chrome et d'une application Android.",
+    "message": "Chrome to Phone, par Google, vous permet d'envoyer des liens et autres informations depuis Chrome vers votre appareil Android. Chrome to Phone consiste d'une extension au navigateur Chrome et d'une application Android.",
+
     "description": "About message in help."
   },
   "features_title_message": {
     "message": "Fonctionnalités",
     "description": "Section title in help."
   },
-  "features_message": {
-    "message": "<ul><li>Envoi de liens depuis Chrome vers votre mobile.</li><li>Les liens issus de Google Maps lancent l'application Google Maps sur Android.</li><li>Les liens issus de YouTube lancent l'application YouTube sur Android.</li><li>La sélection d'un numéro de téléphone active la composition du numéro sur le mobile.</li><li>La sélection de texte sur une page Web le copie dans le presse-papier d'Android (un appui prolongé sur une boîte saisie active le copier-coller sur Android).</li></ul>",
-    "description": "Features message in help."
+  "features_message1": {
+    "message": "Envoi de liens depuis Chrome vers votre mobile.",
+    "description": "Feature message in help."
+  },
+  "features_message2": {
+    "message": "Les liens issus de Google Maps lancent l'application Google Maps sur Android.",
+    "description": "Feature message in help."
+  },
+  "features_message3": {
+    "message": "Les liens issus de YouTube lancent l'application YouTube sur Android.",
+    "description": "Feature message in help."
+  },
+  "features_message4": {
+    "message": "La sélection d'un numéro de téléphone active la composition du numéro sur le mobile.",
+    "description": "Feature message in help."
+  },
+  "features_message5": {
+    "message": "La sélection de texte sur une page Web le copie dans le presse-papier d'Android (un appui prolongé sur une boîte saisie active le copier-coller sur Android).",
+    "description": "Feature message in help."
   },
   "step2_message": {
     "message": "Recherchez 'Chrome to Phone' à chrome.google.com/extensions.",
