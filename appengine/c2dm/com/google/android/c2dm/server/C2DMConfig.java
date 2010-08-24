@@ -35,6 +35,12 @@ public final class C2DMConfig {
     @Persistent
     private String authToken;
 
+    public static final String DATAMESSAGING_SEND_ENDPOINT =
+        "https://android.clients.google.com/c2dm/send";
+
+    @Persistent 
+    private String c2dmUrl;
+
     public String getAuthToken() {
         return (authToken == null) ? "" : authToken;
     }
@@ -45,5 +51,17 @@ public final class C2DMConfig {
     
     public void setKey(Key key) {
         this.key = key;
+    }
+    
+    public void setC2DMUrl(String url) {
+        this.c2dmUrl = url;
+    }
+    
+    public String getC2DMUrl() {
+        if (c2dmUrl == null) {
+            return DATAMESSAGING_SEND_ENDPOINT;
+        } else {
+            return c2dmUrl;
+        }
     }
 }

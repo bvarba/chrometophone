@@ -38,6 +38,7 @@ class C2DMConfigLoader {
     private static final Logger log = Logger.getLogger(C2DMConfigLoader.class.getName());
 
     String currentToken;
+    String c2dmUrl;
     
     C2DMConfigLoader(PersistenceManagerFactory pmf) {
         this.PMF = pmf;
@@ -69,10 +70,9 @@ class C2DMConfigLoader {
     }
 
     /**
-     * Return the auth token.
+     * Return the auth token from the database. Should be called 
+     * only if the old token expired.
      *
-     * It'll first memcache, if not found will use the database. 
-     * 
      * @return
      */
     public String getToken() {
@@ -80,6 +80,13 @@ class C2DMConfigLoader {
             currentToken = getDataMessagingConfig().getAuthToken();
         } 
         return currentToken;
+    }
+    
+    public String getC2DMUrl() {
+        if (c2dmUrl == null) {
+            c2dmUrl = getDataMessagingConfig().getC2DMUrl();
+        }
+        return c2dmUrl;
     }
     
     public C2DMConfig getDataMessagingConfig() {

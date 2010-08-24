@@ -44,10 +44,7 @@ import com.google.appengine.api.labs.taskqueue.TaskOptions;
 @SuppressWarnings("serial")
 public class C2DMessaging {
     private static final String UPDATE_CLIENT_AUTH = "Update-Client-Auth";
-
-    public static final String DATAMESSAGING_SEND_ENDPOINT =
-        "https://android.clients.google.com/c2dm/send";
-
+    
     private static final Logger log = Logger.getLogger(C2DMessaging.class.getName());
 
     public static final String PARAM_REGISTRATION_ID = "registration_id";
@@ -141,8 +138,8 @@ public class C2DMessaging {
         byte[] postData = postDataBuilder.toString().getBytes(UTF8);
 
         // Hit the dm URL.
-        URL url = new URL(DATAMESSAGING_SEND_ENDPOINT);
-
+        URL url = new URL(serverConfig.getC2DMUrl());
+        
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setUseCaches(false);
@@ -185,8 +182,9 @@ public class C2DMessaging {
         // return non-success error codes, this is not explicitly implemented here.
         // If we weren't using App Engine, we'd need to manually implement this.
         if (responseLine == null || responseLine.equals("")) {
-            log.info("Got " + responseCode + " response from Google datamessaging endpoint.");
-            throw new IOException("Got empty response from Google datamessaging endpoint.");
+            log.info("Got " + responseCode + 
+                    " response from Google AC2DM endpoint.");
+            throw new IOException("Got empty response from Google AC2DM endpoint.");
         }
 
         String[] responseParts = responseLine.split("=", 2);
