@@ -2,6 +2,7 @@ content   sendtophone                 chrome/content/
 skin      sendtophone   classic/1.0   chrome/skin/
 resource   sendtophone                 modules/
 
+locale	sendtophone	cs		chrome/locale/cs/
 locale	sendtophone	de		chrome/locale/de/
 locale	sendtophone	en-US		chrome/locale/en-US/
 locale	sendtophone	es		chrome/locale/es/

@@ -16,12 +16,13 @@
 	<em:contributor>Goofy (French)</em:contributor>
 	<em:contributor>Emanuel S. (German)</em:contributor>
 	<em:contributor>ДакСРБИЈА (Serbian)</em:contributor>
+	<em:contributor>Martin Zubek (Czech)</em:contributor>
 
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
         <em:minVersion>3.5</em:minVersion>
-        <em:maxVersion>4.0b4pre</em:maxVersion>
+        <em:maxVersion>4.0b5pre</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>

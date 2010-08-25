@@ -12,3 +12,13 @@
 <!ENTITY sendtophoneContextLogout.accesskey "О">
 <!ENTITY sendtophoneOptions.title "Подешавања слања у телефон">
 <!ENTITY sendtophoneProtocols.label "Протоколи">
+<!ENTITY sendtophoneContextSendFile.label "Пошаљи датотеке...">
+<!ENTITY sendtophoneContextSendFile.accesskey "Д">
+<!ENTITY sendtophoneContextSendFolder.label "Пошаљи фасциклу...">
+<!ENTITY sendtophoneContextSendFolder.accesskey "Ф">
+<!ENTITY sendtophoneContextQrImage.label "Пошаљи декодирану QR везу на Андроид">
+<!ENTITY sendtophoneContextQrImage.accesskey "В">
+<!ENTITY sendtophoneContextSendClipboard.label "Пошаљи садржај оставе">
+<!ENTITY sendtophoneContextSendClipboard.accesskey "Т">
+<!ENTITY sendtophoneContextVideo.label "Пошаљи видео на Андроид">
+<!ENTITY sendtophoneContextVideo.accesskey "Д">

@@ -12,7 +12,7 @@
 <!ENTITY sendtophoneContextLogout.accesskey "L">
 <!ENTITY sendtophoneOptions.title "Fox To Phone Preferences">
 <!ENTITY sendtophoneProtocols.label "Protocols">
-<<!ENTITY sendtophoneContextSendFile.label "Send files...">
+<!ENTITY sendtophoneContextSendFile.label "Send files...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
 <!ENTITY sendtophoneContextSendFolder.label "Send folder...">
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
