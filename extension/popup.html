@@ -30,17 +30,8 @@ td {
 }
 </style>
 
-<script type="text/javascript">
-var apiVersion = 4;
-var baseUrl = 'https://chrometophone.appspot.com';
-var sendUrl = baseUrl + '/send?ver=' + apiVersion;;
-var signInUrl = baseUrl + '/signin?extret=' +
-    encodeURIComponent(chrome.extension.getURL('help.html')) + '%23signed_in&ver=' + apiVersion;
-var signOutUrl = baseUrl + '/signout?extret=' +
-    encodeURIComponent(chrome.extension.getURL('signed_out.html')) + '&ver=' + apiVersion;
-
-var req = new XMLHttpRequest();
-
+<script src="send_logic.js"></script>
+<script>
 function loadHandler() {
   document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sending_message');
   document.getElementById('help').innerHTML = chrome.i18n.getMessage('help_message');
@@ -56,51 +47,32 @@ function loadHandler() {
   });
 }
 
-function sendToPhone(title, url, selection) {
-  req.open('POST', sendUrl, true);
-  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
-
-  req.onreadystatechange = function() {
-    if (this.readyState == 4) {
-      if (req.status == 200) {
-        var body = req.responseText;
-        if (body.indexOf('OK') == 0) {
-          document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sent_message');
-          activateSignOutLink();  
-        } else if (body.indexOf('LOGIN_REQUIRED') == 0) {
-          var link = '<a href="#" onclick="chrome.tabs.create({url: \'' + signInUrl + '\'})">' +
-              chrome.i18n.getMessage('sign_in_message') + '</a>';
-          document.getElementById('msg').innerHTML =
-              chrome.i18n.getMessage('sign_in_required_message', link);
-          setSignOutVisibility(false);
-        } else if (body.indexOf('DEVICE_NOT_REGISTERED') == 0) {
-          document.getElementById('msg').innerHTML = chrome.i18n.getMessage('device_not_registered_message');
-          activateSignOutLink();
-        }
-      } else { 
-        document.getElementById('msg').innerHTML =  
-            chrome.i18n.getMessage('error_sending_message', req.responseText);
-        activateSignOutLink();
-      }
-    }
+function sendToPhoneListener(status) {
+  if (status == STATUS_SUCCESS) {
+    document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sent_message');
+    activateSignOutLink();  
+  } else if (status == STATUS_LOGIN_REQUIRED) {
+    var link = '<a href="#" onclick="chrome.tabs.create({url: \'' + signInUrl + '\'})">' +
+        chrome.i18n.getMessage('sign_in_message') + '</a>';
+    document.getElementById('msg').innerHTML =
+        chrome.i18n.getMessage('sign_in_required_message', link);
+    setSignOutVisibility(false);
+  } else if (status == STATUS_DEVICE_NOT_REGISTERED) {
+    document.getElementById('msg').innerHTML = chrome.i18n.getMessage('device_not_registered_message');
+    activateSignOutLink();
+  } else { 
+    document.getElementById('msg').innerHTML =  
+        chrome.i18n.getMessage('error_sending_message', req.responseText);
+    activateSignOutLink();
   }
-
-  var data = 'title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url) +
-      '&sel=' + encodeURIComponent(selection);
-  req.send(data);
 }
 
 chrome.extension.onConnect.addListener(function(port) {
-  var tab = port.sender.tab;
   // This will get called by the content script. We go through
   // these hoops to get the optional text selection.
   port.onMessage.addListener(function(info) {
-    var max_length = 1024;
-    if (info.selection.length > max_length) {
-      info.selection = info.selection.substring(0, max_length);
-    }
-    sendToPhone(info.title, info.url, info.selection);
+    var msgType = (info.selection && info.selection.length > 0) ? 'selection' : 'page';
+    sendToPhone(info.title, info.url, msgType, info.selection, sendToPhoneListener);
   });
 });
 
@@ -110,7 +82,7 @@ function activateSignOutLink() {
   signOutLink.style.color = 'blue';
   signOutLink.onclick = function() {
     chrome.tabs.create({url: signOutUrl});
-  }
+  };
 }
 
 function setSignOutVisibility(visible) {

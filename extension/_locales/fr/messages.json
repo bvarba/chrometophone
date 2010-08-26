@@ -3,6 +3,10 @@
     "message": "Extension Chrome to Phone par Google",
     "description": "Name of the application"
   },
+  "app_name_short": {
+    "message": "Chrome to Phone",
+    "description": "Short name of the application"
+  },
   "app_desc": {
     "message": "L’extension Chrome to Phone par Google vous permet d’envoyer des liens et autres informations depuis Chrome vers votre appareil Android.",
     "description": "Description of the application."
