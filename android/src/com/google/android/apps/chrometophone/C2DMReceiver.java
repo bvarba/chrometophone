@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -149,7 +150,6 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        Notification notification = new Notification(icon, title, when);
        notification.setLatestEventInfo(context, title, msg,
                PendingIntent.getActivity(context, 0, intent, 0));
-       notification.defaults = Notification.DEFAULT_SOUND;
        notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
        SharedPreferences settings = Prefs.get(context);
@@ -158,6 +158,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        NotificationManager nm =
                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
        nm.notify(notificatonID, notification);
+       playNotificationSound(context);
 
        SharedPreferences.Editor editor = settings.edit();
        editor.putInt("notificationID", ++notificatonID % 32);
@@ -168,6 +169,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
        if (uri != null) {
            Ringtone rt = RingtoneManager.getRingtone(context, uri);
+           rt.setStreamType(AudioManager.STREAM_NOTIFICATION);
            if (rt != null) rt.play();
        }
    }
