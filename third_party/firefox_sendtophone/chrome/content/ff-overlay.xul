@@ -61,6 +61,11 @@
 			accesskey="&sendtophoneContextText.accesskey;"
 			insertafter="context-searchselect"
 			oncommand="sendtophone.onMenuItemCommand(event, 'text')"/>
+		<menuitem id="context-sendtophone-email" label="&sendtophoneContextEmail.label;"
+			class="menuitem-iconic"
+			accesskey="&sendtophoneContextEmail.accesskey;"
+			insertafter="context-searchselect"
+			oncommand="sendtophone.onMenuItemCommand(event, 'email')"/>
 		<menuitem id="context-sendtophone-page" label="&sendtophoneContextPage.label;"
 			class="menuitem-iconic"
 			accesskey="&sendtophoneContextPage.accesskey;"

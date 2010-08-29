@@ -18,3 +18,5 @@
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
 <!ENTITY sendtophoneContextQrImage.label "Send decoded QR Link to Android">
 <!ENTITY sendtophoneContextQrImage.accesskey "Q">
+<!ENTITY sendtophoneContextEmail.label "Send this email to Android">
+<!ENTITY sendtophoneContextEmail.accesskey "E">
