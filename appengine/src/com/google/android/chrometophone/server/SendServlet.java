@@ -17,6 +17,7 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOObjectNotFoundException;
@@ -39,12 +40,8 @@ public class SendServlet extends HttpServlet {
     private static final String DEVICE_NOT_REGISTERED_STATUS = "DEVICE_NOT_REGISTERED";
     private static final String ERROR_STATUS = "ERROR";
 
-    @Deprecated
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        doPost(req, resp);
-    }
-
+    // GET not supported
+    
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
@@ -79,63 +76,91 @@ public class SendServlet extends HttpServlet {
             resp.getWriter().println(ERROR_STATUS + " (Must specify url and title parameters)");
             return;
         }
+        
+        String deviceId = req.getParameter("deviceId");
+        String deviceName = req.getParameter("deviceName");
 
         User user = RegisterServlet.checkUser(req, resp, false);
         if (user != null) {
-            doSendToPhone(url, title, sel, user.getEmail(), resp);
+            doSendToPhone(url, title, sel, user.getEmail(), deviceId, deviceName, 
+                    resp);
         } else {
             resp.getWriter().println(LOGIN_REQUIRED_STATUS);
         }
     }
 
     private boolean doSendToPhone(String url, String title, String sel,
-            String userAccount, HttpServletResponse resp) throws IOException {
-        // Get device info
-        DeviceInfo deviceInfo = null;
-        // Shared PMF
+            String userAccount, String deviceId, 
+            String deviceName, HttpServletResponse resp) throws IOException {
+
+        // ok = we sent to at least one phone.
+        boolean ok = false;
+        
+        // Send push message to phone
+        C2DMessaging push = C2DMessaging.get(getServletContext());
+        boolean res = false;
+        
+        String collapseKey = "" + url.hashCode();
+ 
         PersistenceManager pm =
-                C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
+            C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
+        List<DeviceInfo> registrations = null; 
         try {
-            Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(), userAccount);
-            try {
-                deviceInfo = pm.getObjectById(DeviceInfo.class, key);
-            } catch (JDOObjectNotFoundException e) {
-                log.warning("Device not registered");
-                resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
-                return false;
-            }
+            registrations = DeviceInfo.getDeviceInfoForUser(C2DMessaging.getPMF(getServletContext())
+                    .getPersistenceManager(), userAccount);
         } finally {
             pm.close();
         }
 
-        // Send push message to phone
-        C2DMessaging push = C2DMessaging.get(getServletContext());
-        boolean res = false;
-        String collapseKey = "" + url.hashCode();
-        if (deviceInfo.getDebug()) {
-            res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
-                    collapseKey,
-                    "url", url,
-                    "title", title,
-                    "sel", sel,
-                    "debug", "1");
 
-        } else {
-            res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
-                    collapseKey,
-                    "url", url,
-                    "title", title,
-                    "sel", sel);
+        if (registrations.size() == 0) {
+            log.warning("Device not registered");
+            resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
+            return false;
         }
-        if (res) {
-            log.info("Link sent to phone! collapse_key:" + collapseKey);
+
+        for (DeviceInfo deviceInfo: registrations) {
+            if (deviceId != null && !deviceId.equals(deviceInfo.getId())) {
+                continue; // user-specified device
+            }
+            if (deviceName != null && !deviceName.equals(deviceInfo.getName())) {
+                continue; // user-specified device
+            }
+
+            // if name or value are null - they'll be skipped
+            try {
+                res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
+                        collapseKey, 
+                        "url", url, 
+                        "title", title,
+                        "sel", sel,
+                        "debug", deviceInfo.getDebug() ? "1" : null);
+
+                if (res) {
+                    log.info("Link sent to phone! collapse_key:" + collapseKey);
+                    ok = true;
+                } else {
+                    log.warning("Error: Unable to send link to phone.");
+                }
+            } catch (IOException ex) {
+                if ("NotRegistered".equals(ex.getMessage()) ||
+                        "InvalidRegistration".equals(ex.getMessage())) {
+                    // remove registrations, it no longer works
+                    pm.deletePersistent(deviceInfo);
+                    throw ex;
+                } else {
+                    throw ex;
+                }
+            }
+        }
+        
+        if (ok) {
             resp.getWriter().println(OK_STATUS);
-            return true;
+            return true;            
         } else {
-            log.warning("Error: Unable to send link to phone.");
             resp.setStatus(500);
             resp.getWriter().println(ERROR_STATUS + " (Unable to send link)");
-            return false;
+            return false;            
         }
     }
 }

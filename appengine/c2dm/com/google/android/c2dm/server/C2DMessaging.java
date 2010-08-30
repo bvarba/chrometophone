@@ -205,7 +205,7 @@ public class C2DMessaging {
             log.warning("Got error response from Google datamessaging endpoint: " + err);
             // No retry.
             // TODO(costin): show a nicer error to the user.
-            throw new IOException("Server error: " + err);
+            throw new IOException(err);
         } else {
             // 500 or unparseable response - server error, needs to retry
             log.warning("Invalid response from google " + responseLine + " " +

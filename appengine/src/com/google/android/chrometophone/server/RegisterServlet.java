@@ -17,6 +17,8 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
@@ -40,6 +42,8 @@ public class RegisterServlet extends HttpServlet {
     private static final String OK_STATUS = "OK";
     private static final String ERROR_STATUS = "ERROR";
 
+    private static int MAX_DEVICES = 3;
+    
     /**
      * Get the user using the UserService.
      *
@@ -74,25 +78,16 @@ public class RegisterServlet extends HttpServlet {
         return user;
     }
 
-    /**
-     * @deprecated will be removed in next rel.
-     */
-    @Deprecated
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        doPost(req, resp);
-    }
-
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
         // Basic XSRF protection
         if (req.getHeader("X-Same-Domain") == null) {
-            // TODO: Enable at consumer launch
-            //resp.setStatus(400);
-            //resp.getWriter().println(ERROR_STATUS + " (Missing X-Same-Domain header)");
-            //return;
+            log.warning("Blocked XSRF");
+            resp.setStatus(400);
+            resp.getWriter().println(ERROR_STATUS + " (Missing X-Same-Domain header)");
+            return;
         }
 
         String deviceRegistrationID = req.getParameter("devregid");
@@ -102,20 +97,64 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
+        String deviceName = req.getParameter("deviceName");
+        if (deviceName == null) {
+            deviceName = "Phone";
+        }
+        
+        String deviceId = req.getParameter("deviceId");
+        if (deviceId == null) {
+            deviceId = Long.toHexString(Math.abs(deviceRegistrationID.hashCode()));
+        }
+
+        String deviceType = req.getParameter("deviceType");
+        if (deviceType == null) {
+            deviceType = "ac2dm"; 
+        }
+        
         User user = checkUser(req, resp, true);
         if (user != null) {
-            Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(), user.getEmail());
-            DeviceInfo device = new DeviceInfo(key, deviceRegistrationID);
             // Context-shared PMF.
             PersistenceManager pm =
-                    C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
+                C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
+
             try {
+                List<DeviceInfo> registrations = DeviceInfo.getDeviceInfoForUser(pm,
+                        user.getEmail());
+
+                if (registrations.size() > MAX_DEVICES) {
+                    // we could return an error - but user can't handle it yet.
+                    // we can't let it grow out of bounds.
+                    // TODO: we should also define a 'ping' message and expire/remove
+                    // unused registrations
+                    DeviceInfo oldest = registrations.get(0);
+                    long oldestTime = oldest.getRegistrationTimestamp().getTime();
+                    for (int i = 1; i < registrations.size(); i++) {
+                        if (registrations.get(i).getRegistrationTimestamp().getTime() <
+                                oldestTime) {
+                            oldest = registrations.get(i);
+                            oldestTime = oldest.getRegistrationTimestamp().getTime();
+                        }
+                    }
+                    pm.deletePersistent(oldest);
+                }
+                
+                // TODO: dup ? update
+                String id = Long.toHexString(Math.abs(deviceRegistrationID.hashCode()));
+
+                Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(), 
+                        user.getEmail() + "#" + id);
+                
+                DeviceInfo device = new DeviceInfo(key, deviceRegistrationID);
+                device.setId(deviceId);
+                device.setName(deviceName);
+                
                 pm.makePersistent(device);
-                resp.getWriter().println(OK_STATUS);
+                resp.getWriter().println(OK_STATUS);            
             } catch (Exception e) {
                 resp.setStatus(500);
                 resp.getWriter().println(ERROR_STATUS + " (Error registering device)");
-                log.warning("Error registering device.");
+                log.log(Level.WARNING, "Error registering device.", e);
             } finally {
                 pm.close();
             }

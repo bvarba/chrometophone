@@ -17,6 +17,7 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOObjectNotFoundException;
@@ -39,25 +40,15 @@ public class UnregisterServlet extends HttpServlet {
     private static final String OK_STATUS = "OK";
     private static final String ERROR_STATUS = "ERROR";
 
-    /**
-     * @deprecated Will be removed in next rel cycle.
-     */
-    @Deprecated
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        doPost(req, resp);
-    }
-
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
         // Basic XSRF protection
         if (req.getHeader("X-Same-Domain") == null) {
-            // TODO: Enable at consumer launch
-            //resp.setStatus(400);
-            //resp.getWriter().println(ERROR_STATUS + " (Missing X-Same-Domain header)");
-            //return;
+            resp.setStatus(400);
+            resp.getWriter().println(ERROR_STATUS + " (Missing X-Same-Domain header)");
+            return;
         }
 
         String deviceRegistrationID = req.getParameter("devregid");
@@ -66,17 +57,24 @@ public class UnregisterServlet extends HttpServlet {
             resp.getWriter().println(ERROR_STATUS + " (Must specify devregid)");
             return;
         }
-
+        
         // Authorize & store device info
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
         if (user != null) {
-            Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(), user.getEmail());
             PersistenceManager pm =
                     C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
             try {
-                DeviceInfo device = pm.getObjectById(DeviceInfo.class, key);
-                pm.deletePersistent(device);
+                List<DeviceInfo> registrations = DeviceInfo.getDeviceInfoForUser(pm, user.getEmail());
+                for (int i = 0; i < registrations.size(); i++) {
+                    DeviceInfo deviceInfo = registrations.get(i);
+                    if (deviceInfo.getDeviceRegistrationID().equals(deviceRegistrationID)) {
+                        pm.deletePersistent(deviceInfo);
+                        registrations.remove(i);
+                        break;
+                    }
+                }
+                
                 resp.getWriter().println(OK_STATUS);
             } catch (JDOObjectNotFoundException e) {
                 resp.setStatus(400);
