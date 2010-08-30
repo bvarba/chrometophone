@@ -41,6 +41,12 @@
         <servlet-class>com.google.android.chrometophone.server.AuthServlet
         </servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>BrowserChannelServlet</servlet-name>
+        <servlet-class>com.google.android.chrometophone.server.BrowserChannelServlet
+        </servlet-class>
+    </servlet>
 
     <servlet>
 	    <servlet-name>dataMessagingServlet</servlet-name>
@@ -72,6 +78,11 @@
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/signout</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>BrowserChannelServlet</servlet-name>
+        <url-pattern>/browserchannel</url-pattern>
     </servlet-mapping>
 
 	<servlet-mapping>
