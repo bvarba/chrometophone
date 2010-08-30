@@ -17,7 +17,6 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
