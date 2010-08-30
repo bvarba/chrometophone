@@ -21,12 +21,17 @@ var signInUrl = baseUrl + '/signin?extret=' +
     encodeURIComponent(chrome.extension.getURL('help.html')) + '%23signed_in&ver=' + apiVersion;
 var signOutUrl = baseUrl + '/signout?extret=' +
     encodeURIComponent(chrome.extension.getURL('signed_out.html')) + '&ver=' + apiVersion;
+var channelUrl =  baseUrl + '/browserchannel?ver=' + apiVersion;
 
 var STATUS_SUCCESS = 'success';
 var STATUS_LOGIN_REQUIRED = 'login_required';
 var STATUS_DEVICE_NOT_REGISTERED = 'device_not_registered';
 var STATUS_GENERAL_ERROR = 'general_error';
 
+var BROWSER_CHANNEL_RETRY_INTERVAL_MS = 10000 * (1 + Math.random() - 0.5); 
+
+var channel;
+var socket;
 var req = new XMLHttpRequest();
 
 function sendToPhone(title, url, msgType, selection, listener) {
@@ -49,10 +54,46 @@ function sendToPhone(title, url, msgType, selection, listener) {
         listener(STATUS_GENERAL_ERROR);
       }
     }
-  }
+  };
 
   var data = 'title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url) +
       '&sel=' + encodeURIComponent(selection) + '&type=' + encodeURIComponent(msgType);
   req.send(data);
+}
+
+function initializeBrowserChannel() {
+  console.log('Initializing browser channel');
+  req.open('POST', channelUrl, true);
+  req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector 
+  req.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      if (req.status == 200) {
+        var channelId = req.responseText;
+        channel = new goog.appengine.Channel(channelId);
+        socket = channel.open();
+        socket.onopen = function() {
+          console.log('Browser channel initialized');
+        }
+        socket.onerror = function() {
+          console.log('Browser channel not initialized - retrying in ' + BROWSER_CHANNEL_RETRY_INTERVAL_MS + 'ms');
+          setTimeout('initializeBrowserChannel()', BROWSER_CHANNEL_RETRY_INTERVAL_MS);
+        }
+        socket.onmessage = function(evt) {
+          var url = evt.data;
+          var regex = /http[s]?:\/\//;
+          if (regex.test(url)) { 
+            chrome.tabs.create({url: url})
+          }
+        }
+      } else if (req.status == 400) {
+        if (req.responseText == 'LOGIN_REQUIRED') {
+          console.log('Not initializing browser channel because user not logged in');
+        } 
+      } else {
+        setTimeout('initializeBrowserChannel()', BROWSER_CHANNEL_RETRY_INTERVAL_MS);
+      }
+    }
+  };
+  req.send();
 }
 
