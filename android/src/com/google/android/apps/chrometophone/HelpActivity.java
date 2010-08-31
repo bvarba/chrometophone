@@ -23,37 +23,38 @@ public class HelpActivity extends Activity {
     }
 
     public static String getTOSLink() {
-        String link = "http://m.google.com/toscountry";  // default
-
-        String locale = Locale.getDefault().toString();
-        if (locale.equals(Locale.US.toString())) {
-            link = "http://m.google.com/tospage";
-        } else if (locale.equals(Locale.UK.toString())) {
-            link = "http://m.google.co.uk/tospage";
-        } else if (locale.equals(Locale.CANADA.toString())) {
-            link = "http://m.google.ca/tospage";
-        } else if (locale.equals(Locale.CANADA_FRENCH.toString())) {
-            link = "http://m.google.ca/tospage?hl=fr";
-        } else if (locale.equals(Locale.FRANCE.toString())) {
-            link = "http://m.google.fr/tospage";
-        }
-        return link;
+        return constructLink(Locale.getDefault(), "/tospage", "/toscountry");
     }
 
     public static String getPPLink() {
-        String link = "http://m.google.com/privacy";  // default
+        return constructLink(Locale.getDefault(), "/privacy", "/privacy");
+    }
 
-        String locale = Locale.getDefault().toString();
-        if (locale.toString().equals(Locale.US.toString())) {
-            link = "http://m.google.com/privacy";
-        } else if (locale.toString().equals(Locale.UK.toString())) {
-            link = "http://m.google.co.uk/privacy";
-        } else if (locale.toString().equals(Locale.CANADA.toString())) {
-            link = "http://m.google.ca/privacy";
-        } else if (locale.toString().equals(Locale.CANADA_FRENCH.toString())) {
-            link = "http://m.google.ca/privacy?hl=fr";
-        } else if (locale.toString().equals(Locale.FRANCE.toString())) {
-            link = "http://m.google.fr/privacy";
+    private static String constructLink(Locale locale, String path, String defaultPath) {
+        String link = "http://m.google.com" + defaultPath;
+        String localeString = locale.toString();
+        if (localeString.equals(Locale.CANADA.toString())) {
+            link = "http://m.google.ca" + path;
+        } else if (localeString.equals(Locale.CANADA_FRENCH.toString())) {
+            link = "http://m.google.ca" + path + "?hl=fr";
+        } else if (localeString.equals(Locale.CHINA.toString())) {
+            link = "http://m.google.cn" + path;
+        } else if (localeString.equals(Locale.FRANCE.toString())) {
+            link = "http://m.google.fr" + path;
+        } else if (localeString.equals(Locale.GERMAN.toString())) {
+            link = "http://m.google.de" + path;
+        } else if (localeString.equals(Locale.ITALY.toString())) {
+            link = "http://m.google.it" + path;
+        } else if (localeString.equals(Locale.JAPAN.toString())) {
+            link = "http://m.google.co.jp" + path;
+        } else if (localeString.equals(Locale.KOREA.toString())) {
+            link = "http://m.google.co.kr" + path;
+        } else if (localeString.equals(Locale.TAIWAN.toString())) {
+            link = "http://m.google.tw" + path;
+        } else if (localeString.equals(Locale.UK.toString())) {
+            link = "http://m.google.co.uk" + path;
+        } else if (localeString.equals(Locale.US.toString())) {
+            link = "http://m.google.com" + path;
         }
         return link;
     }

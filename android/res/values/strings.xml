@@ -77,6 +77,18 @@
     <!-- Notification shown when text from the desktop is copied to Android's clipboard (user can now paste the text) [CHAR LIMIT=NONE] -->
     <string name="copied_desktop_clipboard">Copied desktop clipboard</string>
     
+    <!-- Brief notification that appears when user sends link from phone to desktop [CHAR LIMIT=NONE] -->
+    <string name="sending_link_toast">Sending link...</string>
+    
+    <!-- Brief notification that appears when user has sent link from phone to desktop [CHAR LIMIT=NONE] -->
+    <string name="link_sent_toast">Link sent</string>
+    
+    <!-- Brief notification that appears when link cannot be sent from phone to desktop [CHAR LIMIT=NONE] -->
+    <string name="link_not_sent_toast">Link not sent</string>
+    
+    <!-- Brief notification that appears when link cannot be sent from phone to desktop (because of auth issue) [CHAR LIMIT=NONE] -->
+    <string name="link_not_sent_auth_toast">Link not sent - authentication required</string>
+    
     <!-- Introduction text at start of setup flow. Preserve occurrences of &lt;br>, &lt;a href="{tos_link}">, &lt;a href="{pp_link}">, and &lt;a/> [CHAR LIMIT=NONE] -->
     <string name="intro_text">
         Chrome to Phone lets you easily share links, maps, and currently selected phone numbers and text

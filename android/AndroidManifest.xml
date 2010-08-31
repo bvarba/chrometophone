@@ -12,8 +12,9 @@
 
     <!-- Permissions for internet access and account access -->
     <uses-permission android:name="android.permission.INTERNET" />
+    
     <!-- App must have this permission to use the library -->
-     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     
@@ -31,14 +32,21 @@
         <activity android:name=".HelpActivity"
                   android:screenOrientation="portrait">
         </activity>
-
-       <!-- In order to use the c2dm library, an
-               application must declare a class with the name C2DMReceiver, in its 
-               own package, extending com.google.android.c2dm.C2DMBaseReceiver
+        
+        <activity android:name=".ShareLinkActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+       
+        <!-- In order to use the c2dm library, an
+             application must declare a class with the name C2DMReceiver, in its 
+             own package, extending com.google.android.c2dm.C2DMBaseReceiver
                
-               It must also include this section in the manifest, replacing 
-                "com.google.android.apps.chrometophone" with its package name. 
-           -->
+             It must also include this section in the manifest, replacing 
+             "com.google.android.apps.chrometophone" with its package name. -->
         <service android:name=".C2DMReceiver" />
                 
         <!-- Only google service can send data messages for the app. If permission is not set -

@@ -15,7 +15,6 @@
  */
 package com.google.android.apps.chrometophone;
 
-
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
@@ -76,7 +75,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                // turn this on for a small percentage of requests or for users
                // who report issues.
                DefaultHttpClient client = new DefaultHttpClient();
-               HttpGet get = new HttpGet(DeviceRegistrar.BASE_URL + "/debug?id="
+               HttpGet get = new HttpGet(AppEngineClient.BASE_URL + "/debug?id="
                        + extras.get("collapse_key"));
                // No auth - the purpose is only to generate a log/confirm delivery
                // (to avoid overhead of getting the token)
