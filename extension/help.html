@@ -39,10 +39,7 @@ body,td {
     }
 
     // TODO: Remove when out of beta
-    if (window.navigator.language == 'en-US') {
-      document.getElementById('experimental_div').style.visibility = 'visible';
-      document.getElementById('p2c_checkbox').checked = (localStorage['activateBrowserChannel'] == 'true');
-    }
+    document.getElementById('p2c_checkbox').checked = (localStorage['activateBrowserChannel'] == 'true');
   }
 
   // TODO: Remove when out of beta
@@ -100,7 +97,7 @@ body,td {
 
 
 <!-- TODO: Remove when out of beta -->
-<div id="experimental_div" style="visibility: hidden;" align="center"><input id="p2c_checkbox" type="checkbox" onclick="checkBoxHandler()"> Enable Phone to Chrome Feature (Beta)</div>
+<div id="experimental_div" align="center"><input id="p2c_checkbox" type="checkbox" onclick="checkBoxHandler()"> Enable Phone to Chrome Feature (Beta)</div>
 
 <div align="center">&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html"><script>document.write(chrome.i18n.getMessage('about_google_message'));</script></a> - 
 <a href="http://www.google.com/privacy.html"><script>document.write(chrome.i18n.getMessage('privacy_message'));</script></a> -

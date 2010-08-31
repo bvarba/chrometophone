@@ -22,7 +22,7 @@
 // TODO: Remove when out of beta
 function maybeActivateBrowserChannel() {
   var activateBrowserChannel = localStorage['activateBrowserChannel'];
-  if (activateBrowserChannel == undefined && window.navigator.language == 'en-US') {
+  if (activateBrowserChannel == undefined) {
     if (Math.random() < 0.1) {
       localStorage['activateBrowserChannel'] = 'true';
     } else {
