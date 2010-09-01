@@ -83,7 +83,7 @@ function initializeBrowserChannel() {
           setTimeout('initializeBrowserChannel()', BROWSER_CHANNEL_RETRY_INTERVAL_MS);
         }
         socket.onmessage = function(evt) {
-          var url = evt.data;
+          var url = unescape(evt.data);
           var regex = /http[s]?:\/\//;
           if (regex.test(url)) { 
             chrome.tabs.create({url: url})
