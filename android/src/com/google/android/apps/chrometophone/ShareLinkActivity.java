@@ -16,6 +16,9 @@
 
 package com.google.android.apps.chrometophone;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,9 +31,15 @@ public class ShareLinkActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (Intent.ACTION_SEND.equals(getIntent().getAction())) {
-            String link = getIntent().getExtras().getString(Intent.EXTRA_TEXT);
-            ShareLink.getInstance(this).send(link);
+            String text = getIntent().getExtras().getString(Intent.EXTRA_TEXT);
+            Pattern regex = Pattern.compile("http(s)?://.*");  // find the link
+            Matcher matcher = regex.matcher(text);
+            if (matcher.find()) {
+                String link = matcher.group();
+                ShareLink.getInstance(this).send(link);
+            }
         }
         finish();
     }
