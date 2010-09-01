@@ -74,6 +74,10 @@ function initializeBrowserChannel() {
         socket.onopen = function() {
           console.log('Browser channel initialized');
         }
+        socket.onclose = function() {
+          console.log('Browser channel closed. Restarting');
+          setTimeout('initializeBrowserChannel()', 0);
+        }
         socket.onerror = function() {
           console.log('Browser channel not initialized - retrying in ' + BROWSER_CHANNEL_RETRY_INTERVAL_MS + 'ms');
           setTimeout('initializeBrowserChannel()', BROWSER_CHANNEL_RETRY_INTERVAL_MS);
