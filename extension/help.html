@@ -83,12 +83,14 @@ body,td {
     <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step3_message'));</script></td>
   </tr>
   <tr>
-    <td width="33%"><img src="comic4.png"></td>
+    <td width="33%"><img id="comic4" src="comic4.png"></td>
     <td width="33%"><img src="comic5.png"></td>
     <td width="33%"><img src="comic6.png"></td>
   </tr>
   <tr>
-    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step4_message'));</script></td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step4_message'));</script>
+      <b><a href="#" onmouseover="document.getElementById('comic4').src='qr_code.png'" onmouseout="document.getElementById('comic4').src='comic4.png'">(QR)</a></b>
+    </td>
     <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step5_message'));</script></td>
     <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step6_message'));</script></td>
   </tr>
