@@ -9,6 +9,15 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 public class HelpActivity extends Activity {
+    // Consistent with http://m.google.com/toscountry as of 4th Sept 2010
+    private static final String DOT_CO[] = { "bw", "jp", "in", "id", "il", "jp", "ke", "kr", "ma",
+                                             "mz", "nz", "th", "tz", "ug", "uk", "ve", "za", "zm",
+                                             "zw" };
+    private static final  String DOT_COM[] = { "af", "ar", "au", "bh", "bd", "br", "co", "ec",
+                                               "eg", "et", "gh", "hk", "kw", "lb", "ly", "my",
+                                               "mt", "mx", "na", "ng", "pk", "pe", "pr", "qa",
+                                               "sl", "sg", "tr", "tw", "ua", "vn" };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,39 +32,41 @@ public class HelpActivity extends Activity {
     }
 
     public static String getTOSLink() {
-        return constructLink(Locale.getDefault(), "/tospage", "/toscountry");
+        return constructLink(Locale.getDefault(), "/tospage");
     }
 
     public static String getPPLink() {
-        return constructLink(Locale.getDefault(), "/privacy", "/privacy");
+        return constructLink(Locale.getDefault(), "/privacy");
     }
 
-    private static String constructLink(Locale locale, String path, String defaultPath) {
-        String link = "http://m.google.com" + defaultPath;
-        String localeString = locale.toString();
-        if (localeString.equals(Locale.CANADA.toString())) {
-            link = "http://m.google.ca" + path;
-        } else if (localeString.equals(Locale.CANADA_FRENCH.toString())) {
-            link = "http://m.google.ca" + path + "?hl=fr";
-        } else if (localeString.equals(Locale.CHINA.toString())) {
-            link = "http://m.google.cn" + path;
-        } else if (localeString.equals(Locale.FRANCE.toString())) {
-            link = "http://m.google.fr" + path;
-        } else if (localeString.equals(Locale.GERMAN.toString())) {
-            link = "http://m.google.de" + path;
-        } else if (localeString.equals(Locale.ITALY.toString())) {
-            link = "http://m.google.it" + path;
-        } else if (localeString.equals(Locale.JAPAN.toString())) {
-            link = "http://m.google.co.jp" + path;
-        } else if (localeString.equals(Locale.KOREA.toString())) {
-            link = "http://m.google.co.kr" + path;
-        } else if (localeString.equals(Locale.TAIWAN.toString())) {
-            link = "http://m.google.tw" + path;
-        } else if (localeString.equals(Locale.UK.toString())) {
-            link = "http://m.google.co.uk" + path;
-        } else if (localeString.equals(Locale.US.toString())) {
-            link = "http://m.google.com" + path;
+    private static String constructLink(Locale locale, String path) {
+        String domain = locale.getCountry().toLowerCase();
+
+        // ISO-3166-to-TLD exceptions...
+        if (domain.equals("us")) {
+            domain = "com";
+        } else if (domain.equals("ao")) {
+            domain = "it.ao";
+        } else if (domain.equals("gb")) {
+            domain = "co.uk";
+        } else {
+            for (int i = 0; i < DOT_COM.length; i++) {
+                if (domain.equals(DOT_COM[i])) {
+                    domain = "com." + domain;
+                    break;
+                }
+            }
+            for (int i = 0; i < DOT_CO.length; i++) {
+                if (domain.equals(DOT_CO[i])) {
+                    domain = "co." + domain;
+                    break;
+                }
+            }
+            if (locale.toString().equals(Locale.CANADA_FRENCH.toString())) {
+                path += "?hl=fr";
+            }
         }
-        return link;
+
+        return "http://m.google." + domain + path;
     }
 }
