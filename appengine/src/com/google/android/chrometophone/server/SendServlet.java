@@ -71,10 +71,20 @@ public class SendServlet extends HttpServlet {
 
         String url = req.getParameter("url");
         String title = req.getParameter("title");
-        if (url == null || title == null) {
+        if (url == null) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + " (Must specify url and title parameters)");
             return;
+        }
+        if (title == null || url.length() + title.length() + sel.length() > 
+            1000) {
+            // Shorten the title - C2DM has a 1024 limit, some padding for keys
+            title = ""; // any better default ?
+            if (url.length() + sel.length() > 1000) {
+                sel = "";
+            }
+            // TODO: when we have history, save the url/title/sel in the history 
+            // and send a pointer, have device fetch it.
         }
         
         String deviceId = req.getParameter("deviceId");
