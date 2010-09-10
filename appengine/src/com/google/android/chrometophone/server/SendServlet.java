@@ -76,15 +76,8 @@ public class SendServlet extends HttpServlet {
             resp.getWriter().println(ERROR_STATUS + " (Must specify url and title parameters)");
             return;
         }
-        if (title == null || url.length() + title.length() + sel.length() > 
-            1000) {
-            // Shorten the title - C2DM has a 1024 limit, some padding for keys
-            title = ""; // any better default ?
-            if (url.length() + sel.length() > 1000) {
-                sel = "";
-            }
-            // TODO: when we have history, save the url/title/sel in the history 
-            // and send a pointer, have device fetch it.
+        if (title == null) {
+            title = "";
         }
         
         String deviceId = req.getParameter("deviceId");
@@ -139,12 +132,7 @@ public class SendServlet extends HttpServlet {
 
             // if name or value are null - they'll be skipped
             try {
-                res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
-                        collapseKey, 
-                        "url", url, 
-                        "title", title,
-                        "sel", sel,
-                        "debug", deviceInfo.getDebug() ? "1" : null);
+                res = doSend(url, title, sel, push, collapseKey, deviceInfo);
 
                 if (res) {
                     log.info("Link sent to phone! collapse_key:" + collapseKey);
@@ -172,5 +160,37 @@ public class SendServlet extends HttpServlet {
             resp.getWriter().println(ERROR_STATUS + " (Unable to send link)");
             return false;            
         }
+    }
+
+    boolean doSend(String url, String title, String sel, C2DMessaging push,
+            String collapseKey, DeviceInfo deviceInfo) throws IOException {
+        
+        // Trim title, sel if needed.
+        if (url.length() + title.length() + sel.length() > 1000) {
+            // Shorten the title - C2DM has a 1024 limit, some padding for keys
+            if (title.length() > 16) {
+                title = title.substring(0, 16); 
+            }
+            // still not enough ?
+            if (title.length() + url.length() + sel.length() > 1000) {
+                // how much space we have for sel ? 
+                int space = 1000 - url.length() - title.length();
+                if (space > 0 && sel.length() > space) {
+                    sel = sel.substring(0, space);
+                } // else: we'll get an error sending
+            }
+            // TODO: when we have history, save the url/title/sel in the history 
+            // and send a pointer, have device fetch it.
+        }
+        
+
+        boolean res;
+        res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
+                collapseKey, 
+                "url", url, 
+                "title", title,
+                "sel", sel,
+                "debug", deviceInfo.getDebug() ? "1" : null);
+        return res;
     }
 }

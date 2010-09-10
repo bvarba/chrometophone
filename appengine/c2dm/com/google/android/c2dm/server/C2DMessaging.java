@@ -64,6 +64,11 @@ public class C2DMessaging {
 
     final C2DMConfigLoader serverConfig;
 
+    // Testing
+    protected C2DMessaging() {
+        serverConfig = null;
+    }
+    
     private C2DMessaging(C2DMConfigLoader serverConfig) {
         this.serverConfig = serverConfig;
     }
