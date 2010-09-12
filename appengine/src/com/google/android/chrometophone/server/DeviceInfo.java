@@ -54,17 +54,11 @@ public class DeviceInfo {
     @Persistent
     private Key key;
 
-    @Persistent
-    private String deviceRegistrationID;
-
     /**
-     * Each device should provide a stable ID. It can be the
-     * hash of the first registration, the phone ID, etc.
-     * Using the name seems error-prone, users may use the default
-     * which may be the same in identical phones, they may change name, etc.
+     * The ID used for sending messages to.
      */
     @Persistent
-    private String id;
+    private String deviceRegistrationID;
 
     /**
      * Current supported types:
@@ -134,15 +128,6 @@ public class DeviceInfo {
 
     public void setDeviceRegistrationID(String deviceRegistrationID) {
         this.deviceRegistrationID = deviceRegistrationID;
-    }
-
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void setType(String type) {

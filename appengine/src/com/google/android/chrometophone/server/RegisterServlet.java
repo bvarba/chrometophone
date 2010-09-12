@@ -106,15 +106,14 @@ public class RegisterServlet extends HttpServlet {
             deviceName = "Phone";
         }
 
-        String deviceId = req.getParameter("deviceId");
-        if (deviceId == null) {
-            deviceId = Long.toHexString(Math.abs(deviceRegistrationId.hashCode()));
-        }
-
         String deviceType = req.getParameter("deviceType");
         if (deviceType == null) {
             deviceType = "ac2dm";
         }
+
+        // Because the deviceRegistrationId isn't static, we use a static
+        // identifier for the device. (Can be null in older clients)
+        String deviceId = req.getParameter("deviceId");
 
         User user = checkUser(req, resp, true);
         if (user != null) {
@@ -143,26 +142,25 @@ public class RegisterServlet extends HttpServlet {
                     pm.deletePersistent(oldest);
                 }
 
-                // TODO: dup ? update
-                String id = Long.toHexString(Math.abs(deviceRegistrationId.hashCode()));
-
-                Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(),
-                        user.getEmail() + "#" + id);
-
                 // Get device if it already exists, else create
+                String suffix =
+                        (deviceId != null ? "#" + Long.toHexString(Math.abs(deviceId.hashCode())) : "");
+                Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(),
+                        user.getEmail() + suffix);
+
                 DeviceInfo device = null;
                 try {
                     device = pm.getObjectById(DeviceInfo.class, key);
                 } catch (JDOObjectNotFoundException e) { }
                 if (device == null) {
                     device = new DeviceInfo(key, deviceRegistrationId);
-                    device.setId(deviceId);
-                    device.setName(deviceName);
                     device.setType(deviceType);
                     pm.makePersistent(device);
                 }
 
-                if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                device.setName(deviceName);  // update display name
+
+                if (device.getType() != null && device.getType().equals(DeviceInfo.TYPE_CHROME)) {
                     if (device.getPhoneToChromeExperimentEnabled()) {
                         String channelId =
                             ChannelServiceFactory.getChannelService().createChannel(deviceRegistrationId);

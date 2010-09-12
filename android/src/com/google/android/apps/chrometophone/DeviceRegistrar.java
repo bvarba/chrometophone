@@ -25,6 +25,7 @@ import org.apache.http.message.BasicNameValuePair;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 /**
@@ -108,8 +109,14 @@ public class DeviceRegistrar {
             String urlPath) throws Exception {
         SharedPreferences settings = Prefs.get(context);
         String accountName = settings.getString("accountName", null);
+
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("devregid", deviceRegistrationID));
+
+        String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+        if (deviceId != null) {
+            params.add(new BasicNameValuePair("deviceId", deviceId));
+        }
 
         AppEngineClient client = new AppEngineClient(context, accountName);
         return client.makeRequest(urlPath, params);

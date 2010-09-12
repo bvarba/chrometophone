@@ -66,7 +66,6 @@ public class SendServlet extends HttpServlet {
             return;
         }
 
-        String deviceId = req.getParameter("deviceId");
         String deviceName = req.getParameter("deviceName");
         String deviceType = req.getParameter("deviceType");
         if (deviceType == null) deviceType = DeviceInfo.TYPE_AC2DM;
@@ -74,14 +73,14 @@ public class SendServlet extends HttpServlet {
         User user = RegisterServlet.checkUser(req, resp, false);
         if (user != null) {
             doSendToDevice(url, title, sel, user.getEmail(),
-                    deviceId, deviceName, deviceType, resp);
+                    deviceName, deviceType, resp);
         } else {
             resp.getWriter().println(LOGIN_REQUIRED_STATUS);
         }
     }
 
     private boolean doSendToDevice(String url, String title, String sel, String userAccount,
-            String deviceId, String deviceName, String deviceType, HttpServletResponse resp) throws IOException {
+            String deviceName, String deviceType, HttpServletResponse resp) throws IOException {
 
         // ok = we sent to at least one phone.
         boolean ok = false;
@@ -103,15 +102,12 @@ public class SendServlet extends HttpServlet {
         }
 
         if (registrations.size() == 0) {
-            log.warning("Device not registered");
+            log.warning("Device not registered " + userAccount);
             resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
             return false;
         }
 
         for (DeviceInfo deviceInfo : registrations) {
-            if (deviceId != null && !deviceId.equals(deviceInfo.getId())) {
-                continue;  // user-specified device id
-            }
             if (deviceName != null && !deviceName.equals(deviceInfo.getName())) {
                 continue;  // user-specified device name
             }
@@ -138,7 +134,6 @@ public class SendServlet extends HttpServlet {
                         "InvalidRegistration".equals(ex.getMessage())) {
                     // remove registrations, it no longer works
                     pm.deletePersistent(deviceInfo);
-                    throw ex;
                 } else {
                     throw ex;
                 }

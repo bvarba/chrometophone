@@ -112,7 +112,8 @@ function initializeBrowserChannel() {
       }
     }
   };
-  var data = 'devregid=' + deviceRegistrationId + '&deviceType=chrome' + '&deviceName=Chrome';
+  var data = 'devregid=' + deviceRegistrationId + '&deviceId=' + deviceRegistrationId +
+      '&deviceType=chrome' + '&deviceName=Chrome';
   req.send(data);
 }
 
