@@ -33,7 +33,7 @@ import android.widget.Toast;
 
 public class ShareLink implements Handler.Callback {
     private static final String TOAST = "toast";
-    private static final String BROWSER_CHANNEL_PATH = "/browserchannel";
+    private static final String SEND_PATH = "/send";
     private static ShareLink mInstance;
     private final Handler mHandler;
     private final Context mContext;
@@ -56,12 +56,13 @@ public class ShareLink implements Handler.Callback {
                 sendToast(mContext.getString(R.string.sending_link_toast));
                 try {
                     List<NameValuePair> params = new ArrayList<NameValuePair>();
-                    params.add(new BasicNameValuePair("data", URLEncoder.encode(link)));
+                    params.add(new BasicNameValuePair("url", URLEncoder.encode(link)));
+                    params.add(new BasicNameValuePair("deviceType", "chrome"));
                     SharedPreferences settings = Prefs.get(mContext);
                     final String accountName = settings.getString("accountName", null);
 
                     AppEngineClient client = new AppEngineClient(mContext, accountName);
-                    HttpResponse res = client.makeRequest(BROWSER_CHANNEL_PATH, params);
+                    HttpResponse res = client.makeRequest(SEND_PATH, params);
                     if (res.getStatusLine().getStatusCode() == 200) {
                         sendToast(mContext.getString(R.string.link_sent_toast));
                     } else {
