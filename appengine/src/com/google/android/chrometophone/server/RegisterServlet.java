@@ -21,12 +21,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.android.c2dm.server.C2DMessaging;
+import com.google.appengine.api.channel.ChannelServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.oauth.OAuthService;
@@ -40,10 +42,12 @@ public class RegisterServlet extends HttpServlet {
     private static final Logger log =
         Logger.getLogger(RegisterServlet.class.getName());
     private static final String OK_STATUS = "OK";
+    private static final String NOT_ENABLED_STATUS = "NOT_ENABLED";
+    private static final String LOGIN_REQUIRED_STATUS = "LOGIN_REQUIRED";
     private static final String ERROR_STATUS = "ERROR";
 
-    private static int MAX_DEVICES = 3;
-    
+    private static int MAX_DEVICES = 5;
+
     /**
      * Get the user using the UserService.
      *
@@ -73,7 +77,7 @@ public class RegisterServlet extends HttpServlet {
             // TODO: redirect to OAuth/user service login, or send the URL
             // TODO: 401 instead of 400
             resp.setStatus(400);
-            resp.getWriter().println(ERROR_STATUS + " (Not authorized)");
+            resp.getWriter().println(LOGIN_REQUIRED_STATUS);
         }
         return user;
     }
@@ -90,8 +94,8 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        String deviceRegistrationID = req.getParameter("devregid");
-        if (deviceRegistrationID == null) {
+        String deviceRegistrationId = req.getParameter("devregid");
+        if (deviceRegistrationId == null) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + "(Must specify devregid)");
             return;
@@ -101,17 +105,17 @@ public class RegisterServlet extends HttpServlet {
         if (deviceName == null) {
             deviceName = "Phone";
         }
-        
+
         String deviceId = req.getParameter("deviceId");
         if (deviceId == null) {
-            deviceId = Long.toHexString(Math.abs(deviceRegistrationID.hashCode()));
+            deviceId = Long.toHexString(Math.abs(deviceRegistrationId.hashCode()));
         }
 
         String deviceType = req.getParameter("deviceType");
         if (deviceType == null) {
-            deviceType = "ac2dm"; 
+            deviceType = "ac2dm";
         }
-        
+
         User user = checkUser(req, resp, true);
         if (user != null) {
             // Context-shared PMF.
@@ -138,19 +142,38 @@ public class RegisterServlet extends HttpServlet {
                     }
                     pm.deletePersistent(oldest);
                 }
-                
-                // TODO: dup ? update
-                String id = Long.toHexString(Math.abs(deviceRegistrationID.hashCode()));
 
-                Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(), 
+                // TODO: dup ? update
+                String id = Long.toHexString(Math.abs(deviceRegistrationId.hashCode()));
+
+                Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(),
                         user.getEmail() + "#" + id);
-                
-                DeviceInfo device = new DeviceInfo(key, deviceRegistrationID);
-                device.setId(deviceId);
-                device.setName(deviceName);
-                
-                pm.makePersistent(device);
-                resp.getWriter().println(OK_STATUS);            
+
+                // Get device if it already exists, else create
+                DeviceInfo device = null;
+                try {
+                    device = pm.getObjectById(DeviceInfo.class, key);
+                } catch (JDOObjectNotFoundException e) { }
+                if (device == null) {
+                    device = new DeviceInfo(key, deviceRegistrationId);
+                    device.setId(deviceId);
+                    device.setName(deviceName);
+                    device.setType(deviceType);
+                    pm.makePersistent(device);
+                }
+
+                if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                    if (device.getPhoneToChromeExperimentEnabled()) {
+                        String channelId =
+                            ChannelServiceFactory.getChannelService().createChannel(deviceRegistrationId);
+                        resp.getWriter().println(OK_STATUS + " " + channelId);
+                    } else {
+                        resp.setStatus(400);
+                        resp.getWriter().println(NOT_ENABLED_STATUS);
+                    }
+                } else {
+                    resp.getWriter().println(OK_STATUS);
+                }
             } catch (Exception e) {
                 resp.setStatus(500);
                 resp.getWriter().println(ERROR_STATUS + " (Error registering device)");

@@ -31,20 +31,23 @@ import com.google.appengine.api.datastore.Key;
 
 /**
  * Registration info.
- * 
+ *
  * An account may be associated with multiple phones,
  * and a phone may be associated with multiple accounts.
- * 
+ *
  * registrations lists different phones registered to that account.
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class DeviceInfo {
+    public static final String TYPE_AC2DM = "ac2dm";
+    public static final String TYPE_CHROME = "chrome";
+
     /**
      * User-email # device-id
-     * 
+     *
      * Device-id can be specified by device, default is hash of abs(registration
      * id).
-     * 
+     *
      * user@example.com#1234
      */
     @PrimaryKey
@@ -54,38 +57,41 @@ public class DeviceInfo {
     @Persistent
     private String deviceRegistrationID;
 
-    /** 
-     * Each device should provide a stable ID. It can be the 
+    /**
+     * Each device should provide a stable ID. It can be the
      * hash of the first registration, the phone ID, etc.
-     * Using the name seems error-prone, users may use the default 
-     * which may be the same in identical phones, they may change name, etc. 
+     * Using the name seems error-prone, users may use the default
+     * which may be the same in identical phones, they may change name, etc.
      */
     @Persistent
     private String id;
-        
+
     /**
      * Current supported types:
      *   (default) - ac2dm, regular froyo+ devices using C2DM protocol
-     *   
-     * New types may be defined - for example for sending to chrome.   
+     *
+     * New types may be defined - for example for sending to chrome.
      */
     @Persistent
     private String type;
-        
-    /** 
+
+    /**
      * Friendly name for the device. May be edited by the user.
      */
     @Persistent
     private String name;
-        
+
     /**
      * For statistics - and to provide hints to the user.
      */
     @Persistent
     private Date registrationTimestamp;
-    
+
     @Persistent
     private Boolean debug;
+
+    @Persistent
+    private Boolean phoneToChromeExperimentEnabled;
 
     public DeviceInfo(Key key, String deviceRegistrationID) {
         this.key = key;
@@ -98,11 +104,20 @@ public class DeviceInfo {
     }
 
     public boolean getDebug() {
-        return debug != null ? debug.booleanValue() : false;
+        return (debug != null ? debug.booleanValue() : false);
     }
 
     public void setDebug(boolean debug) {
         this.debug = new Boolean(debug);
+    }
+
+    public boolean getPhoneToChromeExperimentEnabled() {
+        return (phoneToChromeExperimentEnabled != null ?
+                phoneToChromeExperimentEnabled.booleanValue() : false);
+    }
+
+    public void setPhoneToChromeExperimentEnabled(boolean phoneToChromeExperimentEnabled) {
+        this.phoneToChromeExperimentEnabled = new Boolean(phoneToChromeExperimentEnabled);
     }
 
     public Key getKey() {
@@ -121,7 +136,7 @@ public class DeviceInfo {
         this.deviceRegistrationID = deviceRegistrationID;
     }
 
-    
+
     public void setId(String id) {
         this.id = id;
     }
@@ -153,10 +168,11 @@ public class DeviceInfo {
     public Date getRegistrationTimestamp() {
         return registrationTimestamp;
     }
-    
+
     /**
      * Helper function - will query all registrations for a user.
      */
+    @SuppressWarnings("unchecked")
     public static List<DeviceInfo> getDeviceInfoForUser(PersistenceManager pm, String user) {
         Query query = pm.newQuery(DeviceInfo.class);
         query.setFilter("key >= '" +
@@ -170,5 +186,4 @@ public class DeviceInfo {
         query.closeAll();
         return result;
     }
-    
 }

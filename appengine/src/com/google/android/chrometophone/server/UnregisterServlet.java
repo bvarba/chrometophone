@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.android.c2dm.server.C2DMessaging;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -57,7 +55,7 @@ public class UnregisterServlet extends HttpServlet {
             resp.getWriter().println(ERROR_STATUS + " (Must specify devregid)");
             return;
         }
-        
+
         // Authorize & store device info
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
@@ -74,7 +72,7 @@ public class UnregisterServlet extends HttpServlet {
                         break;
                     }
                 }
-                
+
                 resp.getWriter().println(OK_STATUS);
             } catch (JDOObjectNotFoundException e) {
                 resp.setStatus(400);
