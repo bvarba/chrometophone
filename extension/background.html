@@ -19,21 +19,6 @@
 
 <script>
 
-// TODO: Remove when out of beta
-function maybeActivateBrowserChannel() {
-  var activateBrowserChannel = localStorage['activateBrowserChannel'];
-  if (activateBrowserChannel == undefined) {
-    if (Math.random() < 0.1) {
-      localStorage['activateBrowserChannel'] = 'true';
-    } else {
-      localStorage['activateBrowserChannel'] = 'false';
-    }
-  }
-  if (localStorage['activateBrowserChannel'] == 'true') {
-    initializeBrowserChannel();
-  }
-}
-
 function onClickHandler(info, tab) {
   var url = info.srcUrl;
   if (url == undefined) url = info.linkUrl;
@@ -60,7 +45,6 @@ if (chrome.contextMenus) {
                               'contexts': ['link', 'selection', 'image', 'video', 'audio']});
 }
 
-// TODO: Replace with initializeBrowserChannel() when out of beta
-maybeActivateBrowserChannel();
+initializeBrowserChannel();
 
 </script>

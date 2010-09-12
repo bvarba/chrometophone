@@ -32,23 +32,10 @@ body,td {
   function loadHandler() {
     if (document.location.hash == '#signed_in') {
       var bg = chrome.extension.getBackgroundPage();
-      bg.maybeActivateBrowserChannel();  // TODO: Replace with initializeBrowserChannel() when out of beta
-
+      bg.initializeBrowserChannel();
       document.getElementById('signed_in_div').innerHTML = '<p><b><font color="#00A000">' +
           chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
     }
-
-    // TODO: Remove when out of beta
-    document.getElementById('p2c_checkbox').checked = (localStorage['activateBrowserChannel'] == 'true');
-  }
-
-  // TODO: Remove when out of beta
-  function checkBoxHandler() {
-    document.getElementById('p2c_checkbox').checked ?
-        localStorage['activateBrowserChannel'] = 'true' :
-            localStorage['activateBrowserChannel'] = 'false';
-    var bg = chrome.extension.getBackgroundPage();
-    bg.initializeBrowserChannel();
   }
 </script>
 </head>
@@ -96,10 +83,6 @@ body,td {
   </tr>
 </table>
 <br>
-
-
-<!-- TODO: Remove when out of beta -->
-<div id="experimental_div" align="center"><input id="p2c_checkbox" type="checkbox" onclick="checkBoxHandler()"> Enable Phone to Chrome Feature (Beta)</div>
 
 <div align="center">&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html"><script>document.write(chrome.i18n.getMessage('about_google_message'));</script></a> - 
 <a href="http://www.google.com/privacy.html"><script>document.write(chrome.i18n.getMessage('privacy_message'));</script></a> -

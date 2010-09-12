@@ -21,7 +21,7 @@ var signInUrl = baseUrl + '/signin?extret=' +
     encodeURIComponent(chrome.extension.getURL('help.html')) + '%23signed_in&ver=' + apiVersion;
 var signOutUrl = baseUrl + '/signout?extret=' +
     encodeURIComponent(chrome.extension.getURL('signed_out.html')) + '&ver=' + apiVersion;
-var channelUrl =  baseUrl + '/browserchannel?ver=' + apiVersion;
+var registerUrl =  baseUrl + '/register?ver=' + apiVersion;
 
 var STATUS_SUCCESS = 'success';
 var STATUS_LOGIN_REQUIRED = 'login_required';
@@ -62,13 +62,25 @@ function sendToPhone(title, url, msgType, selection, listener) {
 }
 
 function initializeBrowserChannel() {
+  // TODO: Enable for v2.2
+  return;
+
   console.log('Initializing browser channel');
-  req.open('POST', channelUrl, true);
-  req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector 
+
+  var deviceRegistrationId = localStorage['deviceRegistrationId'];
+  if (deviceRegistrationId == undefined) {
+    deviceRegistrationId = (Math.random() + '').substring(3);
+    localStorage['deviceRegistrationId'] = deviceRegistrationId;
+  }
+
+  req.open('POST', registerUrl, true);
+  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
+
   req.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (req.status == 200) {
-        var channelId = req.responseText;
+        var channelId = req.responseText.substring(3);  // expect 'OK <id>';
         channel = new goog.appengine.Channel(channelId);
         socket = channel.open();
         socket.onopen = function() {
@@ -90,14 +102,17 @@ function initializeBrowserChannel() {
           }
         }
       } else if (req.status == 400) {
-        if (req.responseText == 'LOGIN_REQUIRED') {
+        if (req.responseText.indexOf('LOGIN_REQUIRED') == 0) {
           console.log('Not initializing browser channel because user not logged in');
+        } else if (req.responseText.indexOf('NOT_ENABLED') == 0) {
+          console.log('Not initializing browser channel because feature not enabled for user');
         } 
       } else {
         setTimeout('initializeBrowserChannel()', BROWSER_CHANNEL_RETRY_INTERVAL_MS);
       }
     }
   };
-  req.send();
+  var data = 'devregid=' + deviceRegistrationId + '&deviceType=chrome' + '&deviceName=Chrome';
+  req.send(data);
 }
 
