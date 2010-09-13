@@ -1,0 +1,30 @@
+?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="7046988859823310406">"Chrome to Phone"</string>
+    <string name="back" msgid="3714046987533635523">"Tilbake"</string>
+    <string name="next" msgid="6088208174835190480">"Neste"</string>
+    <string name="exit" msgid="5599794220815021112">"Avslutt"</string>
+    <string name="select_text" msgid="2780164752024364269">"Velg en konto som skal brukes:"</string>
+    <string name="no_accounts" msgid="4790648085891713190">"Ingen kontoer er konfigurert på denne telefonen."</string>
+    <string name="click_next_text" msgid="6343859715838734116">"Klikk på Neste for å opprette kobling mellom Chrome og telefonen."</string>
+    <string name="google_apps_warning_text" msgid="4013415418659076754">"(Merk: Chrome to Phone håndterer foreløpig ikke Google Apps-kontoer)."</string>
+    <string name="connecting_text" msgid="1772586838863619189">"Kobler til ..."</string>
+    <string name="disconnect_text" msgid="1049207199384057482">"Hvis du ikke lenger vil sende koblinger til denne telefonen, klikker du på knappen nedenfor."</string>
+    <string name="disconnecting_text" msgid="8789611697034308853">"Kobler fra ..."</string>
+    <string name="connect_error_text" msgid="6195828820762013994">"Feil: Kan ikke koble til."</string>
+    <string name="auth_error_text" msgid="7736098761438062685">"Feil: Google Apps-kontoer håndteres ikke."</string>
+    <string name="finish" msgid="8527628297750389353">"Fullfør"</string>
+    <string name="select_link_action_text" msgid="7087896125491966717">"Angi foretrukket handling for kobling:"</string>
+    <string name="auto_launch_text" msgid="5380853357263616610">"Start koblinger automatisk"</string>
+    <string name="manual_launch_text" msgid="5577452865329503133">"Jeg vil åpne koblinger manuelt"</string>
+    <string name="setup_complete_text" msgid="6658152209406398783">"Konfigurasjonen er fullført. Telefonen er nå koblet til og er klar til å motta koblinger fra Chrome. &lt;br&gt;&lt;br&gt; Hvis du ikke allerede har gjort det, må du installere Chrome-utvidelsen ved å gå til utvidelsesgalleriet for Chrome på skrivebordet at&lt;br&gt;http://chrome.google.com/extensions/ og søke etter «Chrome to Phone»."</string>
+    <string name="connected_with_account_text" msgid="4085005469523010506">"Telefonen er koblet til Chrome med denne kontoen:"</string>
+    <string name="link_action_pref_text" msgid="2012073523054002423">"Foretrukket handling for kobling:"</string>
+    <string name="disconnect" msgid="3166410241325004789">"Koble fra telefon"</string>
+    <string name="disconnect_error_text" msgid="8233100346007962621">"Feil: Kan ikke koble fra."</string>
+    <string name="help" msgid="2722089650354357755">"Hjelp"</string>
+    <string name="copied_desktop_clipboard" msgid="8985436645584877">"Kopiert til utklippstavlen fra skrivebordet"</string>
+    <string name="intro_text" msgid="8221719258505966458">"Med Chrome to Phone kan du enkelt dele koblinger, kart og telefonnumre og tekst du har markert på telefonen, mellom datamaskinen og telefonen. &lt;br&gt;&lt;br&gt;Du må installere Chrome-nettleserutvidelsen for å sende koblinger til telefonen. Du kan laste ned nettleserutvidelsen fra utvidelsesgalleriet for Chrome på. http://chrome.google.com/extensions/ ved å søke etter «Chrome to Phone».&lt;br&gt;&lt;br&gt;Du konfigurerer utvidelsen på telefonen med tre enkle trinn: &lt;br&gt;&lt;br&gt;1. Velg Google-kontoen du vil bruke.&lt;br&gt; 2. Koble sammen Chrome og telefonen.&lt;br&gt;3. Angi foretrukket handling for koblingen.&lt;br&gt;&lt;br&gt; Ved å bruke dette programmet, godtar du &lt;br&gt; &lt;a href={tos_link}&gt;vilkårene&lt;/a&gt; og &lt;a href={pp_link}&gt;personvernreglene&lt;/a&gt;."</string>
+    <string name="help_text" msgid="8726842770376559977">"Med Chrome to Phone kan du enkelt dele koblinger, kart og telefonnumre og tekst du har markert på telefonen, mellom datamaskinen og telefonen. &lt;br&gt;&lt;br&gt;Denne funksjonen består av to deler: et Android-program og en Chrome-nettleserutvidelse. Du kan laste ned nettleserutvidelsen fra utvidelsesgalleriet for Chrome på. http://chrome.google.com/extensions/ &lt;br&gt;&lt;br&gt;Når Chrome-utvidelsen er installert på telefonen, kan du koble til Android-telefonen.&lt;br&gt;&lt;br&gt;Du kan velge om koblinger som sendes til telefonen, automatisk skal åpnes av riktig program eller vises som meldinger i statusfeltet slik at du kan åpne dem manuelt. &lt;br&gt;&lt;br&gt; Ved å bruke programmet, godtar du &lt;br&gt; &lt;a href={tos_link}&gt;vilkårene&lt;/a&gt; og &lt;a href={pp_link}&gt;personvernreglene&lt;/a&gt;."</string>
+</resources>

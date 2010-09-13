@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="7046988859823310406">"Chrome to Phone"</string>
+    <string name="back" msgid="3714046987533635523">"Tillbaka"</string>
+    <string name="next" msgid="6088208174835190480">"Nästa"</string>
+    <string name="exit" msgid="5599794220815021112">"Avsluta"</string>
+    <string name="select_text" msgid="2780164752024364269">"Välj ett konto att använda:"</string>
+    <string name="no_accounts" msgid="4790648085891713190">"Inga konton har ställts in för den här telefonen."</string>
+    <string name="click_next_text" msgid="6343859715838734116">"Klicka på Nästa om du vill upprätta en anslutning mellan Chrome och den här telefonen."</string>
+    <string name="google_apps_warning_text" msgid="4013415418659076754">"(Obs! Chrome to Phone har inte stöd för Google Apps-konton)."</string>
+    <string name="connecting_text" msgid="1772586838863619189">"Ansluter..."</string>
+    <string name="disconnect_text" msgid="1049207199384057482">"Om du inte längre vill skicka länkar till den här telefonen trycker du på knappen nedan."</string>
+    <string name="disconnecting_text" msgid="8789611697034308853">"Kopplar ifrån..."</string>
+    <string name="connect_error_text" msgid="6195828820762013994">"Fel: det går inte att ansluta."</string>
+    <string name="auth_error_text" msgid="7736098761438062685">"Fel: Google Apps-konton stöds inte."</string>
+    <string name="finish" msgid="8527628297750389353">"Avsluta"</string>
+    <string name="select_link_action_text" msgid="7087896125491966717">"Ange din inställning för länkåtgärd:"</string>
+    <string name="auto_launch_text" msgid="5380853357263616610">"Öppna länkar automatiskt"</string>
+    <string name="manual_launch_text" msgid="5577452865329503133">"Jag vill aktivera länkarna manuellt"</string>
+    <string name="setup_complete_text" msgid="6658152209406398783">"Installationen är klar. Telefonen är nu ansluten och klar att ta emot länkar från Chrome. &lt;br&gt;&lt;br&gt; Om du inte redan har gjort det måste du nu installera tillägget för Chrome genom att besöka tilläggsgalleriet för Chrome i datorn på&lt;br&gt;http://chrome.google.com/extensions/ och söka efter Chrome to Phone."</string>
+    <string name="connected_with_account_text" msgid="4085005469523010506">"Telefonen är ansluten till Chrome med det här kontot:"</string>
+    <string name="link_action_pref_text" msgid="2012073523054002423">"Inställning för länkåtgärd:"</string>
+    <string name="disconnect" msgid="3166410241325004789">"Koppla från telefon"</string>
+    <string name="disconnect_error_text" msgid="8233100346007962621">"Fel: det går inte att koppla från."</string>
+    <string name="help" msgid="2722089650354357755">"Hjälp"</string>
+    <string name="copied_desktop_clipboard" msgid="8985436645584877">"Kopierat Urklipp från datorn"</string>
+    <string name="intro_text" msgid="8221719258505966458">"Med Chrome to Phone kan du enkelt dela länkar, kartor och markerade telefonnummer och markerad text mellan datorn och telefonen. &lt;br&gt;&lt;br&gt;Du måste installera webbläsartillägget för Chrome i datorn för att kunna skicka länkar till telefonen. Du kan hämta webbläsartillägget från tilläggsgalleriet för Chrome på http://chrome.google.com/extensions/. Sök bara efter Chrome to Phone.&lt;br&gt;&lt;br&gt;Det behövs bara tre enkla steg för att installera programmet i telefonen: &lt;br&gt;&lt;br&gt;1. Välj det Google-konto du vill använda.&lt;br&gt; 2. Anslut Chrome och telefonen.&lt;br&gt;3. Ange inställning för länkåtgärd.&lt;br&gt;&lt;br&gt; Om du använder programmet innebär det att du godkänner &lt;br&gt; &lt;a href={tos_link}&gt;användarvillkoren&lt;/a&gt; och &lt;a href={pp_link}&gt;sekretesspolicyn&lt;/a&gt;."</string>
+    <string name="help_text" msgid="8726842770376559977">"Med Chrome to Phone kan du enkelt dela länkar, kartor och markerade telefonnummer och markerad text mellan datorn och telefonen. &lt;br&gt;&lt;br&gt;Tjänsten består av två delar: ett program för Android och ett webbläsartillägg för Chrome. Du kan hämta webbläsartillägget i Chromes tilläggsgalleri på http://chrome.google.com/extensions/ &lt;br&gt;&lt;br&gt;När tillägget för Chrome är installerat på datorn kan du ansluta till din Android-telefon.&lt;br&gt;&lt;br&gt;Du kan välja om länkar som skickas till telefonen ska öppnas automatiskt av standardprogrammet eller vara kvar som meddelanden i statusfältet. Därifrån kan du använda dem manuellt. &lt;br&gt;&lt;br&gt; Om du använder programmet innebär det att du godkänner &lt;br&gt; &lt;a href={tos_link}&gt;användarvillkoren&lt;/a&gt; och &lt;a href={pp_link}&gt;sekretesspolicyn&lt;/a&gt;."</string>
+</resources>

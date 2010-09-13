@@ -36,10 +36,10 @@
     <!-- Message that appears when Chrome to Phone cannot connect [CHAR LIMIT=NONE] -->
     <string name="connect_error_text">Error: Unable to connect.</string>
     
-    <!-- Error message that appears if the user attempts to use a Google Apps account instead of a normal Google Account -->
+    <!-- Error message that appears if the user attempts to use a Google Apps account instead of a normal Google Account [CHAR LIMIT=NONE] -->
     <string name="auth_error_text">Error: Google Apps accounts not supported.</string>
     
-    <!--  Button name at end of setup flow -->
+    <!--  Button name at end of setup flow [CHAR LIMIT=NONE] -->
     <string name="finish">Finish</string>
     
     <!-- Message to ask user to select their link action preference (either 'Automatically launch links' or 'Let me launch links manually') [CHAR LIMIT=NONE] -->
@@ -59,7 +59,7 @@
         and searching for "Chrome to Phone".
     </string>
     
-    <!-- Message that appears when Chrome to Phone has connected -->
+    <!-- Message that appears when Chrome to Phone has connected [CHAR LIMIT=NONE] -->
     <string name="connected_with_account_text">Your phone is connected to Chrome using this account:</string>
     
     <!-- Message that states the link action preference (either 'Automatically launch links' or 'Let me launch links manually') [CHAR LIMIT=NONE] -->
@@ -71,7 +71,7 @@
     <!-- Error message when Chrome to Phone cannot disconnect from Chrome [CHAR LIMIT=NONE] -->
     <string name="disconnect_error_text">Error: Unable to disconnect.</string>
     
-    <!-- Button name in menu for Help -->
+    <!-- Button name in menu for Help [CHAR LIMIT=NONE] -->
     <string name="help">Help</string>
     
     <!-- Notification shown when text from the desktop is copied to Android's clipboard (user can now paste the text) [CHAR LIMIT=NONE] -->

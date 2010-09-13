@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="7046988859823310406">"瀏覽內容轉送手機"</string>
+    <string name="back" msgid="3714046987533635523">"上一步"</string>
+    <string name="next" msgid="6088208174835190480">"下一步"</string>
+    <string name="exit" msgid="5599794220815021112">"結束"</string>
+    <string name="select_text" msgid="2780164752024364269">"選取您要使用的帳戶："</string>
+    <string name="no_accounts" msgid="4790648085891713190">"尚未對這支手機設定任何帳戶。"</string>
+    <string name="click_next_text" msgid="6343859715838734116">"按 [下一步] 建立「Google 瀏覽器」和這支手機的連線。"</string>
+    <string name="google_apps_warning_text" msgid="4013415418659076754">"(請注意：「瀏覽內容轉送手機」目前不支援 Google Apps 帳戶)。"</string>
+    <string name="connecting_text" msgid="1772586838863619189">"連線中..."</string>
+    <string name="disconnect_text" msgid="1049207199384057482">"如果您不想要再將連結傳送到這支手機，請按下方的按鈕。"</string>
+    <string name="disconnecting_text" msgid="8789611697034308853">"中斷連線中..."</string>
+    <string name="connect_error_text" msgid="6195828820762013994">"錯誤：無法連線。"</string>
+    <string name="auth_error_text" msgid="7736098761438062685">"錯誤：系統不支援 Google Apps 帳戶。"</string>
+    <string name="finish" msgid="8527628297750389353">"完成"</string>
+    <string name="select_link_action_text" msgid="7087896125491966717">"請設定您的連結動作偏好設定："</string>
+    <string name="auto_launch_text" msgid="5380853357263616610">"自動啟動連結"</string>
+    <string name="manual_launch_text" msgid="5577452865329503133">"我要以手動方式啟動連結"</string>
+    <string name="setup_complete_text" msgid="6658152209406398783">"設定完畢。您的手機現已連線，可接收來自「Google 瀏覽器」的連結。&lt;br&gt;&lt;br&gt;如果尚未建立連線，您現在必須安裝「Google 瀏覽器」擴充功能，請使用您的電腦瀏覽「Google 瀏覽器」擴充功能庫並從中搜尋「瀏覽內容轉送手機」，網址是：&lt;br&gt;http://chrome.google.com/extensions/。"</string>
+    <string name="connected_with_account_text" msgid="4085005469523010506">"您的手機目前使用以下帳戶連線至「Google 瀏覽器」："</string>
+    <string name="link_action_pref_text" msgid="2012073523054002423">"連結動作偏好設定："</string>
+    <string name="disconnect" msgid="3166410241325004789">"中斷與手機的連線"</string>
+    <string name="disconnect_error_text" msgid="8233100346007962621">"錯誤：無法中斷連線。"</string>
+    <string name="help" msgid="2722089650354357755">"說明"</string>
+    <string name="copied_desktop_clipboard" msgid="8985436645584877">"已複製電腦的剪貼簿內容"</string>
+    <string name="intro_text" msgid="8221719258505966458">"「瀏覽內容轉送手機」擴充功能可讓您在電腦和手機之間輕鬆分享連結、地圖，以及目前選取的手機號碼和文字。&lt;br&gt;&lt;br&gt;您必須在電腦上安裝這個「Google 瀏覽器」擴充功能，才能將連結傳送到您的手機。如要下載這個瀏覽器擴充功能，只要前往「Google 瀏覽器」擴充功能庫，並從中搜尋「瀏覽內容轉送手機」即可，網址是 http://chrome.google.com/extensions/。&lt;br&gt;&lt;br&gt;只要進行 3 個簡單的步驟，即可在手機上完成設定：&lt;br&gt;&lt;br&gt;1. 選擇您要使用的「Google 帳戶」。&lt;br&gt; 2. 建立「Google 瀏覽器」和手機的連線。&lt;br&gt;3. 設定您的連結動作偏好設定。&lt;br&gt;&lt;br&gt;使用這個應用程式即代表您同意&lt;br&gt; &lt;a href={tos_link}&gt;服務條款&lt;/a&gt;及&lt;a href={pp_link}&gt;隱私權政策&lt;/a&gt;。"</string>
+    <string name="help_text" msgid="8726842770376559977">"「瀏覽內容轉送手機」擴充功能可讓您在電腦和手機之間輕鬆地分享連結、地圖，以及目前選取的手機號碼和文字。&lt;br&gt;&lt;br&gt;這項工具可分為兩部分：Android 應用程式與「Google 瀏覽器」擴充功能。如要下載這個瀏覽器擴充功能，請前往「Google 瀏覽器」擴充功能庫，網址是 http://chrome.google.com/extensions/。&lt;br&gt;&lt;br&gt;在電腦上安裝這個「Google 瀏覽器」擴充功能之後，即可與您的 Android 手機進行連線。&lt;br&gt;&lt;br&gt;您可以選擇使用適當的應用程式自動開啟傳送到手機的連結，或是先將連結保留在狀態列，之後再以手動方式啟動連結內容。&lt;br&gt;&lt;br&gt;使用這個應用程式即代表您同意&lt;br&gt; &lt;a href={tos_link}&gt;服務條款&lt;/a&gt;及&lt;a href={pp_link}&gt;隱私權政策&lt;/a&gt;。"</string>
+</resources>

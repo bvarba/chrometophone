@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="7046988859823310406">"Chrome to Phone"</string>
+    <string name="back" msgid="3714046987533635523">"Geri"</string>
+    <string name="next" msgid="6088208174835190480">"İleri"</string>
+    <string name="exit" msgid="5599794220815021112">"Çık"</string>
+    <string name="select_text" msgid="2780164752024364269">"Kullanmak için bir hesap seçin:"</string>
+    <string name="no_accounts" msgid="4790648085891713190">"Bu telefonda ayarlanmış herhangi bir hesap yok."</string>
+    <string name="click_next_text" msgid="6343859715838734116">"Chrome ile bu telefon arasında bağlantı kurmak için İleri\'yi tıklayın."</string>
+    <string name="google_apps_warning_text" msgid="4013415418659076754">"(Not: Chrome to Phone, şu anda Google Apps hesaplarını desteklememektedir). "</string>
+    <string name="connecting_text" msgid="1772586838863619189">"Bağlanıyor..."</string>
+    <string name="disconnect_text" msgid="1049207199384057482">"Artık bu telefona bağlantı göndermek istemiyorsanız, aşağıdaki düğmeye basın."</string>
+    <string name="disconnecting_text" msgid="8789611697034308853">"Bağlantı kesiliyor..."</string>
+    <string name="connect_error_text" msgid="6195828820762013994">"Hata: Bağlanılamıyor."</string>
+    <string name="auth_error_text" msgid="7736098761438062685">"Hata: Google Apps hesapları desteklenmiyor."</string>
+    <string name="finish" msgid="8527628297750389353">"Son"</string>
+    <string name="select_link_action_text" msgid="7087896125491966717">"Lütfen bağlantı işlemi tercihinizi belirleyin:"</string>
+    <string name="auto_launch_text" msgid="5380853357263616610">"Bağlantıları otomatik olarak başlat"</string>
+    <string name="manual_launch_text" msgid="5577452865329503133">"Bağlantıları el ile ben başlatayım"</string>
+    <string name="setup_complete_text" msgid="6658152209406398783">"Kurulum tamamlandı. Telefonunuz artık bağlı durumda ve Chrome\'dan bağlantı almak için hazır. &lt;br&gt;&lt;br&gt; Henüz yapmadıysanız, şimdi masaüstünüzden http://chrome.google.com/extensions/ adresinde bulunan Chrome Eklenti galerisini ziyaret edip &lt;br&gt;Chrome to Phone terimini aratarak Chrome Eklentisini yüklemeniz ve gerekir."</string>
+    <string name="connected_with_account_text" msgid="4085005469523010506">"Telefonunuz Chrome\'a bu hesap ile bağlandı:"</string>
+    <string name="link_action_pref_text" msgid="2012073523054002423">"Bağlantı işlemi tercihi:"</string>
+    <string name="disconnect" msgid="3166410241325004789">"Telefon bağlantısını kes"</string>
+    <string name="disconnect_error_text" msgid="8233100346007962621">"Hata: Bağlantı kesilemiyor."</string>
+    <string name="help" msgid="2722089650354357755">"Yardım"</string>
+    <string name="copied_desktop_clipboard" msgid="8985436645584877">"Masaüstü panosu kopyalandı"</string>
+    <string name="intro_text" msgid="8221719258505966458">"Chrome to Phone eklentisi, bağlantıları, haritaları, seçili telefon numaralarını ve metni bilgisayarınız ve telefonunuz arasında kolayca paylaşabilmenizi sağlar. &lt;br&gt;&lt;br&gt;Bağlantıları telefonunuza gönderebilmek için Chrome tarayıcı eklentisini bilgisayarınıza yüklemeniz gerekir. Tarayıcı eklentisi http://chrome.google.com/extensions/ adresindeki Chrome eklenti galerisinden indirilebilir. Bunun için Chrome to Phone terimini aramanız yeterlidir.&lt;br&gt;&lt;br&gt;Telefonunuzdaki ayarları tamamlamak için gerçekleştirmeniz gereken 3 basit adım vardır: &lt;br&gt;&lt;br&gt;1. Kullanılacak Google Hesabını seçin.&lt;br&gt; 2. Chrome programınızı ve telefonunuzu bağlayın.&lt;br&gt;3. Bağlantı işlemi tercihinizi belirleyin.&lt;br&gt;&lt;br&gt; Bu uygulamayı kullandığınızda, &lt;br&gt; &lt;a href={tos_link}&gt;Hizmet Şartları&lt;/a&gt;\'nı ve &lt;a href={pp_link}&gt;Gizlilik Politikası&lt;/a&gt;\'nı kabul etmiş olursunuz."</string>
+    <string name="help_text" msgid="8726842770376559977">"Chrome to Phone eklentisi, bağlantıları, haritaları, seçili telefon numaralarını ve metni bilgisayarınız ve telefonunuz arasında kolayca paylaşabilmenizi sağlar. &lt;br&gt;&lt;br&gt;İki bileşenden oluşur: bir Android uygulaması ve bir Chrome tarayıcı eklentisi. Tarayıcı eklentisi, http://chrome.google.com/extensions/ adresindeki Chrome eklenti galerisinden indirilebilir. &lt;br&gt;&lt;br&gt;Chrome eklentisi bilgisayarınıza yüklendikten sonra, Android telefonunuzu bağlayabilirsiniz.&lt;br&gt;&lt;br&gt;Telefonunuza gönderilen bağlantıların ilgili uygulama tarafından otomatik olarak açılıp açılmayacağını veya durum çubuğunda, el ile işlem yapabileceğiniz iletiler olarak bırakılıp bırakılmayacaklarını belirleyebilirsiniz. &lt;br&gt;&lt;br&gt; Bu uygulamayı kullandığınızda, &lt;br&gt; &lt;a href={tos_link}&gt;Hizmet Şartları&lt;/a&gt;\'nı ve &lt;a href={pp_link}&gt;Gizlilik Politikası&lt;/a&gt;\'nı kabul etmiş olursunuz."</string>
+</resources>
