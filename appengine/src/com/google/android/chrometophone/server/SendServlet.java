@@ -68,7 +68,7 @@ public class SendServlet extends HttpServlet {
 
         String deviceName = req.getParameter("deviceName");
         String deviceType = req.getParameter("deviceType");
-        if (deviceType == null) deviceType = DeviceInfo.TYPE_AC2DM;
+        if (deviceType == null) deviceType = DeviceInfo.TYPE_AC2DM;  // default
 
         User user = RegisterServlet.checkUser(req, resp, false);
         if (user != null) {
@@ -108,16 +108,18 @@ public class SendServlet extends HttpServlet {
         }
 
         for (DeviceInfo deviceInfo : registrations) {
-            if (deviceName != null && !deviceName.equals(deviceInfo.getName())) {
+            if (deviceName != null && deviceInfo.getName() != null &&
+                    !deviceName.equals(deviceInfo.getName())) {
                 continue;  // user-specified device name
             }
-            if (deviceType != null && !deviceType.equals(deviceInfo.getType())) {
+            if (deviceType != null && deviceInfo.getType() != null &&
+                    !deviceType.equals(deviceInfo.getType())) {
                 continue;  // user-specified device type
             }
 
             // if name or value are null - they'll be skipped
             try {
-                if (deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                if (deviceInfo.getType() != null && deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
                     res = doSendViaBrowserChannel(url, deviceInfo);
                 } else {
                     res = doSendViaC2dm(url, title, sel, push, collapseKey, deviceInfo);
