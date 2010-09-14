@@ -15,10 +15,10 @@
     "message": "Linki do YouTube są otwierane w aplikacji YouTube w systemie Android."
   },
   "step2_message": {
-    "message": "Wyszukaj rozszerzenie „Z Chrome na telefon” pod adresem chrome.google.com/extensions."
+    "message": "Wyszukaj rozszerzenie 'Chrome to Phone' pod adresem chrome.google.com/extensions."
   },
   "step3_message": {
-    "message": "Zainstaluj rozszerzenie Z Chrome na telefon, a następnie kliknij ikonę na pasku narzędzi, aby się zalogować."
+    "message": "Zainstaluj rozszerzenie 'Chrome to Phone', a następnie kliknij ikonę na pasku narzędzi, aby się zalogować."
   },
   "about_title_message": {
     "message": "Informacje"
@@ -30,22 +30,22 @@
     "message": "Funkcje"
   },
   "about_message": {
-    "message": "Funkcja Z Chrome na telefon udostępniana przez Google umożliwia wysyłanie linków oraz innych informacji z przeglądarki Chrome do telefonu z systemem Android. Obejmuje ona rozszerzenie przeglądarki Chrome i aplikację dla systemu Android."
+    "message": "Funkcja Z Chrome to Phone udostępniana przez Google umożliwia wysyłanie linków oraz innych informacji z przeglądarki Chrome to Phone z systemem Android. Obejmuje ona rozszerzenie przeglądarki Chrome i aplikację dla systemu Android."
   },
   "signed_out_message": {
     "message": "Wylogowano się z funkcji Z Chrome na telefon."
   },
   "app_desc": {
-    "message": "Rozszerzenie Google Z Chrome na telefon umożliwia wysyłanie linków oraz innych informacji z przeglądarki Chrome do telefonu z systemem Android."
+    "message": "Rozszerzenie Google Z Chrome na telefon umożliwia wysyłanie linków oraz innych informacji z przeglądarki Chrome to Phone z systemem Android."
   },
   "step5_message": {
     "message": "Zainstaluj aplikację Z Chrome na telefon w systemie Android, a następnie wykonaj prostą procedurę konfiguracji."
   },
   "app_name": {
-    "message": "Rozszerzenie Google Z Chrome na telefon"
+    "message": "Google Chrome to Phone Extension"
   },
   "sign_in_required_message": {
-    "message": "$link$ do funkcji Z Chrome na telefon.",
+    "message": "$link$ do funkcji Z Chrome to Phone.",
     "placeholders": {
       "link": {
         "content": "$1"
@@ -70,10 +70,10 @@
     }
   },
   "step4_message": {
-    "message": "Wyszukaj aplikację „Z Chrome na telefon” w usłudze Market przy użyciu telefonu z systemem Android."
+    "message": "Wyszukaj aplikację 'Chrome to Phone' w usłudze Market przy użyciu telefonu z systemem Android."
   },
   "app_name_short": {
-    "message": "Z Chrome na telefon"
+    "message": "Chrome to Phone"
   },
   "tos_message": {
     "message": "Warunki korzystania z usługi"

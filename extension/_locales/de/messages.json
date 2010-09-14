@@ -30,7 +30,7 @@
     "message": "Funktionen"
   },
   "about_message": {
-    "message": "Mit 'Chrome to Phone' von Google können Sie Links und andere Informationen von Google Chrome an Ihr Android-Gerät senden. "Chrome to Phone" besteht aus einer Google Chrome-Browsererweiterung und einer Android-Anwendung."
+    "message": "Mit 'Chrome to Phone' von Google können Sie Links und andere Informationen von Google Chrome an Ihr Android-Gerät senden. 'Chrome to Phone' besteht aus einer Google Chrome-Browsererweiterung und einer Android-Anwendung."
   },
   "signed_out_message": {
     "message": "Sie sind jetzt bei 'Chrome to Phone' abgemeldet."
@@ -70,7 +70,7 @@
     }
   },
   "step4_message": {
-    "message": "Suchen Sie auf Ihrem Android-Gerät in Market nach "Chrome to Phone"."
+    "message": "Suchen Sie auf Ihrem Android-Gerät in Market nach 'Chrome to Phone'."
   },
   "app_name_short": {
     "message": "Chrome to Phone"
