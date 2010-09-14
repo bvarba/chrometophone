@@ -1,143 +1,108 @@
 {
-  "app_name": {
-    "message": "Extension Chrome to Phone par Google",
-    "description": "Name of the application"
-  },
-  "app_name_short": {
-    "message": "Chrome to Phone",
-    "description": "Short name of the application"
-  },
-  "app_desc": {
-    "message": "L’extension Chrome to Phone par Google vous permet d’envoyer des liens et autres informations depuis Chrome vers votre appareil Android.",
-    "description": "Description of the application."
-  },
-  "sending_message": {
-    "message": "Envoi sur le téléphone...",
-    "description": "Notice when link is being sent to phone."
-  },
-  "sent_message": {
-    "message": "Envoyé sur le téléphone.",
-    "description": "Notice when link has been successfully sent to phone."
-  },
-  "error_sending_message": {
-    "message": "Erreur pendant l’envoi au téléphone: $details$",
-    "description": "Notice when link cannot be sent. $details$ is automatically replaced with the error text.",
-    "placeholders": {
-      "details": {
-        "content": "$1",
-        "example": "Failed to send message."
-      }
-    }
-  },
-  "sign_in_required_message": {
-    "message": "Veuillez $link$ à Chrome to Phone",
-    "description": "Notice when sign in is required. $link$ is automatically replaced with 'sign in'.",
-    "placeholders": {
-      "link": {
-        "content": "$1",
-        "example": "Sign in link."
-      }
-    }
-  },
-  "sign_in_message": {
-    "message": "vous connecter",
-    "description": "Sign in phrase used in the context of 'Please sign in to Chrome to Phone'."
-  },
-  "sign_out_message": {
-    "message": "Déconnexion",
-    "description": "Sign out link message."
-  }, 
   "invalid_scheme_message": {
-    "message": "Seules les pages http ou https sont supportées.",
-    "description": "Notice when user attempt to send a file link."
-  },
-  "help_message": {
-    "message": "Aide",
-    "description": "The help message."
-  },
-  "connectivity_error_message": {
-    "message": "Erreur the connexion.",
-    "description": "Error message when there is a connection error with the server."
-  },
-  "device_not_registered_message": {
-    "message": "Appareil non enregistré avec cet utilisateur.",
-    "description": "Error message when we can't match a user to a device."
-  },
-  "about_title_message": {
-    "message": "A Propos",
-    "description": "Section title in help."
-  },
-  "about_message": {
-    "message": "Chrome to Phone, par Google, vous permet d'envoyer des liens et autres informations depuis Chrome vers votre appareil Android. Chrome to Phone consiste d'une extension au navigateur Chrome et d'une application Android.",
-
-    "description": "About message in help."
-  },
-  "features_title_message": {
-    "message": "Fonctionnalités",
-    "description": "Section title in help."
-  },
-  "features_message1": {
-    "message": "Envoi de liens depuis Chrome vers votre mobile.",
-    "description": "Feature message in help."
-  },
-  "features_message2": {
-    "message": "Les liens issus de Google Maps lancent l'application Google Maps sur Android.",
-    "description": "Feature message in help."
-  },
-  "features_message3": {
-    "message": "Les liens issus de YouTube lancent l'application YouTube sur Android.",
-    "description": "Feature message in help."
-  },
-  "features_message4": {
-    "message": "La sélection d'un numéro de téléphone active la composition du numéro sur le mobile.",
-    "description": "Feature message in help."
-  },
-  "features_message5": {
-    "message": "La sélection de texte sur une page Web le copie dans le presse-papier d'Android (un appui prolongé sur une boîte saisie active le copier-coller sur Android).",
-    "description": "Feature message in help."
-  },
-  "step2_message": {
-    "message": "Recherchez 'Chrome to Phone' à chrome.google.com/extensions.",
-    "description": "Comic step 2 in help."
-  },
-  "step3_message": {
-    "message": "Installez l'extension Chrome to Phone et cliquez sur l'icône de la barre d'outils pour vous connecter.",
-    "description": "Comic step 3 in help."
-  },
-  "step4_message": {
-    "message": "Recherchez 'Chrome to Phone' sur le Market depuis votre appareil Android.",
-    "description": "Comic step 4 in help."
-  },
-  "step5_message": {
-    "message": "Installez l'application Android Chrome to Phone et suivez les instructions de configuration.",
-    "description": "Comic step 5 in help."
-  },
-  "step6_message": {
-    "message": "Cliquez sur l'icône de la barre d'outils pour envoyer un lien ou le texte sélectionné.",
-    "description": "Comic step 6 in help."
-  },
-  "signed_in_message": {
-    "message": "Connecté. Vous pouvez désormais envoyer des liens vers votre téléphone.",
-    "description": "Signed in message."
-  },
-  "about_google_message": {
-    "message": "À propos de Google",
-    "description": "About."
-  },
-  "privacy_message": {
-    "message": "Confidentialité",
-    "description": "Privacy."
-  },
-  "tos_message": {
-    "message": "Conditions d'utilisation",
-    "description": "Terms of Service."
+    "message": "Seules les pages http ou https sont prises en charge."
   },
   "signed_out_title_message": {
-    "message": "Déconnecté",
-    "description": "Signed out section title."
+    "message": "Déconnecté"
+  },
+  "features_message1": {
+    "message": "Envoyez les liens des pages Web affichées sur le navigateur Chrome vers votre téléphone."
+  },
+  "help_message": {
+    "message": "Aide"
+  },
+  "features_message3": {
+    "message": "Les liens YouTube lancent l'application YouTube sur votre appareil Android."
+  },
+  "step2_message": {
+    "message": "Recherchez 'Chrome to Phone' à partir de la page Web chrome.google.com/extensions."
+  },
+  "step3_message": {
+    "message": "Installez l'extension Chrome to Phone et cliquez sur l'icône correspondante dans la barre d'outils pour vous connecter."
+  },
+  "about_title_message": {
+    "message": "À propos"
+  },
+  "features_message5": {
+    "message": "Il suffit de sélectionner du texte sur une page Web pour le copier dans le Presse-papiers Android (et de maintenir enfoncée ensuite une zone de texte pour le coller dans Android)."
+  },
+  "features_title_message": {
+    "message": "Fonctionnalités"
+  },
+  "about_message": {
+    "message": "L'application Chrome to Phone de Google permet d’envoyer des liens et d'autres informations depuis le navigateur Chrome vers votre appareil Android. Elle se compose d'une extension au navigateur Chrome et d'un module pour Android."
   },
   "signed_out_message": {
-    "message": "Vous êtes désormais déconnecté de Chrome to Phone.",
-    "description": "Signed out message."
+    "message": "Vous êtes déconnecté de Chrome to Phone."
+  },
+  "app_desc": {
+    "message": "L’extension Chrome to Phone par Google permet d’envoyer des liens et d'autres informations depuis le navigateur Chrome vers votre appareil Android."
+  },
+  "step5_message": {
+    "message": "Installez le module Chrome to Phone pour Android et lancez la procédure de configuration."
+  },
+  "app_name": {
+    "message": "Extension Chrome to Phone de Google"
+  },
+  "sign_in_required_message": {
+    "message": "$link$ à Chrome to Phone.",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "Connexion terminée. Vous êtes prêt désormais à envoyer des liens à votre téléphone."
+  },
+  "about_google_message": {
+    "message": "À propos"
+  },
+  "step6_message": {
+    "message": "Cliquez sur l'icône dans la barre d'outil pour transmettre le lien ou le texte actuellement sélectionné vers votre téléphone."
+  },
+  "error_sending_message": {
+    "message": "Erreur lors de l'envoi au téléphone : $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "Recherchez 'Chrome to Phone' sur le site Android Market à partir de votre appareil Android."
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "Conditions d'utilisation"
+  },
+  "sign_in_message": {
+    "message": "Connexion"
+  },
+  "features_message4": {
+    "message": "Si vous sélectionnez un numéro de téléphone, il est entré dans le module Appeler ouvert automatiquement."
+  },
+  "device_not_registered_message": {
+    "message": "Appareil non enregistré pour l'utilisateur."
+  },
+  "privacy_message": {
+    "message": "Confidentialité"
+  },
+  "sent_message": {
+    "message": "Transmis au téléphone."
+  },
+  "sending_message": {
+    "message": "Transmission au téléphone..."
+  },
+  "features_message2": {
+    "message": "Les liens Google Maps lancent l'application Google Maps sur votre appareil Android."
+  },
+  "connectivity_error_message": {
+    "message": "Erreur de connexion."
+  },
+  "sign_out_message": {
+    "message": "Déconnexion"
   }
 }

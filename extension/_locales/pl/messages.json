@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "Obsługiwane są tylko strony z adresem http lub https."
+  },
+  "signed_out_title_message": {
+    "message": "Wylogowano się"
+  },
+  "features_message1": {
+    "message": "Wysyłaj linki z przeglądarki Chrome do telefonu."
+  },
+  "help_message": {
+    "message": "Pomoc"
+  },
+  "features_message3": {
+    "message": "Linki do YouTube są otwierane w aplikacji YouTube w systemie Android."
+  },
+  "step2_message": {
+    "message": "Wyszukaj rozszerzenie „Z Chrome na telefon” pod adresem chrome.google.com/extensions."
+  },
+  "step3_message": {
+    "message": "Zainstaluj rozszerzenie Z Chrome na telefon, a następnie kliknij ikonę na pasku narzędzi, aby się zalogować."
+  },
+  "about_title_message": {
+    "message": "Informacje"
+  },
+  "features_message5": {
+    "message": "Zaznaczenie tekstu na stronie internetowej spowoduje skopiowanie go do schowka w systemie Android (długie naciśnięcie pola tekstowego pozwala wkleić tekst w systemie Android)."
+  },
+  "features_title_message": {
+    "message": "Funkcje"
+  },
+  "about_message": {
+    "message": "Funkcja Z Chrome na telefon udostępniana przez Google umożliwia wysyłanie linków oraz innych informacji z przeglądarki Chrome do telefonu z systemem Android. Obejmuje ona rozszerzenie przeglądarki Chrome i aplikację dla systemu Android."
+  },
+  "signed_out_message": {
+    "message": "Wylogowano się z funkcji Z Chrome na telefon."
+  },
+  "app_desc": {
+    "message": "Rozszerzenie Google Z Chrome na telefon umożliwia wysyłanie linków oraz innych informacji z przeglądarki Chrome do telefonu z systemem Android."
+  },
+  "step5_message": {
+    "message": "Zainstaluj aplikację Z Chrome na telefon w systemie Android, a następnie wykonaj prostą procedurę konfiguracji."
+  },
+  "app_name": {
+    "message": "Rozszerzenie Google Z Chrome na telefon"
+  },
+  "sign_in_required_message": {
+    "message": "$link$ do funkcji Z Chrome na telefon.",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "Zalogowano się. Wszystko jest przygotowane do wysyłania linków do telefonu."
+  },
+  "about_google_message": {
+    "message": "Informacje"
+  },
+  "step6_message": {
+    "message": "Kliknij ikonę na pasku narzędzi, aby wysłać link lub zaznaczony tekst do telefonu."
+  },
+  "error_sending_message": {
+    "message": "Błąd podczas wysyłania do telefonu: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "Wyszukaj aplikację „Z Chrome na telefon” w usłudze Market przy użyciu telefonu z systemem Android."
+  },
+  "app_name_short": {
+    "message": "Z Chrome na telefon"
+  },
+  "tos_message": {
+    "message": "Warunki korzystania z usługi"
+  },
+  "sign_in_message": {
+    "message": "Zaloguj się"
+  },
+  "features_message4": {
+    "message": "Zaznaczenie numeru telefonu spowoduje automatyczne uruchomienie aplikacji Telefon z wpisanym numerem."
+  },
+  "device_not_registered_message": {
+    "message": "Urządzenie nie jest zarejestrowane dla użytkownika."
+  },
+  "privacy_message": {
+    "message": "Prywatność"
+  },
+  "sent_message": {
+    "message": "Wysłano do telefonu."
+  },
+  "sending_message": {
+    "message": "Trwa wysyłanie do telefonu..."
+  },
+  "features_message2": {
+    "message": "Linki do Map Google są otwierane w aplikacji Mapy Google w systemie Android."
+  },
+  "connectivity_error_message": {
+    "message": "Błąd połączenia."
+  },
+  "sign_out_message": {
+    "message": "Wyloguj się"
+  }
+}

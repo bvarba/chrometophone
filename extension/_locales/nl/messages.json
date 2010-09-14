@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "Alleen HTTP- en HTTPS-pagina's worden ondersteund."
+  },
+  "signed_out_title_message": {
+    "message": "Afgemeld"
+  },
+  "features_message1": {
+    "message": "Verzend browserlinks vanuit Chrome naar uw telefoon."
+  },
+  "help_message": {
+    "message": "Help"
+  },
+  "features_message3": {
+    "message": "YouTube-links starten de YouTube-toepassing in Android."
+  },
+  "step2_message": {
+    "message": "Zoeken naar 'Chrome to Phone' op chrome.google.com/extensions."
+  },
+  "step3_message": {
+    "message": "Installeer de extensie Chrome to Phone en klik op het werkbalkpictogram om u aan te melden."
+  },
+  "about_title_message": {
+    "message": "Over"
+  },
+  "features_message5": {
+    "message": "Als u tekst op een webpagina selecteert, wordt het klembord gekopieerd naar Android (druk lang op een tekstvak in Android om te plakken)."
+  },
+  "features_title_message": {
+    "message": "Functies"
+  },
+  "about_message": {
+    "message": "Met Chrome to Phone, van Google, kunt u links en andere informatie uit Chrome verzenden naar uw Android-apparaat. Chrome to Phone bestaat uit een Chrome-browserextensie en een Android-toepassing."
+  },
+  "signed_out_message": {
+    "message": "U bent nu afgemeld bij Chrome to Phone."
+  },
+  "app_desc": {
+    "message": "Met de Google-extensie Chrome to Phone kunt u links en andere informatie vanuit Chrome verzenden naar uw Android-apparaat."
+  },
+  "step5_message": {
+    "message": "Installeer de app Chrome to Phone en voltooi het eenvoudige configuratieproces."
+  },
+  "app_name": {
+    "message": "Google Chrome to Phone"
+  },
+  "sign_in_required_message": {
+    "message": "Graag $link$ bij Chrome to Phone.",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "Aangemeld. U kunt nu links verzenden naar uw telefoon."
+  },
+  "about_google_message": {
+    "message": "Over"
+  },
+  "step6_message": {
+    "message": "Klik op het werkbalkpictogram om de link of momenteel geselecteerde tekst te verzenden naar uw telefoon."
+  },
+  "error_sending_message": {
+    "message": "Fout bij verzenden naar telefoon: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "Zoek naar 'Chrome naar telefoon' in Market op uw Android-apparaat."
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "Servicevoorwaarden"
+  },
+  "sign_in_message": {
+    "message": "aanmelden"
+  },
+  "features_message4": {
+    "message": "Als u een telefoonnummer selecteert, wordt de dialer automatisch geopend met het nummer ingevuld."
+  },
+  "device_not_registered_message": {
+    "message": "Apparaat niet geregistreerd voor gebruiker."
+  },
+  "privacy_message": {
+    "message": "Privacy"
+  },
+  "sent_message": {
+    "message": "Verzonden naar telefoon."
+  },
+  "sending_message": {
+    "message": "Verzenden naar telefoon..."
+  },
+  "features_message2": {
+    "message": "Google Maps-links starten de Google Maps-toepassing in Android."
+  },
+  "connectivity_error_message": {
+    "message": "Verbindingsfout."
+  },
+  "sign_out_message": {
+    "message": "Afmelden"
+  }
+}

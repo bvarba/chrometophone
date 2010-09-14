@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "Jsou podporovány pouze stránky http nebo https."
+  },
+  "signed_out_title_message": {
+    "message": "Odhlášení"
+  },
+  "features_message1": {
+    "message": "Odesílání odkazů z prohlížeče Chrome do telefonu."
+  },
+  "help_message": {
+    "message": "Nápověda"
+  },
+  "features_message3": {
+    "message": "Odkazy na stránky YouTube spouští v systému Android aplikaci YouTube."
+  },
+  "step2_message": {
+    "message": "Na stránkách chrome.google.com/extensions vyhledejte sousloví Chrome to Phone."
+  },
+  "step3_message": {
+    "message": "Nainstalujte rozšíření Chrome to Phone a kliknutím na příslušnou ikonu na liště nástrojů se přihlaste."
+  },
+  "about_title_message": {
+    "message": "Informace o službě"
+  },
+  "features_message5": {
+    "message": "Vyberete-li na webové stránce text, zkopíruje se obsah schránky do systému Android. (Následně jej v systému Android můžete vložit dlouhým stisknutím textového pole.)"
+  },
+  "features_title_message": {
+    "message": "Funkce"
+  },
+  "about_message": {
+    "message": "Rozšíření Chrome to Phone od společnosti Google umožňuje odesílat odkazy a další informace z prohlížeče Chrome do zařízení Android. Chrome to Phone se skládá z rozšíření prohlížeče Chrome a aplikace pro systém Android."
+  },
+  "signed_out_message": {
+    "message": "Nyní jste z rozšíření Chrome to Phone odhlášeni."
+  },
+  "app_desc": {
+    "message": "Rozšíření Google Chrome to Phone umožňuje odesílat odkazy a další informace z prohlížeče Chrome do zařízení Android."
+  },
+  "step5_message": {
+    "message": "Nainstalujte aplikaci Chrome to Phone pro systém Android a dokončete jednoduchý proces nastavení."
+  },
+  "app_name": {
+    "message": "Google Chrome to Phone Extension"
+  },
+  "sign_in_required_message": {
+    "message": "Prosím $link$ do rozšíření Chrome to Phone.",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "Jste přihlášeni. Nyní můžete odesílat odkazy do telefonu."
+  },
+  "about_google_message": {
+    "message": "Informace o službě"
+  },
+  "step6_message": {
+    "message": "Chcete-li odeslat odkaz nebo aktuálně označený text do telefonu, klikněte na příslušnou ikonu na liště nástrojů."
+  },
+  "error_sending_message": {
+    "message": "Při odesílání do telefonu došlo k chybě: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "V zařízení Android vyhledejte ve službě Market sousloví Chrome to Phone."
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "Smluvní podmínky"
+  },
+  "sign_in_message": {
+    "message": "přihlaste se"
+  },
+  "features_message4": {
+    "message": "Vyberete-li telefonní číslo, spustí se aplikace Vytáčení a bude v ní zadáno toto číslo."
+  },
+  "device_not_registered_message": {
+    "message": "Zařízení není pro uživatele zaregistrováno."
+  },
+  "privacy_message": {
+    "message": "Ochrana osobních údajů"
+  },
+  "sent_message": {
+    "message": "Odesláno do telefonu."
+  },
+  "sending_message": {
+    "message": "Odesílání do telefonu..."
+  },
+  "features_message2": {
+    "message": "Odkazy ze služby Mapy Google spouštějí v systému Android aplikaci Mapy Google."
+  },
+  "connectivity_error_message": {
+    "message": "Chyba připojení."
+  },
+  "sign_out_message": {
+    "message": "Odhlásit se"
+  }
+}
