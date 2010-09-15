@@ -15,10 +15,10 @@
     "message": "YouTube 링크는 Android에서 YouTube 애플리케이션을 실행합니다."
   },
   "step2_message": {
-    "message": "chrome.google.com/extensions에서 '크롬 투 폰'을 검색합니다."
+    "message": "chrome.google.com/extensions에서 'Chrome to Phone'을 검색합니다."
   },
   "step3_message": {
-    "message": "크롬 투 폰 확장 프로그램을 설치하고 툴바 아이콘을 클릭하여 로그인합니다."
+    "message": "Chrome to Phone 확장 프로그램을 설치하고 툴바 아이콘을 클릭하여 로그인합니다."
   },
   "about_title_message": {
     "message": "정보"
@@ -30,22 +30,22 @@
     "message": "기능"
   },
   "about_message": {
-    "message": "Google 크롬 투 폰을 사용하면 링크 및 기타 정보를 크롬에서 개인 Android 기기로 전송할 수 있습니다. 크롬 투 폰은 크롬 브라우저 확장 프로그램과 Android 애플리케이션으로 구성되어 있습니다."
+    "message": "Google Chrome to Phone을 사용하면 링크 및 기타 정보를 크롬에서 개인 Android 기기로 전송할 수 있습니다. Chrome to Phone은 크롬 브라우저 확장 프로그램과 Android 애플리케이션으로 구성되어 있습니다."
   },
   "signed_out_message": {
-    "message": "크롬 투 폰에서 로그아웃되었습니다."
+    "message": "Chrome to Phone에서 로그아웃되었습니다."
   },
   "app_desc": {
-    "message": "Google 크롬 투 폰 확장 프로그램을 사용하면 링크 및 기타 정보를 크롬에서 개인 Android 기기로 전송할 수 있습니다."
+    "message": "Google Chrome to Phone 확장 프로그램을 사용하면 링크 및 기타 정보를 크롬에서 개인 Android 기기로 전송할 수 있습니다."
   },
   "step5_message": {
-    "message": "크롬 투 폰 Android 애플리케이션을 설치하고 간단한 설정 프로세스를 완료하세요."
+    "message": "Chrome to Phone Android 애플리케이션을 설치하고 간단한 설정 프로세스를 완료하세요."
   },
   "app_name": {
-    "message": "Google 크롬 투 폰 확장 프로그램"
+    "message": "Google Chrome to Phone 확장 프로그램"
   },
   "sign_in_required_message": {
-    "message": "크롬 투 폰으로 $link$하세요.",
+    "message": "Chrome to Phone으로 $link$하세요.",
     "placeholders": {
       "link": {
         "content": "$1"
@@ -70,10 +70,10 @@
     }
   },
   "step4_message": {
-    "message": "Android 기기의 마켓에서 '크롬 투 폰'을 검색합니다."
+    "message": "Android 기기의 마켓에서 'Chrome to Phone'을 검색합니다."
   },
   "app_name_short": {
-    "message": "크롬 투 폰"
+    "message": "Chrome to Phone"
   },
   "tos_message": {
     "message": "서비스 약관"
