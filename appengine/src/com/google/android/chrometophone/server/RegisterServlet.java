@@ -160,7 +160,7 @@ public class RegisterServlet extends HttpServlet {
 
                 device.setName(deviceName);  // update display name
 
-                if (device.getType() != null && device.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
                     if (device.getPhoneToChromeExperimentEnabled()) {
                         String channelId =
                             ChannelServiceFactory.getChannelService().createChannel(deviceRegistrationId);

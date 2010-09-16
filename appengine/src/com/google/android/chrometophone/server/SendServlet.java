@@ -68,7 +68,6 @@ public class SendServlet extends HttpServlet {
 
         String deviceName = req.getParameter("deviceName");
         String deviceType = req.getParameter("deviceType");
-        if (deviceType == null) deviceType = DeviceInfo.TYPE_AC2DM;  // default
 
         User user = RegisterServlet.checkUser(req, resp, false);
         if (user != null) {
@@ -82,7 +81,7 @@ public class SendServlet extends HttpServlet {
     private boolean doSendToDevice(String url, String title, String sel, String userAccount,
             String deviceName, String deviceType, HttpServletResponse resp) throws IOException {
 
-        // ok = we sent to at least one phone.
+        // ok = we sent to at least one device.
         boolean ok = false;
 
         // Send push message to phone
@@ -101,29 +100,22 @@ public class SendServlet extends HttpServlet {
             pm.close();
         }
 
-        if (registrations.size() == 0) {
-            log.warning("Device not registered " + userAccount);
-            resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
-            return false;
-        }
-
+        int numSendAttempts = 0;
         for (DeviceInfo deviceInfo : registrations) {
-            if (deviceName != null && deviceInfo.getName() != null &&
-                    !deviceName.equals(deviceInfo.getName())) {
+            if (deviceName != null && !deviceName.equals(deviceInfo.getName())) {
                 continue;  // user-specified device name
             }
-            if (deviceType != null && deviceInfo.getType() != null &&
-                    !deviceType.equals(deviceInfo.getType())) {
+            if (deviceType != null && !deviceType.equals(deviceInfo.getType())) {
                 continue;  // user-specified device type
             }
 
-            // if name or value are null - they'll be skipped
             try {
-                if (deviceInfo.getType() != null && deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                if (deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
                     res = doSendViaBrowserChannel(url, deviceInfo);
                 } else {
                     res = doSendViaC2dm(url, title, sel, push, collapseKey, deviceInfo);
                 }
+                numSendAttempts++;
 
                 if (res) {
                     log.info("Link sent to phone! collapse_key:" + collapseKey);
@@ -134,8 +126,8 @@ public class SendServlet extends HttpServlet {
             } catch (IOException ex) {
                 if ("NotRegistered".equals(ex.getMessage()) ||
                         "InvalidRegistration".equals(ex.getMessage())) {
-                    // remove registrations, it no longer works
-                    pm.deletePersistent(deviceInfo);
+                    // Prune device, it no longer works
+                    pruneDevice(deviceInfo);
                 } else {
                     throw ex;
                 }
@@ -145,11 +137,22 @@ public class SendServlet extends HttpServlet {
         if (ok) {
             resp.getWriter().println(OK_STATUS);
             return true;
+        } else if (numSendAttempts == 0) {
+            log.warning("Device not registered " + userAccount);
+            resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
+            return false;
         } else {
             resp.setStatus(500);
             resp.getWriter().println(ERROR_STATUS + " (Unable to send link)");
             return false;
         }
+    }
+
+    private void pruneDevice(DeviceInfo deviceInfo) {
+        PersistenceManager pm =
+            C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
+        pm.deletePersistent(deviceInfo);
+        pm.close();
     }
 
     boolean doSendViaC2dm(String url, String title, String sel, C2DMessaging push,
