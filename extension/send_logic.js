@@ -57,14 +57,12 @@ function sendToPhone(title, url, msgType, selection, listener) {
   };
 
   var data = 'title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url) +
-      '&sel=' + encodeURIComponent(selection) + '&type=' + encodeURIComponent(msgType);
+      '&sel=' + encodeURIComponent(selection) + '&type=' + encodeURIComponent(msgType) +
+      '&deviceType=ac2dm';
   req.send(data);
 }
 
 function initializeBrowserChannel() {
-  // TODO: Enable for v2.2
-  return;
-
   console.log('Initializing browser channel');
 
   var deviceRegistrationId = localStorage['deviceRegistrationId'];
