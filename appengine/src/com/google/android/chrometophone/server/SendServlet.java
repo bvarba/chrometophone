@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.android.c2dm.server.C2DMessaging;
 import com.google.appengine.api.channel.ChannelMessage;
 import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
 
 @SuppressWarnings("serial")
@@ -92,67 +93,79 @@ public class SendServlet extends HttpServlet {
 
         PersistenceManager pm =
             C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
+        
+        // delete will fail if the pm is different than the one used to 
+        // load the object - we must close the object when we're done
+        
         List<DeviceInfo> registrations = null;
         try {
-            registrations = DeviceInfo.getDeviceInfoForUser(C2DMessaging.getPMF(getServletContext())
-                    .getPersistenceManager(), userAccount);
+            registrations = DeviceInfo.getDeviceInfoForUser(pm, userAccount);
+
+            // Deal with upgrades and multi-device:
+            // If user has one device with an old version and few new ones - 
+            // the old registration will be deleted. 
+            if (registrations.size() > 1) {
+                // Make sure there is no 'bare' registration
+                // Keys are sorted - check the first
+                DeviceInfo first = registrations.get(0);
+                Key oldKey = first.getKey();
+                if (oldKey.toString().indexOf("#") < 0) {
+                    log.warning("Removing old-style key " + oldKey.toString());
+                    // multiple devices, first is old-style.
+                    registrations.remove(0); // don't send to it
+                    pm.deletePersistent(first);
+                }
+            }
+
+            int numSendAttempts = 0;
+            for (DeviceInfo deviceInfo : registrations) {
+                if (deviceName != null && !deviceName.equals(deviceInfo.getName())) {
+                    continue;  // user-specified device name
+                }
+                if (deviceType != null && !deviceType.equals(deviceInfo.getType())) {
+                    continue;  // user-specified device type
+                }
+
+                try {
+                    if (deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                        res = doSendViaBrowserChannel(url, deviceInfo);
+                    } else {
+                        res = doSendViaC2dm(url, title, sel, push, collapseKey, deviceInfo);
+                    }
+                    numSendAttempts++;
+
+                    if (res) {
+                        log.info("Link sent to phone! collapse_key:" + collapseKey);
+                        ok = true;
+                    } else {
+                        log.warning("Error: Unable to send link to phone.");
+                    }
+                } catch (IOException ex) {
+                    if ("NotRegistered".equals(ex.getMessage()) ||
+                            "InvalidRegistration".equals(ex.getMessage())) {
+                        // Prune device, it no longer works
+                        pm.deletePersistent(deviceInfo);
+                    } else {
+                        throw ex;
+                    }
+                }
+            }
+
+            if (ok) {
+                resp.getWriter().println(OK_STATUS);
+                return true;
+            } else if (numSendAttempts == 0) {
+                log.warning("Device not registered " + userAccount);
+                resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
+                return false;
+            } else {
+                resp.setStatus(500);
+                resp.getWriter().println(ERROR_STATUS + " (Unable to send link)");
+                return false;
+            }
         } finally {
             pm.close();
         }
-
-        int numSendAttempts = 0;
-        for (DeviceInfo deviceInfo : registrations) {
-            if (deviceName != null && !deviceName.equals(deviceInfo.getName())) {
-                continue;  // user-specified device name
-            }
-            if (deviceType != null && !deviceType.equals(deviceInfo.getType())) {
-                continue;  // user-specified device type
-            }
-
-            try {
-                if (deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
-                    res = doSendViaBrowserChannel(url, deviceInfo);
-                } else {
-                    res = doSendViaC2dm(url, title, sel, push, collapseKey, deviceInfo);
-                }
-                numSendAttempts++;
-
-                if (res) {
-                    log.info("Link sent to phone! collapse_key:" + collapseKey);
-                    ok = true;
-                } else {
-                    log.warning("Error: Unable to send link to phone.");
-                }
-            } catch (IOException ex) {
-                if ("NotRegistered".equals(ex.getMessage()) ||
-                        "InvalidRegistration".equals(ex.getMessage())) {
-                    // Prune device, it no longer works
-                    pruneDevice(deviceInfo);
-                } else {
-                    throw ex;
-                }
-            }
-        }
-
-        if (ok) {
-            resp.getWriter().println(OK_STATUS);
-            return true;
-        } else if (numSendAttempts == 0) {
-            log.warning("Device not registered " + userAccount);
-            resp.getWriter().println(DEVICE_NOT_REGISTERED_STATUS);
-            return false;
-        } else {
-            resp.setStatus(500);
-            resp.getWriter().println(ERROR_STATUS + " (Unable to send link)");
-            return false;
-        }
-    }
-
-    private void pruneDevice(DeviceInfo deviceInfo) {
-        PersistenceManager pm =
-            C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
-        pm.deletePersistent(deviceInfo);
-        pm.close();
     }
 
     boolean doSendViaC2dm(String url, String title, String sel, C2DMessaging push,
