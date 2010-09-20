@@ -168,8 +168,10 @@ public class C2DMReceiver extends C2DMBaseReceiver {
        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
        if (uri != null) {
            Ringtone rt = RingtoneManager.getRingtone(context, uri);
-           rt.setStreamType(AudioManager.STREAM_NOTIFICATION);
-           if (rt != null) rt.play();
+           if (rt != null) {
+               rt.setStreamType(AudioManager.STREAM_NOTIFICATION);
+               rt.play();
+           }
        }
    }
 
