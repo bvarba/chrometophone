@@ -62,7 +62,7 @@
     "message": "Haz clic en ícono de barra de herramientas para enviar al teléfono el vínculo o texto seleccionado."
   },
   "error_sending_message": {
-    "message": "Error al enviar al tel.: $detalls$",
+    "message": "Error al enviar al tel.: $details$",
     "placeholders": {
       "details": {
         "content": "$1"
