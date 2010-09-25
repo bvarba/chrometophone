@@ -97,9 +97,10 @@ public class RegisterServlet extends HttpServlet {
         }
 
         String deviceRegistrationId = req.getParameter("devregid");
-        if (deviceRegistrationId == null) {
+        if (deviceRegistrationId == null || "".equals(deviceRegistrationId.trim())) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + "(Must specify devregid)");
+            log.severe("Missing registration id ");
             return;
         }
 
