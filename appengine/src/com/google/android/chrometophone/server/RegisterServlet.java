@@ -17,6 +17,8 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -155,10 +157,14 @@ public class RegisterServlet extends HttpServlet {
                 if (device == null) {
                     device = new DeviceInfo(key, deviceRegistrationId);
                     device.setType(deviceType);
-                    pm.makePersistent(device);
+                } else {
+                    // update registration id
+                    device.setDeviceRegistrationID(deviceRegistrationId);
+                    device.setRegistrationTimestamp(new Date());
                 }
 
                 device.setName(deviceName);  // update display name
+                pm.makePersistent(device);
 
                 if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
                     if (device.getPhoneToChromeExperimentEnabled()) {
