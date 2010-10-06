@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
         if (mPendingAuth) {
             mPendingAuth = false;
             String regId = C2DMessaging.getRegistrationId(this);
-            if (regId != null) {
+            if (regId != null && !"".equals(regId)) {
                 DeviceRegistrar.registerWithServer(this, regId);
             } else {
                 C2DMessaging.register(this, DeviceRegistrar.SENDER_ID);
