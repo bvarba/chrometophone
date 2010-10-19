@@ -59,7 +59,8 @@ public class HistoryDatabase {
     }
 
     public Cursor lookupHistory() {
-        return mDb.query(TABLE_NAME, ALL_COLUMNS, null, null, null, null, null);
+        return mDb.query(TABLE_NAME, ALL_COLUMNS, null, null, null, null,
+                RECEIVE_TIME_COL_NAME + " desc");
     }
 
     public void deleteHistory(String url) {
