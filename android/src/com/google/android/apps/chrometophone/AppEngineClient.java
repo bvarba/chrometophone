@@ -132,7 +132,7 @@ public class AppEngineClient {
             // User will be asked for "App Engine" permission.
             if (authToken == null) {
                 // No auth token - will need to ask permission from user.
-                Intent intent = new Intent(MainActivity.AUTH_PERMISSION_ACTION);
+                Intent intent = new Intent(SetupActivity.AUTH_PERMISSION_ACTION);
                 intent.putExtra("AccountManagerBundle", bundle);
                 context.sendBroadcast(intent);
             }

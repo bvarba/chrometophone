@@ -45,9 +45,9 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import com.google.android.c2dm.C2DMessaging;
 
 /**
- * Main activity - takes user through set up.
+ * Setup activity - takes user through the setup.
  */
-public class MainActivity extends Activity {
+public class SetupActivity extends Activity {
     public static final String UPDATE_UI_ACTION = "com.google.ctp.UPDATE_UI";
     public static final String AUTH_PERMISSION_ACTION = "com.google.ctp.AUTH_PERMISSION";
 
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.help, menu);
+        inflater.inflate(R.menu.setup, menu);
         return true;
     }
 
