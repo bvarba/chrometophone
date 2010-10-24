@@ -17,7 +17,6 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -168,7 +167,8 @@ public class RegisterServlet extends HttpServlet {
                 pm.makePersistent(device);
 
                 if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
-                    if (device.getPhoneToChromeExperimentEnabled()) {
+                    // if (device.getPhoneToChromeExperimentEnabled()) {
+                    if (true) {
                         String channelId =
                             ChannelServiceFactory.getChannelService().createChannel(deviceRegistrationId);
                         resp.getWriter().println(OK_STATUS + " " + channelId);
