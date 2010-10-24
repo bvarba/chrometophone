@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-<script src="http://chrometophone.appspot.com/_ah/channel/jsapi"/>
-<script src="send_logic.js"/>
+<html>
 
+
+<script src="http://chrometophone.appspot.com/_ah/channel/jsapi"></script>
+<script src="send_logic.js"></script>
 <script>
-
 function onClickHandler(info, tab) {
   var url = info.srcUrl;
   if (url == undefined) url = info.linkUrl;
@@ -48,3 +49,5 @@ if (chrome.contextMenus) {
 initializeBrowserChannel();
 
 </script>
+
+</html>
