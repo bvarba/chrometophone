@@ -28,8 +28,6 @@ var STATUS_LOGIN_REQUIRED = 'login_required';
 var STATUS_DEVICE_NOT_REGISTERED = 'device_not_registered';
 var STATUS_GENERAL_ERROR = 'general_error';
 
-var BROWSER_CHANNEL_RETRY_INTERVAL_MS = 10000 * (1 + Math.random() - 0.5); 
-
 var channel;
 var socket;
 var req = new XMLHttpRequest();
@@ -85,12 +83,16 @@ function initializeBrowserChannel() {
           console.log('Browser channel initialized');
         }
         socket.onclose = function() {
-          console.log('Browser channel closed. Restarting');
-          setTimeout('initializeBrowserChannel()', 0);
+          console.log('Browser channel closed');
+          setTimeout('initializeBrowserChannel()', 0); 
         }
-        socket.onerror = function() {
-          console.log('Browser channel not initialized - retrying in ' + BROWSER_CHANNEL_RETRY_INTERVAL_MS + 'ms');
-          setTimeout('initializeBrowserChannel()', BROWSER_CHANNEL_RETRY_INTERVAL_MS);
+        socket.onerror = function(error) {
+          if (error.code == 401) {  // token expiry
+            console.log('Browser channel token expired - reconnecting');
+          } else {
+            console.log('Browser channel error');
+            // Automatically reconnects
+          }
         }
         socket.onmessage = function(evt) {
           var url = unescape(evt.data);
@@ -105,8 +107,6 @@ function initializeBrowserChannel() {
         } else if (req.responseText.indexOf('NOT_ENABLED') == 0) {
           console.log('Not initializing browser channel because feature not enabled for user');
         } 
-      } else {
-        setTimeout('initializeBrowserChannel()', BROWSER_CHANNEL_RETRY_INTERVAL_MS);
       }
     }
   };
