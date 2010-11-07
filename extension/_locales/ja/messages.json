@@ -6,13 +6,13 @@
     "message": "ログアウトしました"
   },
   "features_message1": {
-    "message": "ブラウザ リンクを Chrome から携帯端末に送信できます。"
+    "message": "ブラウザで表示中のページのリンクを Chrome から携帯端末に送信できます。"
   },
   "help_message": {
     "message": "ヘルプ"
   },
   "features_message3": {
-    "message": "YouTube リンクを送信すると Android の YouTube アプリケーションが起動します。"
+    "message": "YouTube のリンクを送信すると、Android で YouTube アプリケーションが起動します。"
   },
   "step2_message": {
     "message": "chrome.google.com/extensions で「Chrome to Phone」を検索します。"
@@ -30,7 +30,7 @@
     "message": "機能"
   },
   "about_message": {
-    "message": "Google の Chrome to Phone を使用すると、リンクなどの情報を Chrome から Android 搭載携帯に送信できます。Chrome to Phone は、Android アプリケーションと Chrome ブラウザ拡張機能の 2 つの要素で構成されています。"
+    "message": "Google の Chrome to Phone を使用すると、リンクなどの情報を Chrome から Android 搭載携帯に送信できます。Chrome to Phone を使うには、Chrome ブラウザ拡張機能と Android アプリケーションの両方をインストールします。"
   },
   "signed_out_message": {
     "message": "Chrome to Phone からログアウトしました。"
@@ -70,7 +70,7 @@
     }
   },
   "step4_message": {
-    "message": "Android 搭載携帯から Android マーケットにアクセスし、「Chrome to Phone」を検索します。"
+    "message": "Android 搭載携帯で Android マーケットにアクセスし、「Chrome to Phone」を検索します。"
   },
   "app_name_short": {
     "message": "Chrome to Phone"
@@ -97,7 +97,7 @@
     "message": "携帯端末に送信しています..."
   },
   "features_message2": {
-    "message": "Google マップのリンクを送信すると Android の Google マップ アプリケーションが起動します。"
+    "message": "Google マップのリンクを送信すると、Android で Google マップ アプリケーションが起動します。"
   },
   "connectivity_error_message": {
     "message": "接続エラーが発生しました。"
@@ -106,3 +106,4 @@
     "message": "ログアウト"
   }
 }
+
