@@ -77,6 +77,18 @@
     <!-- Notification shown when text from the desktop is copied to Android's clipboard (user can now paste the text) [CHAR LIMIT=NONE] -->
     <string name="copied_desktop_clipboard">Copied desktop clipboard</string>
     
+    <!-- Brief notification that appears when user sends link from phone to desktop [CHAR LIMIT=NONE] -->
+    <string name="sending_link_toast">Sending link...</string>
+    
+    <!-- Brief notification that appears when user has sent link from phone to desktop [CHAR LIMIT=NONE] -->
+    <string name="link_sent_toast">Link sent</string>
+    
+    <!-- Brief notification that appears when link cannot be sent from phone to desktop [CHAR LIMIT=NONE] -->
+    <string name="link_not_sent_toast">Link not sent</string>
+    
+    <!-- Brief notification that appears when link cannot be sent from phone to desktop (because of auth issue) [CHAR LIMIT=NONE] -->
+    <string name="link_not_sent_auth_toast">Link not sent - authentication required</string>
+    
     <!-- Introduction text at start of setup flow. Preserve occurrences of &lt;br>, &lt;a href="{tos_link}">, &lt;a href="{pp_link}">, and &lt;a/> [CHAR LIMIT=NONE] -->
     <string name="intro_text">
         Chrome to Phone lets you easily share links, maps, and currently selected phone numbers and text
@@ -105,38 +117,4 @@
         &lt;a href="{tos_link}">Terms of Service&lt;/a> and
         &lt;a href="{pp_link}">Privacy Policy&lt;/a>.
     </string>
-    
-    <!-- Label for items received today [CHAR LIMIT=NONE] -->
-    <string name="today_text">Today</string>
-    
-    <!-- Label for items received in the last 7 days [CHAR LIMIT=NONE] -->
-    <string name="last_seven_days_text">Last 7 days</string>
-    
-    <!-- Label for items received in the last month [CHAR LIMIT=NONE] -->
-    <string name="last_month_text">Last month</string>
-    
-    <!-- Label for items received older [CHAR LIMIT=NONE] -->
-    <string name="older_text">Older</string>
-    
-    <!-- Menu option for 'Clear all' [CHAR LIMIT=NONE] -->
-    <string name="clear_all">Clear all</string>
-    
-    <!-- Menu option for 'Settings' [CHAR LIMIT=NONE] -->
-    <string name="settings">Settings</string>
-    
-    <!-- Title for dialog where user is asked to share a link with their choice of app [CHAR LIMIT=NONE] -->
-    <string name="share_chooser_title">Share with</string>
-    
-    <!-- Brief notification that appears when user sends link from phone to desktop [CHAR LIMIT=NONE] -->
-    <string name="sending_link_toast">Sending link...</string>
-    
-    <!-- Brief notification that appears when user has sent link from phone to desktop [CHAR LIMIT=NONE] -->
-    <string name="link_sent_toast">Link sent</string>
-    
-    <!-- Brief notification that appears when link cannot be sent from phone to desktop [CHAR LIMIT=NONE] -->
-    <string name="link_not_sent_toast">Link not sent</string>
-    
-    <!-- Brief notification that appears when link cannot be sent from phone to desktop (because of auth issue) [CHAR LIMIT=NONE] -->
-    <string name="link_not_sent_auth_toast">Link not sent - authentication required</string>
-    
 </resources>

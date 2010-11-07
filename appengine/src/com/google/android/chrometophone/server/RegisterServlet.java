@@ -17,7 +17,6 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,10 +95,9 @@ public class RegisterServlet extends HttpServlet {
         }
 
         String deviceRegistrationId = req.getParameter("devregid");
-        if (deviceRegistrationId == null || "".equals(deviceRegistrationId.trim())) {
+        if (deviceRegistrationId == null) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + "(Must specify devregid)");
-            log.severe("Missing registration id ");
             return;
         }
 
@@ -157,18 +155,13 @@ public class RegisterServlet extends HttpServlet {
                 if (device == null) {
                     device = new DeviceInfo(key, deviceRegistrationId);
                     device.setType(deviceType);
-                } else {
-                    // update registration id
-                    device.setDeviceRegistrationID(deviceRegistrationId);
-                    device.setRegistrationTimestamp(new Date());
+                    pm.makePersistent(device);
                 }
 
                 device.setName(deviceName);  // update display name
-                pm.makePersistent(device);
 
-                if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
-                    // if (device.getPhoneToChromeExperimentEnabled()) {
-                    if (true) {
+                if (device.getType() != null && device.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                    if (device.getPhoneToChromeExperimentEnabled()) {
                         String channelId =
                             ChannelServiceFactory.getChannelService().createChannel(deviceRegistrationId);
                         resp.getWriter().println(OK_STATUS + " " + channelId);

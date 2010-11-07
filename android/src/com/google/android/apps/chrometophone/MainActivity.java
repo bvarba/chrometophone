@@ -45,9 +45,9 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import com.google.android.c2dm.C2DMessaging;
 
 /**
- * Setup activity - takes user through the setup.
+ * Main activity - takes user through set up.
  */
-public class SetupActivity extends Activity {
+public class MainActivity extends Activity {
     public static final String UPDATE_UI_ACTION = "com.google.ctp.UPDATE_UI";
     public static final String AUTH_PERMISSION_ACTION = "com.google.ctp.AUTH_PERMISSION";
 
@@ -77,7 +77,7 @@ public class SetupActivity extends Activity {
         if (mPendingAuth) {
             mPendingAuth = false;
             String regId = C2DMessaging.getRegistrationId(this);
-            if (regId != null && !"".equals(regId)) {
+            if (regId != null) {
                 DeviceRegistrar.registerWithServer(this, regId);
             } else {
                 C2DMessaging.register(this, DeviceRegistrar.SENDER_ID);
@@ -95,7 +95,7 @@ public class SetupActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.setup, menu);
+        inflater.inflate(R.menu.help, menu);
         return true;
     }
 

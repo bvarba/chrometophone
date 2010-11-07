@@ -149,7 +149,7 @@ public class C2DMessaging {
         conn.setDoOutput(true);
         conn.setUseCaches(false);
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         conn.setRequestProperty("Content-Length", Integer.toString(postData.length));
         String authToken = serverConfig.getToken();
         conn.setRequestProperty("Authorization", "GoogleLogin auth=" + authToken);

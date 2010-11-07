@@ -97,24 +97,6 @@ public class DeviceInfo {
         this.key = key;
     }
 
-    public Key getKey() {
-        return key;
-    }
-
-    public void setKey(Key key) {
-        this.key = key;
-    }
-
-    // Accessor methods for properties added later (hence can be null)
-
-    public String getDeviceRegistrationID() {
-        return deviceRegistrationID;
-    }
-
-    public void setDeviceRegistrationID(String deviceRegistrationID) {
-        this.deviceRegistrationID = deviceRegistrationID;
-    }
-
     public boolean getDebug() {
         return (debug != null ? debug.booleanValue() : false);
     }
@@ -132,12 +114,28 @@ public class DeviceInfo {
         this.phoneToChromeExperimentEnabled = new Boolean(phoneToChromeExperimentEnabled);
     }
 
+    public Key getKey() {
+        return key;
+    }
+
+    public void setKey(Key key) {
+        this.key = key;
+    }
+
+    public String getDeviceRegistrationID() {
+        return deviceRegistrationID;
+    }
+
+    public void setDeviceRegistrationID(String deviceRegistrationID) {
+        this.deviceRegistrationID = deviceRegistrationID;
+    }
+
     public void setType(String type) {
         this.type = type;
     }
 
     public String getType() {
-        return type != null ? type : "";
+        return type;
     }
 
     public void setName(String name) {
@@ -145,7 +143,7 @@ public class DeviceInfo {
     }
 
     public String getName() {
-        return name != null ? name : "";
+        return name;
     }
 
     public void setRegistrationTimestamp(Date registrationTimestamp) {
@@ -167,7 +165,7 @@ public class DeviceInfo {
         List<DeviceInfo> qresult = (List<DeviceInfo>) query.execute();
         // Copy to array - we need to close the query
         List<DeviceInfo> result = new ArrayList<DeviceInfo>();
-        for (DeviceInfo di : qresult) {
+        for (DeviceInfo di: qresult) {
             result.add(di);
         }
         query.closeAll();

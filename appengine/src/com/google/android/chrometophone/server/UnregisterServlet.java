@@ -68,7 +68,8 @@ public class UnregisterServlet extends HttpServlet {
                     DeviceInfo deviceInfo = registrations.get(i);
                     if (deviceInfo.getDeviceRegistrationID().equals(deviceRegistrationID)) {
                         pm.deletePersistent(deviceInfo);
-                        // Keep looping in case of duplicates
+                        registrations.remove(i);
+                        break;
                     }
                 }
 
