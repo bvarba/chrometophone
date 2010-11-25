@@ -108,34 +108,36 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
     protected Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_LINK_ACTION:
-            return new AlertDialog.Builder(this)
-                .setTitle(ellipsis(mSelectedLink.mTitle))
-                .setItems(R.array.link_action_dialog_items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {  // Open
-                            startActivity(LauncherUtils.getLaunchIntent(mContext,
-                                    mSelectedLink.mTitle, mSelectedLink.mUrl, null));
-                        } else if (which == 1) {  // Add bookmark
-                            Browser.saveBookmark(mContext, mSelectedLink.mTitle,
-                                    mSelectedLink.mUrl);
-                        } else if (which == 2) {  // Share link
-                            Intent intent = new Intent(Intent.ACTION_SEND);
-                            intent.putExtra(Intent.EXTRA_TEXT, mSelectedLink.mUrl);
-                            intent.setType("text/plain");
-                            startActivity(Intent.createChooser(intent,
-                                    getString(R.string.share_chooser_title)));
-                        } else if (which == 3) {  // Copy link URL
-                            ClipboardManager cm =
-                                (ClipboardManager) mContext.getSystemService(CLIPBOARD_SERVICE);
-                            cm.setText(mSelectedLink.mUrl);
-                        } else if (which == 4) {  // Remove from history
-                            HistoryDatabase.get(mContext).deleteHistory(mSelectedLink.mUrl);
-                            mListAdapter.refresh();
-                            mList.collapseGroup(mSelectedGroup);
-                            mList.expandGroup(mSelectedGroup);
+            if (mSelectedLink != null) {
+                return new AlertDialog.Builder(this)
+                    .setTitle(ellipsis(mSelectedLink.mTitle))
+                    .setItems(R.array.link_action_dialog_items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0) {  // Open
+                                startActivity(LauncherUtils.getLaunchIntent(mContext,
+                                        mSelectedLink.mTitle, mSelectedLink.mUrl, null));
+                            } else if (which == 1) {  // Add bookmark
+                                Browser.saveBookmark(mContext, mSelectedLink.mTitle,
+                                        mSelectedLink.mUrl);
+                            } else if (which == 2) {  // Share link
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.putExtra(Intent.EXTRA_TEXT, mSelectedLink.mUrl);
+                                intent.setType("text/plain");
+                                startActivity(Intent.createChooser(intent,
+                                        getString(R.string.share_chooser_title)));
+                            } else if (which == 3) {  // Copy link URL
+                                ClipboardManager cm =
+                                    (ClipboardManager) mContext.getSystemService(CLIPBOARD_SERVICE);
+                                cm.setText(mSelectedLink.mUrl);
+                            } else if (which == 4) {  // Remove from history
+                                HistoryDatabase.get(mContext).deleteHistory(mSelectedLink.mUrl);
+                                mListAdapter.refresh();
+                                mList.collapseGroup(mSelectedGroup);
+                                mList.expandGroup(mSelectedGroup);
+                            }
                         }
-                    }
-                }).create();
+                    }).create();
+            }
         }
         return null;
     }
