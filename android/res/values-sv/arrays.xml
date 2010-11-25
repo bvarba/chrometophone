@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Öppna</item>
+        <item>Lägg till bokmärke</item>
+        <item>Dela länk</item>
+        <item>Kopiera länkens webbadress</item>
+        <item>Ta bort från historiken</item>
+    </string-array>
+</resources>

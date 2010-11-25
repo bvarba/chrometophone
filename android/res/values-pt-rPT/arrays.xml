@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Abrir</item>
+        <item>Adicionar marcador</item>
+        <item>Partilhar link</item>
+        <item>Copiar URL do link</item>
+        <item>Remover do histórico</item>
+    </string-array>
+</resources>

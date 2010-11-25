@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Otwórz</item>
+        <item>Dodaj do zakładek</item>
+        <item>Udostępnij link</item>
+        <item>Kopiuj adres URL linku</item>
+        <item>Usuń z historii</item>
+    </string-array>
+</resources>

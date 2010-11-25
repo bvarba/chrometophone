@@ -27,4 +27,16 @@
     <string name="copied_desktop_clipboard" msgid="8985436645584877">"パソコンのクリップボードをコピーしました"</string>
     <string name="intro_text" msgid="8221719258505966458">"Chrome to Phoneを使用すると、リンク、地図、選択した電話番号やテキストをパソコンから携帯端末に簡単に送信できます。&lt;br&gt;&lt;br&gt;携帯端末にリンクを送信するにはパソコンにChromeブラウザ拡張機能をインストールする必要があります。ブラウザ拡張機能はChrome拡張機能ギャラリー（http://chrome.google.com/extensions/）からダウンロードできます。「Chrome to Phone」で検索してください。&lt;br&gt;&lt;br&gt;携帯端末側の設定は次の手順で行います: &lt;br&gt;&lt;br&gt;1. 使用するGoogleアカウントを選択します。&lt;br&gt; 2. Chromeと携帯端末を接続します。&lt;br&gt;3. リンク操作を設定します。&lt;br&gt;&lt;br&gt;このアプリケーションを使用することで、&lt;br&gt; &lt;a href={tos_link}&gt;利用規約&lt;/a&gt;と&lt;a href={pp_link}&gt;プライバシーポリシー&lt;/a&gt;に同意したものと見なされます。"</string>
     <string name="help_text" msgid="8726842770376559977">"Chrome to Phoneを使用すると、リンク、地図、選択した電話番号やテキストをパソコンから携帯端末に簡単に送信できます。&lt;br&gt;&lt;br&gt;Chrome to Phoneは、AndroidアプリケーションとChromeブラウザ拡張機能の2つの要素で構成されています。ブラウザ拡張機能はChrome拡張機能ギャラリー（http://chrome.google.com/extensions/）からダウンロードできます。&lt;br&gt;&lt;br&gt;パソコンにChrome拡張機能をインストールするとAndroid搭載携帯に接続できるようになります。&lt;br&gt;&lt;br&gt;携帯端末に送信したリンクは、自動的に適切なアプリケーションで開くか、ステータスバーにメッセージを表示して手動で開くかを選択できます。&lt;br&gt;&lt;br&gt;このアプリケーションを使用することで、&lt;br&gt; &lt;a href={tos_link}&gt;利用規約&lt;/a&gt;と&lt;a href={pp_link}&gt;プライバシーポリシー&lt;/a&gt;に同意したものと見なされます。"</string>
+    <string name="today_text" msgid="5394978862420937303">今日</string>
+    <string name="last_seven_days_text" msgid="4852029789306739080">過去7日間</string>
+    <string name="last_month_text" msgid="6590554560137734479">先月</string>
+    <string name="older_text" msgid="8361517858518842292">もっと前</string>
+    <string name="clear_all" msgid="2958594063550732304">すべて消去</string>
+    <string name="settings" msgid="6285536363347126881">設定</string>
+    <string name="share_chooser_title" msgid="8939929380131671300">リンク共有アプリ</string>
+    <string name="sending_link_toast" msgid="4672942003889006322">リンクを送信中...</string>
+    <string name="link_sent_toast" msgid="3619482093745686699">リンクが送信されました</string>
+    <string name="link_not_sent_toast" msgid="3940456215929964552">リンクを送信できません</string>
+    <string name="link_not_sent_auth_toast" msgid="7239765517934560962">リンクを送信できません（認証が必要）</string>
+
 </resources>

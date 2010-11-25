@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Openen</item>
+        <item>Bladwijzer toevoegen</item>
+        <item>Link delen</item>
+        <item>Link-URL kopiëren</item>
+        <item>Uit geschiedenis verwijderen</item>
+    </string-array>
+</resources>

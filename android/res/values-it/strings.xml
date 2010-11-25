@@ -27,4 +27,16 @@
     <string name="copied_desktop_clipboard" msgid="8985436645584877">"Appunti desktop copiati"</string>
     <string name="intro_text" msgid="8221719258505966458">"\"Chrome to Phone\" consente di condividere facilmente tra il computer e il telefono link, mappe nonché testo e numeri di telefono correntemente selezionati. &lt;br&gt;&lt;br&gt;Per inviare link al tuo telefono devi installare l\'estensione del browser Google Chrome sul tuo computer. L\'estensione per il browser può essere scaricata dalla galleria delle estensioni di Google Chrome all\'indirizzo http://chrome.google.com/extensions/. Cerca il nome dell\'estensione.&lt;br&gt;&lt;br&gt;Per completare la configurazione sul telefono sono necessari tre semplici passaggi: &lt;br&gt;&lt;br&gt;1. Scegli l\'account Google da utilizzare.&lt;br&gt; 2. Collega Google Chrome e il tuo telefono.&lt;br&gt;3. Imposta la preferenza per l\'azione sui link.&lt;br&gt;&lt;br&gt; Utilizzando questa applicazione, accetti i &lt;br&gt; &lt;a href={tos_link}&gt;Termini di servizio&lt;/a&gt; e le &lt;a href={pp_link}&gt;Norme sulla privacy&lt;/a&gt;."</string>
     <string name="help_text" msgid="8726842770376559977">"\"Chrome to Phone\" consente di condividere facilmente tra il computer e il telefono link, mappe nonché testo e numeri di telefono correntemente selezionati. &lt;br&gt;&lt;br&gt;È formato da due componenti: un\'applicazione Android e un\'estensione per il browser Google Chrome. L\'estensione per il browser può essere scaricata dalla galleria delle estensioni di Google Chrome all\'indirizzo http://chrome.google.com/extensions/. &lt;br&gt;&lt;br&gt;Una volta installata l\'estensione di Google Chrome sul computer, puoi collegare il tuo telefono Android.&lt;br&gt;&lt;br&gt;Puoi scegliere se i link inviati al telefono verranno aperti automaticamente dall\'applicazione appropriata o lasciati come messaggi nella barra di stato con cui puoi interagire manualmente. &lt;br&gt;&lt;br&gt; Utilizzando questa applicazione, accetti i &lt;br&gt; &lt;a href={tos_link}&gt;Termini di servizio&lt;/a&gt; e le &lt;a href={pp_link}&gt;Norme sulla privacy&lt;/a&gt;."</string>
+    <string name="today_text" msgid="5394978862420937303">Oggi</string>
+    <string name="last_seven_days_text" msgid="4852029789306739080">Ultimi 7 giorni</string>
+    <string name="last_month_text" msgid="6590554560137734479">Ultimo mese</string>
+    <string name="older_text" msgid="8361517858518842292">Meno recenti</string>
+    <string name="clear_all" msgid="2958594063550732304">Cancella tutto</string>
+    <string name="settings" msgid="6285536363347126881">Impostazioni</string>
+    <string name="share_chooser_title" msgid="8939929380131671300">Condividi con</string>
+    <string name="sending_link_toast" msgid="4672942003889006322">Invio del link in corso...</string>
+    <string name="link_sent_toast" msgid="3619482093745686699">Link inviato</string>
+    <string name="link_not_sent_toast" msgid="3940456215929964552">Link non inviato</string>
+    <string name="link_not_sent_auth_toast" msgid="7239765517934560962">Link non inviato - occorre l'autenticazione</string>
+
 </resources>

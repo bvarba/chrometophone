@@ -27,4 +27,15 @@
     <string name="copied_desktop_clipboard" msgid="8985436645584877">"데스크톱 클립보드가 복사됨"</string>
     <string name="intro_text" msgid="8221719258505966458">"크롬 투 폰을 사용하면 링크, 지도, 현재 선택된 전화번호 및 텍스트를 컴퓨터와 휴대전화 간에 쉽게 공유할 수 있습니다. &lt;br&gt;&lt;br&gt;휴대전화로 링크를 전송하려면 컴퓨터에 크롬 브라우저 확장 프로그램을 설치해야 합니다. 브라우저 확장 프로그램은 크롬 확장 프로그램 갤러리(http://chrome.google.com/extensions/)에서 다운로드할 수 있습니다. 간단히 크롬 투 폰을 검색하기만 하면 됩니다.&lt;br&gt;&lt;br&gt;다음의 간단한 3단계로 휴대전화에서 설정을 완료할 수 있습니다. &lt;br&gt;&lt;br&gt;1. 사용할 Google 계정을 선택합니다.&lt;br&gt; 2. 크롬과 휴대전화를 연결합니다.&lt;br&gt;3. 링크 동작 환경설정을 지정합니다.&lt;br&gt;&lt;br&gt; 이 애플리케이션을 사용하면 &lt;br&gt; &lt;a href={tos_link}&gt;서비스 약관&lt;/a&gt; 및 &lt;a href={pp_link}&gt;개인정보취급방침&lt;/a&gt;에 동의하는 것으로 간주됩니다."</string>
     <string name="help_text" msgid="8726842770376559977">"크롬 투 폰을 사용하면 링크, 지도, 현재 선택된 전화번호 및 텍스트를 컴퓨터와 휴대전화 간에 쉽게 공유할 수 있습니다. &lt;br&gt;&lt;br&gt;크롬 투 폰은 Android 애플리케이션과 크롬 브라우저 확장 프로그램이라는 두 가지 요소로 구성되어 있습니다. 브라우저 확장 프로그램은 크롬 확장 프로그램 갤러리(http://chrome.google.com/extensions/)에서 다운로드할 수 있습니다. &lt;br&gt;&lt;br&gt;크롬 확장 프로그램이 컴퓨터에 설치되면 Android 휴대전화를 연결할 수 있습니다.&lt;br&gt;&lt;br&gt;휴대전화로 전송된 링크가 적절한 애플리케이션에서 자동으로 열리게 할 것인지, 상태 표시줄에 수동으로 실행시킬 수 있는 메시지로 남아 있게 할 것인지 선택할 수 있습니다. &lt;br&gt;&lt;br&gt; 이 애플리케이션을 사용하면 &lt;br&gt; &lt;a href={tos_link}&gt;서비스 약관&lt;/a&gt; 및 &lt;a href={pp_link}&gt;개인정보취급방침&lt;/a&gt;에 동의하는 것으로 간주됩니다."</string>
+    <string name="today_text" msgid="5394978862420937303">오늘</string>
+    <string name="last_seven_days_text" msgid="4852029789306739080">지난 7일</string>
+    <string name="last_month_text" msgid="6590554560137734479">지난 달</string>
+    <string name="older_text" msgid="8361517858518842292">이전</string>
+    <string name="clear_all" msgid="2958594063550732304">모두 지우기</string>
+    <string name="settings" msgid="6285536363347126881">설정</string>
+    <string name="share_chooser_title" msgid="8939929380131671300">공유</string>
+    <string name="sending_link_toast" msgid="4672942003889006322">링크 전송 중...</string>
+    <string name="link_sent_toast" msgid="3619482093745686699">링크가 전송됨</string>
+    <string name="link_not_sent_toast" msgid="3940456215929964552">링크가 전송되지 않음</string>
+    <string name="link_not_sent_auth_toast" msgid="7239765517934560962">링크가 전송되지 않음 - 인증 필요</string>
 </resources>

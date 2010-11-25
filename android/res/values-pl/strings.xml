@@ -27,4 +27,16 @@
     <string name="copied_desktop_clipboard" msgid="8985436645584877">"Skopiowano z komputera do schowka"</string>
     <string name="intro_text" msgid="8221719258505966458">"Funkcja Chrome to Phone umożliwia łatwe udostępnianie linków, map oraz zaznaczonych numerów telefonów między komputerem i telefonem. &lt;br&gt;&lt;br&gt;Aby wysyłać linki do telefonu, musisz zainstalować rozszerzenie przeglądarki Chrome na komputerze. Rozszerzenie jest dostępne do pobrania w galerii rozszerzeń Google Chrome pod adresem http://chrome.google.com/extensions/. Wystarczy wyszukać rozszerzenie Chrome to Phone.&lt;br&gt;&lt;br&gt;Aby skonfigurować funkcję w telefonie, wykonaj trzy proste czynności: &lt;br&gt;&lt;br&gt;1. Wybierz konto Google, którego chcesz użyć.&lt;br&gt;2. Nawiąż połączenie między przeglądarką Chrome i telefonem.&lt;br&gt;3. Określ sposób obsługi linków.&lt;br&gt;&lt;br&gt; Skorzystanie z tej funkcji oznacza zaakceptowanie &lt;br&gt; &lt;a href={tos_link}&gt;Warunków korzystania z usługi&lt;/a&gt; i &lt;a href={pp_link}&gt;Polityki prywatności&lt;/a&gt;."</string>
     <string name="help_text" msgid="8726842770376559977">"Funkcja Chrome to Phone umożliwia łatwe udostępnianie linków, map oraz zaznaczonych numerów telefonów między komputerem i telefonem. &lt;br&gt;&lt;br&gt;Obejmuje ona dwa składniki: aplikację dla systemu Android i rozszerzenie przeglądarki Chrome. Rozszerzenie jest dostępne do pobrania w galerii rozszerzeń Google Chrome pod adresem http://chrome.google.com/extensions/ &lt;br&gt;&lt;br&gt;Po zainstalowaniu rozszerzenia przeglądarki Chrome na komputerze możesz nawiązać połączenie z telefonem z systemem Android.&lt;br&gt;&lt;br&gt;Możesz również określić, czy linki wysłane do telefonu mają być automatycznie otwierane w odpowiedniej aplikacji, czy wyświetlane w postaci komunikatów na pasku stanu w celu wykonania innych czynności. &lt;br&gt;&lt;br&gt; Skorzystanie z tej funkcji oznacza zaakceptowanie &lt;br&gt; &lt;a href={tos_link}&gt;Warunków korzystania z usługi&lt;/a&gt; i &lt;a href={pp_link}&gt;Polityki prywatności&lt;/a&gt;."</string>
+    <string name="today_text" msgid="5394978862420937303">Dzisiaj</string>
+    <string name="last_seven_days_text" msgid="4852029789306739080">Ostatnie 7 dni</string>
+    <string name="last_month_text" msgid="6590554560137734479">Ostatni miesiąc</string>
+    <string name="older_text" msgid="8361517858518842292">Starsze</string>
+    <string name="clear_all" msgid="2958594063550732304">Wyczyść wszystko</string>
+    <string name="settings" msgid="6285536363347126881">Ustawienia</string>
+    <string name="share_chooser_title" msgid="8939929380131671300">Udostępnij</string>
+    <string name="sending_link_toast" msgid="4672942003889006322">Wysyłanie linku...</string>
+    <string name="link_sent_toast" msgid="3619482093745686699">Link został wysłany</string>
+    <string name="link_not_sent_toast" msgid="3940456215929964552">Link nie został wysłany</string>
+    <string name="link_not_sent_auth_toast" msgid="7239765517934560962">Link nie został wysłany – wymagane jest uwierzytelnienie</string>
+
 </resources>

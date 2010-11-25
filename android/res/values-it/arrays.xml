@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Apri</item>
+        <item>Aggiungi segnalibro</item>
+        <item>Condividi link</item>
+        <item>Copia URL link</item>
+        <item>Rimuovi da cronologia</item>
+    </string-array>
+</resources>

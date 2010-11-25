@@ -27,4 +27,16 @@
     <string name="copied_desktop_clipboard" msgid="8985436645584877">"Desktop-Zwischenablage kopiert"</string>
     <string name="intro_text" msgid="8221719258505966458">"Mit \"Chrome to Phone\" können Sie ganz einfach Links, Karten sowie aktuell ausgewählte Telefonnummern und Texte von Ihrem Computer an Ihr Handy senden. &lt;br&gt;&lt;br&gt;Installieren Sie die Google Chrome-Browserweiterung auf Ihrem Computer, damit Sie Links an Ihr Telefon senden können. Die Browsererweiterung kann von der Galerie \"Google Chrome-Erweiterungen\" unter http://chrome.google.com/extensions/ heruntergeladen werden. Suchen Sie einfach nach \"Chrome to Phone\".&lt;br&gt;&lt;br&gt;Zur Einrichtung auf Ihrem Telefon sind nur drei einfache Schritte erforderlich: &lt;br&gt;&lt;br&gt;1. Wählen Sie das zu verwendende Google-Konto aus.&lt;br&gt; 2. Stellen Sie eine Verbindung zwischen Google Chrome und Ihrem Telefon her.&lt;br&gt;3. Legen Sie Ihre Einstellung für Link-Aktionen fest.&lt;br&gt;&lt;br&gt; Durch die Verwendung dieser Anwendung stimmen Sie den &lt;br&gt; &lt;a href={tos_link}&gt;Nutzungsbedingungen&lt;/a&gt; und &lt;a href={pp_link}&gt;Datenschutzbestimmungen&lt;/a&gt; zu."</string>
     <string name="help_text" msgid="8726842770376559977">"Mit \"Chrome to Phone\" können Sie ganz einfach Links, Karten sowie aktuell ausgewählte Telefonnummern und Texte von Ihrem Computer an Ihr Handy senden. &lt;br&gt;&lt;br&gt;\"Chrome to Phone\" besteht aus zwei Komponenten: einer Android-Anwendung und einer Google Chrome-Browsererweiterung. Die Browsererweiterung kann von der Galerie \"Google Chrome-Erweiterungen\" unter http://chrome.google.com/extensions/ heruntergeladen werden. &lt;br&gt;&lt;br&gt;Sobald Sie die Google Chrome-Erweiterung auf Ihrem Computer installiert haben, können Sie eine Verbindung zu Ihrem Android-Telefon herstellen.&lt;br&gt;&lt;br&gt;Sie können wählen, ob die an Ihr Telefon gesendeten Links automatisch von der entsprechenden Anwendung geöffnet oder als Nachrichten in der Statusleiste angezeigt werden sollen, die Sie dann manuell aufrufen können. &lt;br&gt;&lt;br&gt; Durch die Verwendung dieser Anwendung stimmen Sie den &lt;br&gt; &lt;a href={tos_link}&gt;Nutzungsbedingungen&lt;/a&gt; und &lt;a href={pp_link}&gt;Datenschutzbestimmungen&lt;/a&gt; zu."</string>
+    <string name="today_text" msgid="5394978862420937303">Heute</string>
+    <string name="last_seven_days_text" msgid="4852029789306739080">Letzte sieben Tage</string>
+    <string name="last_month_text" msgid="6590554560137734479">Letzter Monat</string>
+    <string name="older_text" msgid="8361517858518842292">Älter</string>
+    <string name="clear_all" msgid="2958594063550732304">Alles löschen</string>
+    <string name="settings" msgid="6285536363347126881">Einstellungen</string>
+    <string name="share_chooser_title" msgid="8939929380131671300">Weitergeben an</string>
+    <string name="sending_link_toast" msgid="4672942003889006322">Link wird gesendet...</string>
+    <string name="link_sent_toast" msgid="3619482093745686699">Link wurde gesendet</string>
+    <string name="link_not_sent_toast" msgid="3940456215929964552">Link konnte nicht gesendet werden</string>
+    <string name="link_not_sent_auth_toast" msgid="7239765517934560962">Link konnte nicht gesendet werden. Authentifizierung erforderlich</string>
+
 </resources>

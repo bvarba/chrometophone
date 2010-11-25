@@ -27,4 +27,16 @@
     <string name="copied_desktop_clipboard" msgid="8985436645584877">"Kopiert til utklippstavlen fra skrivebordet"</string>
     <string name="intro_text" msgid="8221719258505966458">"Med Chrome to Phone kan du enkelt dele koblinger, kart og telefonnumre og tekst du har markert på telefonen, mellom datamaskinen og telefonen. &lt;br&gt;&lt;br&gt;Du må installere Chrome-nettleserutvidelsen for å sende koblinger til telefonen. Du kan laste ned nettleserutvidelsen fra utvidelsesgalleriet for Chrome på. http://chrome.google.com/extensions/ ved å søke etter «Chrome to Phone».&lt;br&gt;&lt;br&gt;Du konfigurerer utvidelsen på telefonen med tre enkle trinn: &lt;br&gt;&lt;br&gt;1. Velg Google-kontoen du vil bruke.&lt;br&gt; 2. Koble sammen Chrome og telefonen.&lt;br&gt;3. Angi foretrukket handling for koblingen.&lt;br&gt;&lt;br&gt; Ved å bruke dette programmet, godtar du &lt;br&gt; &lt;a href={tos_link}&gt;vilkårene&lt;/a&gt; og &lt;a href={pp_link}&gt;personvernreglene&lt;/a&gt;."</string>
     <string name="help_text" msgid="8726842770376559977">"Med Chrome to Phone kan du enkelt dele koblinger, kart og telefonnumre og tekst du har markert på telefonen, mellom datamaskinen og telefonen. &lt;br&gt;&lt;br&gt;Denne funksjonen består av to deler: et Android-program og en Chrome-nettleserutvidelse. Du kan laste ned nettleserutvidelsen fra utvidelsesgalleriet for Chrome på. http://chrome.google.com/extensions/ &lt;br&gt;&lt;br&gt;Når Chrome-utvidelsen er installert på telefonen, kan du koble til Android-telefonen.&lt;br&gt;&lt;br&gt;Du kan velge om koblinger som sendes til telefonen, automatisk skal åpnes av riktig program eller vises som meldinger i statusfeltet slik at du kan åpne dem manuelt. &lt;br&gt;&lt;br&gt; Ved å bruke programmet, godtar du &lt;br&gt; &lt;a href={tos_link}&gt;vilkårene&lt;/a&gt; og &lt;a href={pp_link}&gt;personvernreglene&lt;/a&gt;."</string>
+    <string name="today_text" msgid="5394978862420937303">I dag</string>
+    <string name="last_seven_days_text" msgid="4852029789306739080">Siste sju dager</string>
+    <string name="last_month_text" msgid="6590554560137734479">Forrige måned</string>
+    <string name="older_text" msgid="8361517858518842292">Eldre</string>
+    <string name="clear_all" msgid="2958594063550732304">Tøm alle</string>
+    <string name="settings" msgid="6285536363347126881">Innstillinger</string>
+    <string name="share_chooser_title" msgid="8939929380131671300">Del med</string>
+    <string name="sending_link_toast" msgid="4672942003889006322">Sender kobling ...</string>
+    <string name="link_sent_toast" msgid="3619482093745686699">Koblingen er sendt</string>
+    <string name="link_not_sent_toast" msgid="3940456215929964552">Koblingen er ikke sendt</string>
+    <string name="link_not_sent_auth_toast" msgid="7239765517934560962">Koblingen er ikke sendt – autorisasjon påkrevd</string>
+
 </resources>

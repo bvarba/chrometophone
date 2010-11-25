@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>打开</item>
+        <item>添加书签</item>
+        <item>分享链接</item>
+        <item>复制链接网址</item>
+        <item>从历史记录中删除</item>
+    </string-array>
+</resources>

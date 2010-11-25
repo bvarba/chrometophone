@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Åbn</item>
+        <item>Opret bogmærke</item>
+        <item>Del link</item>
+        <item>Kopier linkets webadresse</item>
+        <item>Fjern fra oversigt</item>
+    </string-array>
+</resources>

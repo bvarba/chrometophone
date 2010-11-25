@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>열기</item>
+        <item>북마크에 추가</item>
+        <item>링크 공유</item>
+        <item>링크 URL 복사</item>
+        <item>기록에서 삭제</item>
+    </string-array>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Otevřít</item>
+        <item>Přidat záložku...</item>
+        <item>Sdílet odkaz</item>
+        <item>Kopírovat adresu URL odkazu</item>
+        <item>Odstranit z historie</item>
+    </string-array>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Открыть</item>
+        <item>Добавить закладку</item>
+        <item>Отправить ссылку</item>
+        <item>Копировать URL ссылки</item>
+        <item>Удалить из истории</item>
+    </string-array>
+</resources>

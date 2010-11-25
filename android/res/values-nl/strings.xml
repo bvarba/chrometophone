@@ -27,4 +27,15 @@
     <string name="copied_desktop_clipboard" msgid="8985436645584877">"Desktopklembord gekopieerd"</string>
     <string name="intro_text" msgid="8221719258505966458">"Met Chrome to Phone kunt u gemakkelijk links, kaarten en momenteel geselecteerde telefoonnummers delen tussen uw computer en uw telefoon. &lt;br&gt;&lt;br&gt;U moet de Chrome-browserextensie installeren op uw computer om links te verzenden naar uw telefoon. De browserextensie kan worden gedownload uit de galerij met Chrome-extensies op http://chrome.google.com/extensions/. Zoek naar Chrome to Phone.&lt;br&gt;&lt;br&gt;U hoeft slechts drie eenvoudige stappen te volgen om de configuratie op uw telefoon te voltooien: &lt;br&gt;&lt;br&gt;1. Selecteer het Google-account dat u wilt gebruiken.&lt;br&gt; 2. Maak verbinding tussen Chrome en uw telefoon.&lt;br&gt;3. Stel de voorkeur voor de linkactie in.&lt;br&gt;&lt;br&gt; Als u deze toepassing gebruikt, gaat u akkoord met de &lt;br&gt; &lt;a href={tos_link}&gt;Servicevoorwaarden&lt;/a&gt; en het &lt;a href={pp_link}&gt;Privacybeleid&lt;/a&gt;."</string>
     <string name="help_text" msgid="8726842770376559977">"Met Chrome to Phone kunt u gemakkelijk links, kaarten en momenteel geselecteerde telefoonnummers delen tussen uw computer en uw telefoon. &lt;br&gt;&lt;br&gt;Het bestaat uit twee componenten: een Android-toepassing en een Chrome-browserextensie. De browserextensie kan worden gedownload uit de galerij met Chrome-extensies op http://chrome.google.com/extensions/ &lt;br&gt;&lt;br&gt;Zodra de Chrome-extensie is geïnstalleerd op uw computer, kunt u verbinding maken met uw Android-telefoon.&lt;br&gt;&lt;br&gt;U kunt kiezen of links die naar uw telefoon worden verzonden, automatisch worden geopend door de bijbehorende toepassing of in de statusbalk blijven staan als berichten waarvoor u handmatig actie kunt ondernemen. &lt;br&gt;&lt;br&gt; Als u deze toepassing gebruikt, gaat u akkoord met de &lt;br&gt; &lt;a href={tos_link}&gt;Servicevoorwaarden&lt;/a&gt; en het &lt;a href={pp_link}&gt;Privacybeleid&lt;/a&gt;."</string>
+    <string name="today_text" msgid="5394978862420937303">Vandaag</string>
+    <string name="last_seven_days_text" msgid="4852029789306739080">Afgelopen 7 dagen</string>
+    <string name="last_month_text" msgid="6590554560137734479">Afgelopen maand</string>
+    <string name="older_text" msgid="8361517858518842292">Ouder</string>
+    <string name="clear_all" msgid="2958594063550732304">Alles wissen</string>
+    <string name="settings" msgid="6285536363347126881">Instellingen</string>
+    <string name="share_chooser_title" msgid="8939929380131671300">Delen met</string>
+    <string name="sending_link_toast" msgid="4672942003889006322">Link verzenden...</string>
+    <string name="link_sent_toast" msgid="3619482093745686699">Link verzonden</string>
+    <string name="link_not_sent_toast" msgid="3940456215929964552">Link niet verzonden</string>
+    <string name="link_not_sent_auth_toast" msgid="7239765517934560962">Link niet verzonden - verificatie vereist</string>
 </resources>

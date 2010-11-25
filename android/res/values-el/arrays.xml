@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>Άνοιγμα</item>
+        <item>Προσθήκη σελιδοδείκτη</item>
+        <item>Κοινή χρήση συνδέσμου</item>
+        <item>Αντιγραφή συνδέσμου διεύθυνσης URL</item>
+        <item>Κατάργηση από το ιστορικό</item>
+    </string-array>
+</resources>

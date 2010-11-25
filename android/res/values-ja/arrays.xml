@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="link_action_dialog_items">
+        <item>開く</item>
+        <item>現在のページをブックマーク</item>
+        <item>リンクを共有</item>
+        <item>URLをコピー</item>
+        <item>履歴から消去</item>
+    </string-array>
+</resources>

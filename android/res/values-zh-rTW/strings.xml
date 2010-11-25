@@ -27,4 +27,15 @@
     <string name="copied_desktop_clipboard" msgid="8985436645584877">"已複製電腦的剪貼簿內容"</string>
     <string name="intro_text" msgid="8221719258505966458">"「瀏覽內容轉送手機」擴充功能可讓您在電腦和手機之間輕鬆分享連結、地圖，以及目前選取的手機號碼和文字。&lt;br&gt;&lt;br&gt;您必須在電腦上安裝這個「Google 瀏覽器」擴充功能，才能將連結傳送到您的手機。如要下載這個瀏覽器擴充功能，只要前往「Google 瀏覽器」擴充功能庫，並從中搜尋「瀏覽內容轉送手機」即可，網址是 http://chrome.google.com/extensions/。&lt;br&gt;&lt;br&gt;只要進行 3 個簡單的步驟，即可在手機上完成設定：&lt;br&gt;&lt;br&gt;1. 選擇您要使用的「Google 帳戶」。&lt;br&gt; 2. 建立「Google 瀏覽器」和手機的連線。&lt;br&gt;3. 設定您的連結動作偏好設定。&lt;br&gt;&lt;br&gt;使用這個應用程式即代表您同意&lt;br&gt; &lt;a href={tos_link}&gt;服務條款&lt;/a&gt;及&lt;a href={pp_link}&gt;隱私權政策&lt;/a&gt;。"</string>
     <string name="help_text" msgid="8726842770376559977">"「瀏覽內容轉送手機」擴充功能可讓您在電腦和手機之間輕鬆地分享連結、地圖，以及目前選取的手機號碼和文字。&lt;br&gt;&lt;br&gt;這項工具可分為兩部分：Android 應用程式與「Google 瀏覽器」擴充功能。如要下載這個瀏覽器擴充功能，請前往「Google 瀏覽器」擴充功能庫，網址是 http://chrome.google.com/extensions/。&lt;br&gt;&lt;br&gt;在電腦上安裝這個「Google 瀏覽器」擴充功能之後，即可與您的 Android 手機進行連線。&lt;br&gt;&lt;br&gt;您可以選擇使用適當的應用程式自動開啟傳送到手機的連結，或是先將連結保留在狀態列，之後再以手動方式啟動連結內容。&lt;br&gt;&lt;br&gt;使用這個應用程式即代表您同意&lt;br&gt; &lt;a href={tos_link}&gt;服務條款&lt;/a&gt;及&lt;a href={pp_link}&gt;隱私權政策&lt;/a&gt;。"</string>
+    <string name="today_text" msgid="5394978862420937303">今天</string>
+    <string name="last_seven_days_text" msgid="4852029789306739080">最近 7 天</string>
+    <string name="last_month_text" msgid="6590554560137734479">上個月</string>
+    <string name="older_text" msgid="8361517858518842292">較舊</string>
+    <string name="clear_all" msgid="2958594063550732304">全部清除</string>
+    <string name="settings" msgid="6285536363347126881">設定</string>
+    <string name="share_chooser_title" msgid="8939929380131671300">分享連結</string>
+    <string name="sending_link_toast" msgid="4672942003889006322">正在傳送連結...</string>
+    <string name="link_sent_toast" msgid="3619482093745686699">連結已傳送</string>
+    <string name="link_not_sent_toast" msgid="3940456215929964552">無法傳送連結</string>
+    <string name="link_not_sent_auth_toast" msgid="7239765517934560962">無法傳送連結 - 需要驗證</string>
 </resources>
