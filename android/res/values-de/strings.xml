@@ -38,5 +38,5 @@
     <string name="link_sent_toast" msgid="3619482093745686699">Link wurde gesendet</string>
     <string name="link_not_sent_toast" msgid="3940456215929964552">Link konnte nicht gesendet werden</string>
     <string name="link_not_sent_auth_toast" msgid="7239765517934560962">Link konnte nicht gesendet werden. Authentifizierung erforderlich</string>
-
+    <string name="history">"Verlauf"</string>
 </resources>

@@ -38,4 +38,5 @@
     <string name="link_sent_toast" msgid="3619482093745686699">連結已傳送</string>
     <string name="link_not_sent_toast" msgid="3940456215929964552">無法傳送連結</string>
     <string name="link_not_sent_auth_toast" msgid="7239765517934560962">無法傳送連結 - 需要驗證</string>
+    <string name="history">"記錄"</string>
 </resources>

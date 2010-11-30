@@ -138,5 +138,7 @@
     
     <!-- Brief notification that appears when link cannot be sent from phone to desktop (because of auth issue) [CHAR LIMIT=NONE] -->
     <string name="link_not_sent_auth_toast">Link not sent - authentication required</string>
-    
+   
+    <!-- Label for history -->
+    <string name="history">History</string> 
 </resources>

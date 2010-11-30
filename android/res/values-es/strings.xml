@@ -38,4 +38,5 @@
     <string name="link_sent_toast" msgid="3619482093745686699">Enlace enviado</string>
     <string name="link_not_sent_toast" msgid="3940456215929964552">Enlace no enviado</string>
     <string name="link_not_sent_auth_toast" msgid="7239765517934560962">Enlace no enviado: autenticación necesaria</string>
+    <string name="history">"Historial"</string>
 </resources>

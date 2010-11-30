@@ -38,5 +38,5 @@
     <string name="link_sent_toast" msgid="3619482093745686699">链接已发送</string>
     <string name="link_not_sent_toast" msgid="3940456215929964552">链接未发送</string>
     <string name="link_not_sent_auth_toast" msgid="7239765517934560962">链接未发送 - 要求身份验证</string>
-
+    <string name="history">"历史记录"</string>
 </resources>

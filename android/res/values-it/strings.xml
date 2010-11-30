@@ -38,5 +38,5 @@
     <string name="link_sent_toast" msgid="3619482093745686699">Link inviato</string>
     <string name="link_not_sent_toast" msgid="3940456215929964552">Link non inviato</string>
     <string name="link_not_sent_auth_toast" msgid="7239765517934560962">Link non inviato - occorre l\'autenticazione</string>
-
+    <string name="history">"Cronologia"</string>
 </resources>
