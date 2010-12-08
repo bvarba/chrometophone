@@ -34,7 +34,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
     }
 
     @Override
-    public void onRegistrered(Context context, String registration) {
+    public void onRegistered(Context context, String registration) {
         DeviceRegistrar.registerWithServer(context, registration);
     }
 
