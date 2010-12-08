@@ -133,15 +133,19 @@ public class RegisterServlet extends HttpServlet {
                     // TODO: we should also define a 'ping' message and expire/remove
                     // unused registrations
                     DeviceInfo oldest = registrations.get(0);
-                    long oldestTime = oldest.getRegistrationTimestamp().getTime();
-                    for (int i = 1; i < registrations.size(); i++) {
-                        if (registrations.get(i).getRegistrationTimestamp().getTime() <
-                                oldestTime) {
-                            oldest = registrations.get(i);
-                            oldestTime = oldest.getRegistrationTimestamp().getTime();
+                    if (oldest.getRegistrationTimestamp() == null) {
+                        pm.deletePersistent(oldest);
+                    } else {
+                        long oldestTime = oldest.getRegistrationTimestamp().getTime();
+                        for (int i = 1; i < registrations.size(); i++) {
+                            if (registrations.get(i).getRegistrationTimestamp().getTime() <
+                                    oldestTime) {
+                                oldest = registrations.get(i);
+                                oldestTime = oldest.getRegistrationTimestamp().getTime();
+                            }
                         }
+                        pm.deletePersistent(oldest);
                     }
-                    pm.deletePersistent(oldest);
                 }
 
                 // Get device if it already exists, else create
