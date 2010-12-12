@@ -8,7 +8,7 @@ var channel;
 var socket;
 var req = new XMLHttpRequest();
 
-function sendToPhone(title, url, sel, msgType, listener) {
+function sendToPhone( data, listener ) {
   req.open('POST', sendUrl, true);
   req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
@@ -25,13 +25,22 @@ function sendToPhone(title, url, sel, msgType, listener) {
           listener(STATUS_DEVICE_NOT_REGISTERED);
         }
       } else {
-        listener(STATUS_GENERAL_ERROR);
+    	listener(STATUS_GENERAL_ERROR);
       }
     }
   };
 
   // title, url and sel have already been encoded...
-  var data = 'title=' + title + '&url=' + url + 
-  '&sel=' + sel + '&type=' + encodeURIComponent(msgType);
-  req.send(data);
+  var postData = '';
+  for(var key in data) {
+	  if(postData.length > 1) 
+		  postData += '&';
+	  if( data[key] !== null ) {
+		  opera.postError(key + ' = ' + data[key]);
+		  postData += key + '=' + encodeURIComponent( data[key] );
+	  }
+  }
+  //var postData = 'title=' + data.title + '&url=' + data.url + 
+  //'&sel=' + data.sel + '&type=' + encodeURIComponent(data.msgType);
+  req.send(postData);
 }

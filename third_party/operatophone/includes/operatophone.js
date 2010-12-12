@@ -1,64 +1,76 @@
 // ==UserScript==
-// @include *
+// @include http://*
+// @include https://*
 // ==/UserScript==
 
-// obtain access to all tabs
-
-var ACTION_REGISTER_USERJS = 'register_userjs';
-var ACTION_DEREGISTER_USERJS = 'deregister_userjs';
 var ACTION_CAPTURE_SELECTION = 'capture_selection';
 var ACTION_SEND_PAGE = 'send_to_phone';
+var ACTION_CLOSE_TAB = 'close_tab';
 
-function S4() {
-   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-}
-function guid() {
-   return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-}
+var currentUrl = document.location.href;
 
-if(!window.top.userJS_UUID) {
-	window.top.userJS_UUID = guid();
-	
-	window.addEventListener('focus', function(){
-		opera.extension.postMessage({action: ACTION_REGISTER_USERJS, uuid: window.top.userJS_UUID});
-	}, false);
-	
-	window.addEventListener('blur', function(){
-		opera.extension.postMessage({action: ACTION_DEREGISTER_USERJS, uuid: window.top.userJS_UUID});
-	}, false);
-	
-	// register this tab as the active userjs onload
-	opera.extension.postMessage({action: ACTION_REGISTER_USERJS, uuid: window.top.userJS_UUID});
-}
-
-opera.extension.addEventListener('message', function(request) {
-	
-	//opera.postError('Callback received at UserJS: ' + request.data.action);
-	   	
-	if(request.data.action==ACTION_CAPTURE_SELECTION 
-			&& request.data.uuid==window.top.userJS_UUID) {
-		
-		var currentUrl = document.location.href;
-		
+opera.extension.addEventListener( 'message', function( message ) {
+	if( message.data.action === ACTION_CAPTURE_SELECTION ) {
 		var pageInfo = {
 			action: ACTION_SEND_PAGE,
 			data: {
-				link: encodeURIComponent(currentUrl),
-				title: encodeURIComponent(document.title),
-				selection: encodeURIComponent(window.getSelection())
+				link: currentUrl,
+				title: document.title,
+				selection: window.getSelection() ? window.getSelection().toString() : null
 			}
 		};
-		
 		// URL overrides
-		if (currentUrl.match(/^http[s]?:\/\/maps\.google\./) ||
-				currentUrl.match(/^http[s]?:\/\/www\.google\.[a-z]{2,3}(\.[a-z]{2})\/maps/)) {
+		if ( currentUrl.match( /^http[s]?:\/\/maps\.google\./i ) ||
+				currentUrl.match( /^http[s]?:\/\/www\.google\.[a-z]{2,3}(\.[a-z]{2})\/maps/i ) ) {
 		  var link = document.getElementById('link');
 		  if (link && link.href)
-			  pageInfo.data.link = encodeURIComponent(link.href);
+			  pageInfo.data.link = link.href;
 		}
-		
-		opera.extension.postMessage(pageInfo);
+		opera.extension.postMessage( pageInfo );
 	}
 }, false);
 
-//opera.postError("UserJS loaded: " + window.location.href + " / " + window.top.userJS_UUID);
+function findAndReplace(searchText, replacement, searchNode) {
+    if (!searchText || typeof replacement === 'undefined') {
+        // Throw error here if you want...
+        return;
+    }
+    var regex = typeof searchText === 'string' ?
+                new RegExp(searchText, 'g') : searchText,
+        childNodes = (searchNode || document.body).childNodes,
+        cnLength = childNodes.length,
+        excludes = 'html,head,style,title,link,meta,script,object,iframe';
+    while (cnLength--) {
+        var currentNode = childNodes[cnLength];
+        if (currentNode.nodeType === 1 &&
+            (excludes + ',').indexOf(currentNode.nodeName.toLowerCase() + ',') === -1) {
+            arguments.callee(searchText, replacement, currentNode);
+        }
+        if (currentNode.nodeType !== 3 || !regex.test(currentNode.data) ) {
+            continue;
+        }
+        var parent = currentNode.parentNode,
+            frag = (function(){
+                var html = currentNode.data.replace(regex, replacement),
+                    wrap = document.createElement('div'),
+                    frag = document.createDocumentFragment();
+                wrap.innerHTML = html;
+                while (wrap.firstChild) {
+                    frag.appendChild(wrap.firstChild);
+                }
+                return frag;
+            })();
+        parent.insertBefore(frag, currentNode);
+        parent.removeChild(currentNode);
+    }
+}
+window.addEventListener( 'DOMContentLoaded', function() {
+	if( currentUrl.match( /^http[s]?:\/\/www\.google\.com\/accounts\/ServiceLogin\?(.*)?ahname=Chrome\+to\+Phone(.*)?$/i ) ) {
+		// Opera log in message so users know what they are logging in to.
+		findAndReplace('Chrome', 'Opera', document.body); 
+	} else if (currentUrl.match( /^http:\/\/code\.google\.com\/p\/chrometophone\/logo(.*)?$/i )) {
+		opera.extension.postMessage({
+			action: ACTION_CLOSE_TAB
+		});
+	}
+}, false);
