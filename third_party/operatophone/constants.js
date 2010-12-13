@@ -8,9 +8,9 @@ var apiVersion = 5;
 var baseUrl = 'https://chrometophone.appspot.com';
 var sendUrl = baseUrl + '/send?ver=' + apiVersion;
 var signInUrl = baseUrl + '/signin?extret=' +
-encodeURIComponent('http://code.google.com/p/chrometophone/logo') + '?login&ver=' + apiVersion;;
+encodeURIComponent('http://code.google.com/p/chrometophone/logo') + '?login&ver=' + apiVersion;
 var signOutUrl = baseUrl + '/signout?extret=' +
-encodeURIComponent('http://code.google.com/p/chrometophone/logo') + '?logout&ver=' + apiVersion;;
+encodeURIComponent('http://code.google.com/p/chrometophone/logo') + '?logout&ver=' + apiVersion;
 var registerUrl =  baseUrl + '/register?ver=' + apiVersion;
 var apkUrl = 'http://code.google.com/p/chrometophone/wiki/AndroidApp';
 

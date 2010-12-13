@@ -26,29 +26,26 @@ function loadHandler() {
   	opera.extension.postMessage({
   		action: ACTION_OPEN_TAB,
   		data: {
-  			url: '/o2p_help.html'
+  			url: '/o2p_help.html?' + Math.floor(Math.random()*1e10) // to prevent caching issue
   		}
   	});
-  	closeWindow();
   }, false );
   signOutLink.href = signOutUrl;
-  signOutLink.addEventListener( 'click', closeWindow, false );
 
   // Callback from the background process
   opera.extension.addEventListener( 'message', function( message ) {
+    var msgRcvd = false;
     switch(message.data.action) {
       case STATUS_SUCCESS:
     	 msg.innerHTML = "Sent to phone."
          setSignoutVisibility(true);
-         window.setTimeout(function() {
-             window.close();
-         }, 3000);  
+         msgRcvd = true;
          break;
       case STATUS_LOGIN_REQUIRED:
-         var signinLink = '<a id="signin" href="' + signInUrl + '" target="_o2pTab">sign in</a>';
+         var signinLink = '<a href="' + signInUrl + '" target="_o2pTab_ext">sign in</a>';
          msg.innerHTML = "Please " + signinLink +  " to Opera to Phone.";
-	 document.getElementById('signin').addEventListener( 'click', closeWindow, false );
          setSignoutVisibility(false);
+         msgRcvd = true;
          break;
       case STATUS_DEVICE_NOT_REGISTERED:
          opera.extension.postMessage({
@@ -59,19 +56,25 @@ function loadHandler() {
          });
          msg.innerHTML = "Device not registered for user.";
          setSignoutVisibility(true);
+         msgRcvd = true;
+         break;
       case STATUS_NO_TAB_ACCESS:
     	 msg.innerHTML = "Cannot access the current tab.";
+    	 msgRcvd = true;
          break;
       case STATUS_GENERAL_ERROR:
     	 msg.innerHTML =  "Error sending to phone: " + message.data.action;
          setSignoutVisibility(false);
+         msgRcvd = true;
          break;
     }
+    
+    if(msgRcvd) {
+	  window.setTimeout(function() {
+		  window.close();
+	  }, 3000);
+	}
   }, false);
-  
-  function closeWindow() {
-	window.close();
-  }
   
   function setSignoutVisibility(visible) {
 	signOutLink.style.visibility = visible ? 'visible' : 'hidden';
@@ -94,7 +97,7 @@ window.addEventListener("load", loadHandler, false);
     <td valign="middle">
       <b><div id="msg">Sending to phone...</div></b>
       <p><a id="help" href="#">Help</a> <span id="sep" style="visibility:hidden;">|</span>
-      <a id="signout" target="_blank" style="color: gray; visibility: hidden;">Sign out</a></p>
+      <a id="signout" href="#" target="_o2ptab_ext" style="color: gray; visibility: hidden;">Sign out</a></p>
     </td>
   </tr>
 </table> 

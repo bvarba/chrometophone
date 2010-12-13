@@ -60,7 +60,7 @@ function onMessage( message ) {
       case ACTION_OPEN_TAB:
           if(message.data.data && message.data.data.url) {
              var tabData = {
-                 url: message.data.data.url, 
+                 url: message.data.data.url,
                  focused: true
              };
              opera.extension.tabs.create( tabData );
