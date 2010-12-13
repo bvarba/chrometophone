@@ -19,27 +19,36 @@ td {
 <script type="text/javascript" src="constants.js"></script>
 <script>
 function loadHandler() {
-  var msg = document.getElementById('msg');
-  msg.innerHTML = "Sending to phone...";
-  document.getElementById('help').innerHTML = "Help";
-  document.getElementById('signout').innerHTML = "Sign out";
-
-  setSignOutVisibility(false);
+  var msg = document.getElementById('msg'),
+      helpLink = document.getElementById('help'),
+      signOutLink = document.getElementById('signout');
+  helpLink.addEventListener( 'click', function() {
+  	opera.extension.postMessage({
+  		action: ACTION_OPEN_TAB,
+  		data: {
+  			url: '/o2p_help.html'
+  		}
+  	});
+  	closeWindow();
+  }, false );
+  signOutLink.href = signOutUrl;
+  signOutLink.addEventListener( 'click', closeWindow, false );
 
   // Callback from the background process
   opera.extension.addEventListener( 'message', function( message ) {
     switch(message.data.action) {
       case STATUS_SUCCESS:
     	 msg.innerHTML = "Sent to phone."
-         activateSignOutLink();
+         setSignoutVisibility(true);
          window.setTimeout(function() {
              window.close();
          }, 3000);  
          break;
       case STATUS_LOGIN_REQUIRED:
-         var signinLink = '<a href="' + signInUrl + '" target="_o2pTab">sign in</a>';
+         var signinLink = '<a id="signin" href="' + signInUrl + '" target="_o2pTab">sign in</a>';
          msg.innerHTML = "Please " + signinLink +  " to Opera to Phone.";
-         setSignOutVisibility(false);
+	 document.getElementById('signin').addEventListener( 'click', closeWindow, false );
+         setSignoutVisibility(false);
          break;
       case STATUS_DEVICE_NOT_REGISTERED:
          opera.extension.postMessage({
@@ -49,36 +58,30 @@ function loadHandler() {
              }
          });
          msg.innerHTML = "Device not registered for user.";
-         activateSignOutLink();
+         setSignoutVisibility(true);
       case STATUS_NO_TAB_ACCESS:
     	 msg.innerHTML = "Cannot access the current tab.";
          break;
       case STATUS_GENERAL_ERROR:
     	 msg.innerHTML =  "Error sending to phone: " + message.data.action;
-         activateSignOutLink();
+         setSignoutVisibility(false);
          break;
     }
   }, false);
-
+  
+  function closeWindow() {
+	window.close();
+  }
+  
+  function setSignoutVisibility(visible) {
+	signOutLink.style.visibility = visible ? 'visible' : 'hidden';
+	signOutLink.style.color = visible ? 'blue' : 'gray';
+	document.getElementById('sep').style.visibility = visible ? 'visible' : 'hidden';
+  }
+  
   opera.extension.postMessage({
      action: ACTION_START_SEND
   });
-}
-
-function activateSignOutLink() {
-  setSignOutVisibility(true);
-  var signOutLink = document.getElementById('signout');
-  signOutLink.style.color = 'blue';
-  signOutLink.href=signOutUrl;
-  //signOutLink.click();
-}
-
-function setSignOutVisibility(visible) {
-  var signOutLink = document.getElementById('signout');
-  signOutLink.style.visibility = visible ? 'visible' : 'hidden';
-  signOutLink.href = null;
-  var sep = document.getElementById('sep');
-  sep.style.visibility = visible ? 'visible' : 'hidden';
 }
 
 window.addEventListener("load", loadHandler, false);
@@ -89,9 +92,9 @@ window.addEventListener("load", loadHandler, false);
   <tr>
     <td valign="top" width="48px"><img src="/icon_64.png" width="48px" height="48px" style="margin-right: 4px;"/></td>
     <td valign="middle">
-      <b><div id="msg"></div></b>
-      <p><a id="help" href="help.html" target="_o2pTab"></a> <span id="sep" style="visibility:hidden;">|</span>
-      <a id="signout" target="_blank" style="color: gray;"></a></p>
+      <b><div id="msg">Sending to phone...</div></b>
+      <p><a id="help" href="#">Help</a> <span id="sep" style="visibility:hidden;">|</span>
+      <a id="signout" target="_blank" style="color: gray; visibility: hidden;">Sign out</a></p>
     </td>
   </tr>
 </table> 

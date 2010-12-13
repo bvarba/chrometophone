@@ -30,17 +30,12 @@ function sendToPhone( data, listener ) {
     }
   };
 
-  // title, url and sel have already been encoded...
   var postData = '';
   for(var key in data) {
 	  if(postData.length > 1) 
 		  postData += '&';
-	  if( data[key] !== null ) {
-		  opera.postError(key + ' = ' + data[key]);
+	  if( data[key] !== null )
 		  postData += key + '=' + encodeURIComponent( data[key] );
-	  }
   }
-  //var postData = 'title=' + data.title + '&url=' + data.url + 
-  //'&sel=' + data.sel + '&type=' + encodeURIComponent(data.msgType);
   req.send(postData);
 }
