@@ -5,7 +5,7 @@
 <script type="text/javascript" src="send_logic.js"></script>
 <script>
 var UIItemProperties = { // options for the button
-   disabled: false,
+   disabled: true,
    title: "Opera to Phone",
    icon: "icon_18x18.png",
    popup: {
@@ -74,6 +74,28 @@ function onMessage( message ) {
 }
 
 opera.extension.addEventListener( 'message' , onMessage, false );
+
+function enableButton() {
+	var tab = opera.extension.tabs.getFocused();
+	if (tab) {
+		operaBtn.disabled = false;
+	}
+	else {
+		operaBtn.disabled = true;
+	}
+}
+
+//Enable the button when a tab is ready.
+opera.extension.addEventListener( 'connect', function() {
+	enableButton();
+}, false );
+opera.extension.tabs.addEventListener( 'focus', function() {
+	enableButton();
+}, false );
+opera.extension.tabs.addEventListener( 'blur', function() {
+	enableButton();
+}, false );
+
 </script>
 </head>
 <body>
