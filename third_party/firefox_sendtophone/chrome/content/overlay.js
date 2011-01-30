@@ -62,26 +62,6 @@ var sendtophone = {
 		}
 	},
 
-	detectEmail: function ( email ){
-		var exEmail=/^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
-		return email.match(exEmail);
-	},
-
-	selectText: function (){
-		var input = gContextMenu.target;
-		if (gContextMenu.onTextInput && input && input.value)
-		{
-			selectedText = input.value.substring(input.selectionStart, input.selectionEnd);
-		}
-		else
-		{
-			// Get the selection from the correct iframe
-			var focusedWindow = document.commandDispatcher.focusedWindow;
-			selectedText = focusedWindow.getSelection().toString();
-		}
-		return selectedText;
-	},	
-
 	onMenuItemCommand: function(e, type)
 	{
 		var title, url, selection = '';
@@ -119,12 +99,17 @@ var sendtophone = {
 			case 'text':
 				title = "Selection";
 				url = 'http://google.com/';
-				selection = this.selectText();
-
-			case 'email':
-				title = "Selected EMail Address";
-				url = "mailto:"+this.selectText();
-				selection = "";
+				var input = gContextMenu.target;
+				if (gContextMenu.onTextInput && input && input.value)
+				{
+					selection = input.value.substring(input.selectionStart, input.selectionEnd);
+				}
+				else
+				{
+					// Get the selection from the correct iframe
+					var focusedWindow = document.commandDispatcher.focusedWindow;
+					selection = focusedWindow.getSelection().toString();
+				}
 				break;
 
 			case 'pageButton':

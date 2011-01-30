@@ -1,4 +1,4 @@
-<!ENTITY sendtophoneToolbarButton.label "Fox To Phone">
+<!ENTITY sendtophoneToolbarButton.label "Fox to Phone">
 <!ENTITY sendtophoneToolbarButton.tooltip "Diese Seite auf Ihr Android Gerät schicken.">
 <!ENTITY sendtophoneContext.label "Link auf Android senden">
 <!ENTITY sendtophoneContext.accesskey "A">
@@ -10,18 +10,15 @@
 <!ENTITY sendtophoneContextPage.accesskey "A">
 <!ENTITY sendtophoneContextLogout.label "Abmelden">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Fox To Phone Einstellungen">
+<!ENTITY sendtophoneOptions.title "Send To Phone Einstellungen">
 <!ENTITY sendtophoneProtocols.label "Protokolle">
-<!ENTITY sendtophoneContextSendFile.label "Dateien senden ...">
+<!ENTITY sendtophoneContextSendFile.label "Send files...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
-<!ENTITY sendtophoneContextSendFolder.label "Send Ordner ...">
+<!ENTITY sendtophoneContextSendFolder.label "Send folder...">
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
-<!ENTITY sendtophoneContextQrImage.label "Send dekodiert QR Link zum Android">
+<!ENTITY sendtophoneContextQrImage.label "Send decoded QR Link to Android">
 <!ENTITY sendtophoneContextQrImage.accesskey "Q">
-<!ENTITY sendtophoneContextSendClipboard.label "Send Merkzettel">
+<!ENTITY sendtophoneContextSendClipboard.label "Send Clipboard">
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
-<!ENTITY sendtophoneContextVideo.label "Senden Video zum Android">
+<!ENTITY sendtophoneContextVideo.label "Send Video to Android">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
-<!ENTITY sendtophoneContextEmail.label "Senden Email zum Android">
-<!ENTITY sendtophoneContextEmail.accesskey "E">
-

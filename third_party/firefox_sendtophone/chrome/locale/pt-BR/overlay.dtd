@@ -1,0 +1,24 @@
+<!ENTITY sendtophoneToolbarButton.label "Fox To Phone">
+<!ENTITY sendtophoneToolbarButton.tooltip "Envia esta página para seu celular Android">
+<!ENTITY sendtophoneContext.label "Enviar este link para o Android">
+<!ENTITY sendtophoneContext.accesskey "l">
+<!ENTITY sendtophoneContextImage.label "Enviar esta imagem para o Android">
+<!ENTITY sendtophoneContextImage.accesskey "i">
+<!ENTITY sendtophoneContextText.label "Enviar este texto para o Android">
+<!ENTITY sendtophoneContextText.accesskey "t">
+<!ENTITY sendtophoneContextPage.label "Enviar esta página para o Android">
+<!ENTITY sendtophoneContextPage.accesskey "g">
+<!ENTITY sendtophoneContextLogout.label "Logout">
+<!ENTITY sendtophoneContextLogout.accesskey "L">
+<!ENTITY sendtophoneOptions.title "Preferências do Fox To Phone">
+<!ENTITY sendtophoneProtocols.label "Protocolos">
+<!ENTITY sendtophoneContextSendFile.label "Enviar arquivos...">
+<!ENTITY sendtophoneContextSendFile.accesskey "a">
+<!ENTITY sendtophoneContextSendFolder.label "Enviar pasta...">
+<!ENTITY sendtophoneContextSendFolder.accesskey "p">
+<!ENTITY sendtophoneContextQrImage.label "Enviar link QR decodificado para o Android">
+<!ENTITY sendtophoneContextQrImage.accesskey "Q">
+<!ENTITY sendtophoneContextSendClipboard.label "Enviar área de transferência">
+<!ENTITY sendtophoneContextSendClipboard.accesskey "t">
+<!ENTITY sendtophoneContextVideo.label "Enviar vídeo para o Android">
+<!ENTITY sendtophoneContextVideo.accesskey "v">

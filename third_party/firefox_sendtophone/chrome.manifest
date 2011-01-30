@@ -13,10 +13,11 @@ locale	sendtophone	hu		chrome/locale/hu/
 locale	sendtophone	it		chrome/locale/it/
 locale	sendtophone	ja-JP		chrome/locale/ja-JP/
 locale	sendtophone	nl		chrome/locale/nl/
+locale	sendtophone	pt-BR		chrome/locale/pt-BR/
 locale	sendtophone	ru		chrome/locale/ru/
 locale	sendtophone	sr		chrome/locale/sr/
 locale	sendtophone	sv		chrome/locale/sv/
-locale	sendtophone	zh		chrome/locale/zh/
+locale	sendtophone	zh-CN		chrome/locale/zh-CN/
 
 overlay   chrome://browser/content/browser.xul   chrome://sendtophone/content/ff-overlay.xul
 style chrome://global/content/customizeToolbar.xul chrome://sendtophone/skin/overlay.css
