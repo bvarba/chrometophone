@@ -1,24 +1,26 @@
-<!ENTITY sendtophoneToolbarButton.label "Fox To Phone">
-<!ENTITY sendtophoneToolbarButton.tooltip "Отправить страницу в телефон">
-<!ENTITY sendtophoneContext.label "Отправить ссылку в телефон">
+<!ENTITY sendtophoneToolbarButton.label "Отправить на телефон">
+<!ENTITY sendtophoneToolbarButton.tooltip "Отправить эту страницу к Android телефон">
+<!ENTITY sendtophoneContext.label "Отправить ссылку Android">
 <!ENTITY sendtophoneContext.accesskey "A">
-<!ENTITY sendtophoneContextImage.label "Послать картинку в телефон">
+<!ENTITY sendtophoneContextImage.label "Послать это изображение Android">
 <!ENTITY sendtophoneContextImage.accesskey "A">
-<!ENTITY sendtophoneContextText.label "Отправить текст в телефон">
+<!ENTITY sendtophoneContextText.label "Отправить этот текст Android">
 <!ENTITY sendtophoneContextText.accesskey "A">
-<!ENTITY sendtophoneContextPage.label "Отправить страницу в телефон">
+<!ENTITY sendtophoneContextPage.label "Отправить эту страницу по Android">
 <!ENTITY sendtophoneContextPage.accesskey "A">
 <!ENTITY sendtophoneContextLogout.label "Выйти">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Настройки Fox To Phone">
-<!ENTITY sendtophoneProtocols.label "Протоколы">
-<!ENTITY sendtophoneContextSendFile.label "Отправить файл(ы)…">
+<!ENTITY sendtophoneOptions.title "Fox To Phone Preferences">
+<!ENTITY sendtophoneProtocols.label "Protocols">
+<!ENTITY sendtophoneContextSendFile.label "Send files...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
-<!ENTITY sendtophoneContextSendFolder.label "Отправить папку…">
+<!ENTITY sendtophoneContextSendFolder.label "Send folder...">
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
-<!ENTITY sendtophoneContextQrImage.label "Отправить QR-ссылку в телефон">
+<!ENTITY sendtophoneContextQrImage.label "Send decoded QR Link to Android">
 <!ENTITY sendtophoneContextQrImage.accesskey "Q">
-<!ENTITY sendtophoneContextSendClipboard.label "Отправить содержимое буфера обмена в телефон">
+<!ENTITY sendtophoneContextSendClipboard.label "Send Clipboard">
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
-<!ENTITY sendtophoneContextVideo.label "Отправить видео в телефон">
+<!ENTITY sendtophoneContextVideo.label "Send Video to Android">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneContextEmail.label "Send this email to Android">
+<!ENTITY sendtophoneContextEmail.accesskey "E">

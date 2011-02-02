@@ -111,7 +111,10 @@ sendtophone.showFirefoxContextMenu = function(event) {
 
   gContextMenu.showItem("context-sendtophone-text", gContextMenu.isTextSelected ||
   	(gContextMenu.onTextInput && gContextMenu.target.selectionEnd > gContextMenu.target.selectionStart) );
-
+  gContextMenu.showItem("context-sendtophone-email", (gContextMenu.isTextSelected ||
+  	(gContextMenu.onTextInput && gContextMenu.target.selectionEnd > gContextMenu.target.selectionStart))&&
+	this.detectEmail(this.selectText())
+	);
   gContextMenu.showItem("context-sendtophone-page",  !( gContextMenu.inDirList || gContextMenu.isContentSelected || gContextMenu.onTextInput || gContextMenu.onLink || gContextMenu.onImage ));
 
 };

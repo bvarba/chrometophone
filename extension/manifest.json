@@ -16,7 +16,7 @@
   },
   "background_page": "background.html",
   "permissions": [
-    "contextMenus", "tabs", "http://*/*", "https://*/*"
+    "contextMenus", "notifications", "tabs", "http://*/*", "https://*/*"
   ],
   "content_scripts": [ 
     {

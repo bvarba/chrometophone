@@ -23,20 +23,30 @@
 function onClickHandler(info, tab) {
   var url = info.srcUrl;
   if (url == undefined) url = info.linkUrl;
-  if (url == undefined) url = tab.url;
+  if (url == undefined) url = info.url || tab.url;
 
   var msgType = info.mediaType;
   if (msgType == undefined) msgType = 'page';
 
-  var sel = info.selectionText;
-  if (sel == undefined) sel = '';
+  var sel = info.selectionText || '';
 
   var bg = chrome.extension.getBackgroundPage();
-  bg.sendToPhone(tab.title, url, msgType, sel, function(status) {
+  bg.sendToPhone(info.title || tab.title, url, msgType, sel, function(status) {
     if (status == STATUS_LOGIN_REQUIRED) {
       chrome.tabs.create({url: signInUrl});
     } 
   });
+}
+
+function isWhitelisted(domain) {
+  var domains = JSON.parse(localStorage.getItem('whitelist')) || {};
+  return domains[domain];
+}
+
+function addToWhitelist(domain) {
+  var domains = JSON.parse(localStorage.getItem('whitelist')) || {};
+  domains[domain] = true;
+  localStorage.setItem('whitelist', JSON.stringify(domains));
 }
 
 if (chrome.contextMenus) {
@@ -46,7 +56,28 @@ if (chrome.contextMenus) {
                               'contexts': ['link', 'selection', 'image', 'video', 'audio']});
 }
 
-//initializeBrowserChannel();
+var lastRequest;
+
+// Handle content script requests.
+chrome.extension.onRequest.addListener(
+    function(info, sender, respond) {
+      var msgType = (info.selection && info.selection.length > 0) ? 'selection' : 'page';
+      var domain = info.url.match(/:\/\/(.[^/]+)/)[1];
+
+      if (isWhitelisted(domain)) {
+        sendToPhone(info.title, info.url, msgType, info.selection, function(status) {
+          alert('sent to phone!');
+          if (status == STATUS_LOGIN_REQUIRED) {
+            chrome.tabs.create({url: signInUrl});
+          }
+        });
+      } else {
+        var notification = webkitNotifications.createHTMLNotification('notification.html');
+        lastRequest = info;
+        notification.show();
+      }
+      respond();
+    });
 
 </script>
 

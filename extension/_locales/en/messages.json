@@ -138,5 +138,27 @@
   "signed_out_message": {
     "message": "You are now signed out of Chrome to Phone.",
     "description": "Signed out message."
+  },
+  "request_message": {
+    "message": "The page at <b>$domain$</b> wants to send content to your phone.",
+    "description": "Confirmation when a page initiates a phone action. $domain$ is automatically replaced with the domain.",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "google.com"
+      }
+    }    
+  },
+  "request_deny_message": {
+    "message": "Deny",
+    "description": "Deny a page's request to send content to your phone."
+  },
+  "request_allow_message": {
+    "message": "Allow",
+    "description": "Allow a page's request to send content to your phone."
+  },
+  "request_approve_message": {
+    "message": "Allow Forever",
+    "description": "Allow a page's request - and all subsequent requests - to send content to your phone."
   }
 }

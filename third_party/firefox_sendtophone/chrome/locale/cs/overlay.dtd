@@ -22,3 +22,5 @@
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
 <!ENTITY sendtophoneContextVideo.label "Odeslat video do telefonu">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneContextEmail.label "Send this email to Android">
+<!ENTITY sendtophoneContextEmail.accesskey "E">

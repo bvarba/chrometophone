@@ -22,3 +22,5 @@
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
 <!ENTITY sendtophoneContextVideo.label "Seol Video chun Android">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneContextEmail.label "Seol riomhpost chun Android">
+<!ENTITY sendtophoneContextEmail.accesskey "E">

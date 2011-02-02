@@ -14,19 +14,39 @@
  * limitations under the License.
  */
 
-var pageInfo = {
-  "url": document.location.href,
-  "title": document.title,
-  "selection": window.getSelection().toString()
-};
+function getPageInfo() {
+  var pageInfo = {
+    "url": document.location.href,
+    "title": document.title,
+    "selection": window.getSelection().toString()
+  };
 
-// URL overrides
-if (pageInfo.url.match(/^http[s]?:\/\/maps\.google\./) ||
-    pageInfo.url.match(/^http[s]?:\/\/www\.google\.[a-z]{2,3}(\.[a-z]{2})\/maps/)) {
-  var link = document.getElementById('link');
-  if (link && link.href) {
-    pageInfo.url = link.href;
+  // URL overrides.
+  if (pageInfo.url.match(/^http[s]?:\/\/maps\.google\./) ||
+      pageInfo.url.match(/^http[s]?:\/\/www\.google\.[a-z]{2,3}(\.[a-z]{2})\/maps/)) {
+    var link = document.getElementById('link');
+    if (link && link.href) {
+      pageInfo.url = link.href;
+    }
   }
+  return pageInfo;
 }
 
-chrome.extension.connect().postMessage(pageInfo);
+// Respond to extension requests with the current page info.
+chrome.extension.onRequest.addListener(
+   function(request, sender, sendResponse) {
+     if (request == 'run') {
+       sendResponse(getPageInfo());
+     }
+   });
+
+// Allow pages to initiate sending as well.
+var element = document.createElement('sendtophone');
+element.style.display='none';
+element.style.background='url(\'' + chrome.extension.getURL("icon_16.png") + '\')';
+element.addEventListener('sendToPhone', function() {
+  var pageInfo = getPageInfo();
+  pageInfo.selection = element.innerText;
+  chrome.extension.sendRequest(pageInfo, function(response) {});
+});
+document.head.appendChild(element);

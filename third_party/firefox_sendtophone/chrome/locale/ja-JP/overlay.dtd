@@ -1,24 +1,26 @@
-<!ENTITY sendtophoneToolbarButton.label "Fox To Phone">
-<!ENTITY sendtophoneToolbarButton.tooltip "このページを Android に送信">
-<!ENTITY sendtophoneContext.label "リンクを Android に送信">
+﻿<!ENTITY sendtophoneToolbarButton.label "電話に送信">
+<!ENTITY sendtophoneToolbarButton.tooltip "送信あなたのAndroid携帯電話にこのページ">
+<!ENTITY sendtophoneContext.label "Androidへの送信このリンク">
 <!ENTITY sendtophoneContext.accesskey "A">
-<!ENTITY sendtophoneContextImage.label "画像を Android に送信">
+<!ENTITY sendtophoneContextImage.label "Send this image to Android">
 <!ENTITY sendtophoneContextImage.accesskey "A">
-<!ENTITY sendtophoneContextText.label "選択したテキストを Android に送信">
+<!ENTITY sendtophoneContextText.label "Send this text to Android">
 <!ENTITY sendtophoneContextText.accesskey "A">
-<!ENTITY sendtophoneContextPage.label "このページを Android に送信">
+<!ENTITY sendtophoneContextPage.label "Send this page to Android">
 <!ENTITY sendtophoneContextPage.accesskey "A">
-<!ENTITY sendtophoneContextLogout.label "ログアウト">
+<!ENTITY sendtophoneContextLogout.label "Logout">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Fox to Phone の設定">
-<!ENTITY sendtophoneProtocols.label "プロトコル">
-<!ENTITY sendtophoneContextSendFile.label "送信するファイル...">
+<!ENTITY sendtophoneOptions.title "Fox to Phone Preferences">
+<!ENTITY sendtophoneProtocols.label "Protocols">
+<!ENTITY sendtophoneContextSendFile.label "Send files...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
-<!ENTITY sendtophoneContextSendFolder.label "送信するフォルダ...">
+<!ENTITY sendtophoneContextSendFolder.label "Send folder...">
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
-<!ENTITY sendtophoneContextQrImage.label "解読した QR リンクを Android に送信">
+<!ENTITY sendtophoneContextQrImage.label "Send decoded QR Link to Android">
 <!ENTITY sendtophoneContextQrImage.accesskey "Q">
-<!ENTITY sendtophoneContextSendClipboard.label "クリップボードを Android に送信">
+<!ENTITY sendtophoneContextSendClipboard.label "Send Clipboard">
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
-<!ENTITY sendtophoneContextVideo.label "動画を Android に送信">
+<!ENTITY sendtophoneContextVideo.label "Send Video to Android">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneContextEmail.label "Send this email to Android">
+<!ENTITY sendtophoneContextEmail.accesskey "E">

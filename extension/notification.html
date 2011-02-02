@@ -30,26 +30,26 @@ td {
 }
 </style>
 
-<script src="send_logic.js"></script>
 <script>
-// The popup has it's own sending process since it is the result of a user action.
-// These requests are automatically sent, and errors appear in the popup (rather
-// than a desktop notification.)
 function loadHandler() {
-  document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sending_message');
-  document.getElementById('help').innerHTML = chrome.i18n.getMessage('help_message');
-  document.getElementById('signout').innerHTML = chrome.i18n.getMessage('sign_out_message');
-
-  chrome.tabs.getSelected(null, function(tab) {
-    if (tab.url.indexOf('http:') == 0 ||
-        tab.url.indexOf('https:') == 0) {
-      chrome.tabs.sendRequest(tab.id, 'run', function(response) {
-        var msgType = (info.selection && info.selection.length > 0) ? 'selection' : 'page';
-        sendToPhone(info.title, info.url, msgType, info.selection, sendToPhoneListener);
-      });
-    } else {
-      document.getElementById('msg').innerHTML = chrome.i18n.getMessage('invalid_scheme_message');
-    }
+  var request = chrome.extension.getBackgroundPage().lastRequest;
+  if (!request) {
+    window.close();
+  }
+  var domain = request.url.match(/:\/\/(.[^/]+)/)[1];
+  document.getElementById('msg').innerHTML = chrome.i18n.getMessage('request_message', domain);
+  document.getElementById('deny').innerHTML = chrome.i18n.getMessage('request_deny_message');
+  document.getElementById('allow').innerHTML = chrome.i18n.getMessage('request_allow_message');
+  document.getElementById('approve').innerHTML = chrome.i18n.getMessage('request_approve_message');
+  document.getElementById('content').innerText = request.selection;
+  document.getElementById('allow').addEventListener("click", function () {
+    chrome.extension.getBackgroundPage().onClickHandler(request, null);
+    window.close();
+  });
+  document.getElementById('approve').addEventListener("click", function () {
+    chrome.extension.getBackgroundPage().addToWhitelist(domain);
+    chrome.extension.getBackgroundPage().onClickHandler(request, null);
+    window.close();
   });
 }
 
@@ -73,22 +73,6 @@ function sendToPhoneListener(status) {
   }
 }
 
-function activateSignOutLink() {
-  setSignOutVisibility(true);
-  var signOutLink = document.getElementById('signout');
-  signOutLink.style.color = 'blue';
-  signOutLink.onclick = function() {
-    chrome.tabs.create({url: signOutUrl});
-  };
-}
-
-function setSignOutVisibility(visible) {
-  var signOutLink = document.getElementById('signout');
-  signOutLink.style.visibility = visible ? 'visible' : 'hidden';
-  var sep = document.getElementById('sep');
-  sep.style.visibility = visible ? 'visible' : 'hidden';
-}
-
 </script>
 
 <body onload="loadHandler()">
@@ -96,11 +80,14 @@ function setSignOutVisibility(visible) {
   <tr>
     <td><img src="icon_48.png" style="margin-right: 4px;"/></td>
     <td width="100%" valign="middle">
-      <b><div id="msg"></div></b>
-      <p><a id="help" href="#" onclick="chrome.tabs.create({url: 'help.html'})"></a> <span id="sep">|</span>
-      <a id="signout" href="#" style="color: gray;"></a></p>
+      <div id="msg"></div>
+      <div id="content"></div>
+      <p>
+        <button id="deny" onclick="window.close();"></button>
+        <button id="allow"></button>
+        <button id="approve"></button>
+      </p>
     </td>
-    <td valign="top"><a href="#" onclick="window.close()"><img src="popup_close.png" style="margin: 2px;"></a></td>
   </tr>
 </table> 
 </body>
