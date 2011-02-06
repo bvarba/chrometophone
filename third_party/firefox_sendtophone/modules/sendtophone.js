@@ -133,7 +133,7 @@ var sendtophoneCore = {
 				else
 				{
 					if (req.status==500 && body.substr(0,27) =="ERROR (Unable to send link)"){
-						sendtophoneCore.openTab( "http://www.foxtophone.com/status500/" );
+						sendtophoneCore.openTab( "http://www.foxtophone.com/help/error-500/" );
 					}
 					else if (req.status==400&&this.retryCount<4){
 						this.retryCount++;
