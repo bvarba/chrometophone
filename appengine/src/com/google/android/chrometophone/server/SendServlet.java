@@ -33,7 +33,7 @@ import com.google.appengine.api.users.User;
 
 @SuppressWarnings("serial")
 public class SendServlet extends HttpServlet {
-    private static final Logger log =
+    static final Logger log =
         Logger.getLogger(SendServlet.class.getName());
     private static final String OK_STATUS = "OK";
     private static final String LOGIN_REQUIRED_STATUS = "LOGIN_REQUIRED";
@@ -79,7 +79,7 @@ public class SendServlet extends HttpServlet {
         }
     }
 
-    private boolean doSendToDevice(String url, String title, String sel, String userAccount,
+    protected boolean doSendToDevice(String url, String title, String sel, String userAccount,
             String deviceName, String deviceType, HttpServletResponse resp) throws IOException {
 
         // ok = we sent to at least one device.
