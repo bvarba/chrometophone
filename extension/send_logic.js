@@ -56,7 +56,7 @@ function sendToPhone(title, url, msgType, selection, listener) {
 
   var data = 'title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url) +
       '&sel=' + encodeURIComponent(selection) + '&type=' + encodeURIComponent(msgType) +
-      '&deviceType=ac2dm';
+      '&deviceType=ac2dm&deviceName=Phone,Tablet';  // TODO: add deviceName chooser
   req.send(data);
 }
 
@@ -111,7 +111,7 @@ function initializeBrowserChannel() {
     }
   };
   var data = 'devregid=' + deviceRegistrationId + '&deviceId=' + deviceRegistrationId +
-      '&deviceType=chrome' + '&deviceName=Chrome';
+      '&deviceType=chrome' + '&deviceName=Chrome';  // TODO: Allow device name to be configured
   req.send(data);
 }
 
