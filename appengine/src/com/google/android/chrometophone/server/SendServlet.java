@@ -67,20 +67,20 @@ public class SendServlet extends HttpServlet {
             return;
         }
 
-        String deviceName = req.getParameter("deviceName");
+        String[] deviceNames = req.getParameter("deviceName") != null ? req.getParameter("deviceName").split(",") : null;
         String deviceType = req.getParameter("deviceType");
 
         User user = RegisterServlet.checkUser(req, resp, false);
         if (user != null) {
             doSendToDevice(url, title, sel, user.getEmail(),
-                    deviceName, deviceType, resp);
+                    deviceNames, deviceType, resp);
         } else {
             resp.getWriter().println(LOGIN_REQUIRED_STATUS);
         }
     }
 
     protected boolean doSendToDevice(String url, String title, String sel, String userAccount,
-            String deviceName, String deviceType, HttpServletResponse resp) throws IOException {
+            String deviceNames[], String deviceType, HttpServletResponse resp) throws IOException {
 
         // ok = we sent to at least one device.
         boolean ok = false;
@@ -93,17 +93,17 @@ public class SendServlet extends HttpServlet {
 
         PersistenceManager pm =
             C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
-        
-        // delete will fail if the pm is different than the one used to 
+
+        // delete will fail if the pm is different than the one used to
         // load the object - we must close the object when we're done
-        
+
         List<DeviceInfo> registrations = null;
         try {
             registrations = DeviceInfo.getDeviceInfoForUser(pm, userAccount);
 
             // Deal with upgrades and multi-device:
-            // If user has one device with an old version and few new ones - 
-            // the old registration will be deleted. 
+            // If user has one device with an old version and few new ones -
+            // the old registration will be deleted.
             if (registrations.size() > 1) {
                 // Make sure there is no 'bare' registration
                 // Keys are sorted - check the first
@@ -119,9 +119,17 @@ public class SendServlet extends HttpServlet {
 
             int numSendAttempts = 0;
             for (DeviceInfo deviceInfo : registrations) {
-                if (deviceName != null && !deviceName.equals(deviceInfo.getName())) {
-                    continue;  // user-specified device name
+                if (deviceNames != null) {
+                    boolean found = false;
+                    for (int i = 0; i < deviceNames.length; i++) {
+                        if (deviceNames[i].equals(deviceInfo.getName())) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) continue;  // user-specified device name
                 }
+
                 if (deviceType != null && !deviceType.equals(deviceInfo.getType())) {
                     continue;  // user-specified device type
                 }
@@ -185,8 +193,6 @@ public class SendServlet extends HttpServlet {
                     sel = sel.substring(0, space);
                 } // else: we'll get an error sending
             }
-            // TODO: when we have history, save the url/title/sel in the history
-            // and send a pointer, have device fetch it.
         }
 
         boolean res;

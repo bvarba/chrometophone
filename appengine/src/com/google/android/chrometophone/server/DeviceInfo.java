@@ -84,9 +84,6 @@ public class DeviceInfo {
     @Persistent
     private Boolean debug;
 
-    @Persistent
-    private Boolean phoneToChromeExperimentEnabled;
-
     public DeviceInfo(Key key, String deviceRegistrationID) {
         this.key = key;
         this.deviceRegistrationID = deviceRegistrationID;
@@ -121,15 +118,6 @@ public class DeviceInfo {
 
     public void setDebug(boolean debug) {
         this.debug = new Boolean(debug);
-    }
-
-    public boolean getPhoneToChromeExperimentEnabled() {
-        return (phoneToChromeExperimentEnabled != null ?
-                phoneToChromeExperimentEnabled.booleanValue() : false);
-    }
-
-    public void setPhoneToChromeExperimentEnabled(boolean phoneToChromeExperimentEnabled) {
-        this.phoneToChromeExperimentEnabled = new Boolean(phoneToChromeExperimentEnabled);
     }
 
     public void setType(String type) {

@@ -43,7 +43,6 @@ public class RegisterServlet extends HttpServlet {
     private static final Logger log =
         Logger.getLogger(RegisterServlet.class.getName());
     private static final String OK_STATUS = "OK";
-    private static final String NOT_ENABLED_STATUS = "NOT_ENABLED";
     private static final String LOGIN_REQUIRED_STATUS = "LOGIN_REQUIRED";
     private static final String ERROR_STATUS = "ERROR";
 
@@ -171,15 +170,9 @@ public class RegisterServlet extends HttpServlet {
                 pm.makePersistent(device);
 
                 if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
-                    // if (device.getPhoneToChromeExperimentEnabled()) {
-                    if (true) {
-                        String channelId =
-                            ChannelServiceFactory.getChannelService().createChannel(deviceRegistrationId);
-                        resp.getWriter().println(OK_STATUS + " " + channelId);
-                    } else {
-                        resp.setStatus(400);
-                        resp.getWriter().println(NOT_ENABLED_STATUS);
-                    }
+                    String channelId =
+                        ChannelServiceFactory.getChannelService().createChannel(deviceRegistrationId);
+                    resp.getWriter().println(OK_STATUS + " " + channelId);
                 } else {
                     resp.getWriter().println(OK_STATUS);
                 }
