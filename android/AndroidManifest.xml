@@ -39,7 +39,6 @@
                   android:screenOrientation="portrait">
         </activity>
         
-        <!--
         <activity android:name=".ShareLinkActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -47,7 +46,6 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        -->
 
         <!-- In order to use the c2dm library, an
              application must declare a class with the name C2DMReceiver, in its 

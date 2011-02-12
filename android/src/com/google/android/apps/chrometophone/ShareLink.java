@@ -16,7 +16,6 @@
 
 package com.google.android.apps.chrometophone;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +55,10 @@ public class ShareLink implements Handler.Callback {
                 sendToast(mContext.getString(R.string.sending_link_toast));
                 try {
                     List<NameValuePair> params = new ArrayList<NameValuePair>();
-                    params.add(new BasicNameValuePair("url", URLEncoder.encode(link)));
-                    params.add(new BasicNameValuePair("deviceType", "chrome"));
+                    params.add(new BasicNameValuePair("url", link));
+                    params.add(new BasicNameValuePair("deviceName", "Chrome," +
+                            (DeviceRegistrar.isTablet(mContext) ? "Phone" : "Tablet")));
+
                     SharedPreferences settings = Prefs.get(mContext);
                     final String accountName = settings.getString("accountName", null);
 

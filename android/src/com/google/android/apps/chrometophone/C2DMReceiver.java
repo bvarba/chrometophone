@@ -21,6 +21,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -85,8 +86,12 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
                 // Notify and optionally start activity
                 if (settings.getBoolean("launchBrowserOrMaps", true) && launchIntent != null) {
-                    LauncherUtils.playNotificationSound(context);
-                    context.startActivity(launchIntent);
+                    try {
+                        context.startActivity(launchIntent);
+                        LauncherUtils.playNotificationSound(context);
+                    } catch (ActivityNotFoundException e) {
+                        return;
+                    }
                 } else {
                     if (sel != null && sel.length() > 0) {  // have selection
                         LauncherUtils.generateNotification(context, sel,

@@ -26,7 +26,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 /**
  * Register/unregister with the Chrome to Phone App Engine server.
@@ -118,7 +120,19 @@ public class DeviceRegistrar {
             params.add(new BasicNameValuePair("deviceId", deviceId));
         }
 
+        // TODO: Allow device name to be configured
+        params.add(new BasicNameValuePair("deviceName", isTablet(context) ? "Tablet" : "Phone"));
+
         AppEngineClient client = new AppEngineClient(context, accountName);
         return client.makeRequest(urlPath, params);
+    }
+
+    static boolean isTablet (Context context) {
+        // Look for a width/height >= 7 inches (which is min xlarge width)
+        // TODO: Remove this hack once we allow user to specify device name
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        return (metrics.widthPixels / metrics.xdpi >= 7 || metrics.heightPixels / metrics.ydpi >= 7);
     }
 }
