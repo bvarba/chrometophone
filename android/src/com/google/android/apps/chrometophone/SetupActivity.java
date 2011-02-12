@@ -60,11 +60,11 @@ public class SetupActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = Prefs.get(this);
-        String deviceRegistrationID = prefs.getString("deviceRegistrationID", null);
-        if (deviceRegistrationID != null) {
-            setScreenContent(R.layout.connected);
-        } else {
+        int savedScreenId = prefs.getInt("savedScreenId", -1);
+        if (savedScreenId == -1) {
             setScreenContent(R.layout.intro);
+        } else {
+            setScreenContent(savedScreenId);
         }
 
         registerReceiver(mUpdateUIReceiver, new IntentFilter(UPDATE_UI_ACTION));
@@ -139,6 +139,10 @@ public class SetupActivity extends Activity {
                 break;
             }
         }
+        SharedPreferences prefs = Prefs.get(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("savedScreenId", screenId);
+        editor.commit();
     }
 
     private void setIntroScreenContent() {
@@ -231,9 +235,14 @@ public class SetupActivity extends Activity {
             }
         });
 
+        final Context context = this;
         Button finishButton = (Button) findViewById(R.id.finish);
         finishButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
+                SharedPreferences prefs = Prefs.get(context);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("savedScreenId", R.layout.connected);
+                editor.commit();
                 finish();
             }
         });
