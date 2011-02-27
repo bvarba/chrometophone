@@ -25,6 +25,7 @@ import org.apache.http.message.BasicNameValuePair;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -128,11 +129,9 @@ public class DeviceRegistrar {
     }
 
     static boolean isTablet (Context context) {
-        // Look for a width/height >= 7 inches (which is min xlarge width)
-        // TODO: Remove this hack once we allow user to specify device name
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        return (metrics.widthPixels / metrics.xdpi >= 7 || metrics.heightPixels / metrics.ydpi >= 7);
+        // TODO: This hacky stuff goes away when we allow users to target devices
+        int xlargeBit = 4; // Configuration.SCREENLAYOUT_SIZE_XLARGE;  // upgrade to HC SDK to get this
+        Configuration config = context.getResources().getConfiguration();
+        return (config.screenLayout & xlargeBit) == xlargeBit;
     }
 }
