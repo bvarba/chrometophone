@@ -76,7 +76,7 @@ function initializeBrowserChannel() {
   req.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (req.status == 200) {
-        var channelId = req.responseText.substring(3);  // expect 'OK <id>';
+        var channelId = req.responseText.substring(3).trim();  // expect 'OK <id>';
         channel = new goog.appengine.Channel(channelId);
         socket = channel.open();
         socket.onopen = function() {
