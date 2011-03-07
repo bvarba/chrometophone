@@ -50,6 +50,7 @@ public class XMPPSendServlet extends SendServlet {
         Message message = xmpp.parseMessage(req);
 
         JID fromJid = message.getFromJid();
+        
         String body = message.getBody();
 
         String jid = fromJid.getId();
@@ -59,6 +60,7 @@ public class XMPPSendServlet extends SendServlet {
         }
         
         Map<String, String> params = new HashMap<String, String>();
+        
         String[] bodyParts = body.split("&");
         for (String part: bodyParts) {
             String[] keyValue = part.split("=");
@@ -86,6 +88,7 @@ public class XMPPSendServlet extends SendServlet {
         
         log.info("Sending " + jid);
         doSendToDevice(url, title, sel, jid,
-                    deviceName, deviceType, resp);
+                    deviceName == null ? null : new String[] {deviceName}, 
+                            deviceType, resp);
     }
 }

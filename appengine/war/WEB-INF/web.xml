@@ -30,12 +30,18 @@
         </servlet-class>
     </servlet>
 
-	<servlet>
-		<servlet-name>SendServlet</servlet-name>
-		<servlet-class>com.google.android.chrometophone.server.SendServlet
-		</servlet-class>
-	</servlet>
-	
+        <servlet>
+                <servlet-name>SendServlet</servlet-name>
+                <servlet-class>com.google.android.chrometophone.server.SendServlet
+                </servlet-class>
+        </servlet>
+        
+        <servlet>
+                <servlet-name>XMPPSendServlet</servlet-name>
+                <servlet-class>com.google.android.chrometophone.server.XMPPSendServlet
+                </servlet-class>
+        </servlet>
+        
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>com.google.android.chrometophone.server.AuthServlet
@@ -59,11 +65,16 @@
         <url-pattern>/unregister</url-pattern>
     </servlet-mapping>
 
-	<servlet-mapping>
-		<servlet-name>SendServlet</servlet-name>
-		<url-pattern>/send</url-pattern>
-	</servlet-mapping>
-	
+        <servlet-mapping>
+                <servlet-name>XMPPSendServlet</servlet-name>
+                <url-pattern>/_ah/xmpp/message/chat/</url-pattern>
+        </servlet-mapping>
+        
+        <servlet-mapping>
+                <servlet-name>SendServlet</servlet-name>
+                <url-pattern>/send</url-pattern>
+        </servlet-mapping>
+        
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/signin</url-pattern>

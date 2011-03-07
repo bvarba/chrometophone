@@ -20,4 +20,7 @@
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
+    <inbound-services>
+      <service>xmpp_message</service>
+    </inbound-services>
 </appengine-web-app>
