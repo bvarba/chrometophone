@@ -33,7 +33,7 @@ import com.google.appengine.api.datastore.KeyFactory;
  * Stores config information related to data messaging.
  * 
  */
-class C2DMConfigLoader {
+public class C2DMConfigLoader {
     private final PersistenceManagerFactory PMF;
     private static final Logger log = Logger.getLogger(C2DMConfigLoader.class.getName());
 
@@ -99,7 +99,7 @@ class C2DMConfigLoader {
         }
     }
 
-    private C2DMConfig getDataMessagingConfig(PersistenceManager pm) {
+    public static C2DMConfig getDataMessagingConfig(PersistenceManager pm) {
         Key key = KeyFactory.createKey(C2DMConfig.class.getSimpleName(), 1);
         C2DMConfig dmConfig = null;
         try {
@@ -110,7 +110,7 @@ class C2DMConfigLoader {
             dmConfig.setKey(key);
             // Must be in classpath, before sending. Do not checkin !
             try {
-                InputStream is = this.getClass().getClassLoader().getResourceAsStream("/dataMessagingToken.txt");
+                InputStream is = C2DMConfigLoader.class.getClassLoader().getResourceAsStream("/dataMessagingToken.txt");
                 if (is != null) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                     String token = reader.readLine();

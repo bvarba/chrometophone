@@ -22,48 +22,60 @@
 			com.google.android.chrometophone.server.RegisterServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
-        <servlet-name>UnregisterServlet</servlet-name>
-        <servlet-class>
-            com.google.android.chrometophone.server.UnregisterServlet
-        </servlet-class>
-    </servlet>
+		<servlet-name>UnregisterServlet</servlet-name>
+		<servlet-class>
+			com.google.android.chrometophone.server.UnregisterServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>DebugServlet</servlet-name>
+		<servlet-class>
+			com.google.android.chrometophone.server.DebugServlet
+		</servlet-class>
+	</servlet>
 
         <servlet>
                 <servlet-name>SendServlet</servlet-name>
                 <servlet-class>com.google.android.chrometophone.server.SendServlet
                 </servlet-class>
         </servlet>
-        
-        <servlet>
-                <servlet-name>XMPPSendServlet</servlet-name>
-                <servlet-class>com.google.android.chrometophone.server.XMPPSendServlet
-                </servlet-class>
-        </servlet>
-        
-    <servlet>
-        <servlet-name>AuthServlet</servlet-name>
-        <servlet-class>com.google.android.chrometophone.server.AuthServlet
-        </servlet-class>
-    </servlet>
-    
-    <servlet>
-	    <servlet-name>dataMessagingServlet</servlet-name>
-	    <servlet-class>
-	        com.google.android.c2dm.server.C2DMRetryServlet
+
+	<servlet>
+		<servlet-name>XMPPSendServlet</servlet-name>
+		<servlet-class>com.google.android.chrometophone.server.XMPPSendServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>AuthServlet</servlet-name>
+		<servlet-class>com.google.android.chrometophone.server.AuthServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>dataMessagingServlet</servlet-name>
+		<servlet-class>
+			com.google.android.c2dm.server.C2DMRetryServlet
 	    </servlet-class>
-    </servlet>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>RegisterServlet</servlet-name>
 		<url-pattern>/register</url-pattern>
 	</servlet-mapping>
-	
-	<servlet-mapping>
-        <servlet-name>UnregisterServlet</servlet-name>
-        <url-pattern>/unregister</url-pattern>
-    </servlet-mapping>
+
+        <servlet-mapping>
+                <servlet-name>UnregisterServlet</servlet-name>
+                <url-pattern>/unregister</url-pattern>
+        </servlet-mapping>
+
+        <servlet-mapping>
+                <servlet-name>DebugServlet</servlet-name>
+                <url-pattern>/debug</url-pattern>
+        </servlet-mapping>
 
         <servlet-mapping>
                 <servlet-name>XMPPSendServlet</servlet-name>

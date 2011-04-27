@@ -35,8 +35,18 @@ public final class C2DMConfig {
     @Persistent
     private String authToken;
 
+    @Persistent
+    private String oauth2RefreshToken;
+    
+    @Persistent 
+    private String clientId;
+   
+    @Persistent 
+    private String clientSecret;
+   
+
     public static final String DATAMESSAGING_SEND_ENDPOINT =
-        "https://android.clients.google.com/c2dm/send";
+        "https://android.apis.google.com/c2dm/send";
 
     @Persistent 
     private String c2dmUrl;
@@ -63,5 +73,29 @@ public final class C2DMConfig {
         } else {
             return c2dmUrl;
         }
+    }
+
+    public void setOauth2RefreshToken(String oauth2RefreshToken) {
+        this.oauth2RefreshToken = oauth2RefreshToken;
+    }
+
+    public String getOauth2RefreshToken() {
+        return oauth2RefreshToken;
+    }
+
+    public void setOAuth2ClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getOAuth2ClientId() {
+        return clientId;
+    }
+
+    public void setOAuth2ClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getOAuth2ClientSecret() {
+        return clientSecret;
     }
 }

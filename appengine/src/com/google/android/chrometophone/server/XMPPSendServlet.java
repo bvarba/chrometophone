@@ -24,9 +24,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.users.User;
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
+import com.google.appengine.api.xmpp.MessageBuilder;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
 
@@ -58,6 +58,10 @@ public class XMPPSendServlet extends SendServlet {
         if (resIdx > 0) {
             jid = jid.substring(0, resIdx);
         }
+        if (body.equals("register")) {
+            
+            return;
+        }
         
         Map<String, String> params = new HashMap<String, String>();
         
@@ -87,8 +91,17 @@ public class XMPPSendServlet extends SendServlet {
 
         
         log.info("Sending " + jid);
-        doSendToDevice(url, title, sel, jid,
+        RequestInfo reqInfo = new RequestInfo(jid, getServletContext());
+        
+        String id = doSendToDevice(url, title, sel, reqInfo,
                     deviceName == null ? null : new String[] {deviceName}, 
-                            deviceType, resp);
+                            deviceType);
+        // Confirm
+        Message respmsg = 
+            new MessageBuilder()
+            .withBody(id)
+            .withRecipientJids(fromJid)
+            .withFromJid(message.getRecipientJids()[0]).build();
+        xmpp.sendMessage(respmsg);
     }
 }

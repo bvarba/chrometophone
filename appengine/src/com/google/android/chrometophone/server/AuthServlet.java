@@ -27,6 +27,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+/**
+ * Handles login/logout requests by redirecting to the cookie-based login page.
+ * Has logic to handle redirect limitations, the redirect URL can't be a chrome
+ * URL. 
+ * 
+ * Not needed if OAuth1 is used.  
+ */
 @SuppressWarnings("serial")
 public class AuthServlet extends HttpServlet {
     private static final Logger log =
@@ -45,7 +52,7 @@ public class AuthServlet extends HttpServlet {
             resp.getWriter().println(ERROR_STATUS + " (extret parameter missing)");
             return;
         }
-
+        
         // If login/logout is complete, redirect to the extension page. Otherwise, send user to
         // login/logout, setting the continue page back to this servlet (since UserService does
         // not understand chrome-extension:// URLs)
@@ -69,8 +76,9 @@ public class AuthServlet extends HttpServlet {
                 log.warning("Invalid redirect " + extRet);
             }
         } else {
-            String followOnURL = req.getRequestURI() + "?completed=true&extret=" +
-                    URLEncoder.encode(extRet, "UTF-8");
+            // Called directly from extension, redirect
+            String followOnURL = req.getRequestURI() + "?completed=true" +
+            		"&extret=" + URLEncoder.encode(extRet, "UTF-8");
             UserService userService = UserServiceFactory.getUserService();
             resp.sendRedirect(signIn ? userService.createLoginURL(followOnURL) :
                     userService.createLogoutURL(followOnURL));

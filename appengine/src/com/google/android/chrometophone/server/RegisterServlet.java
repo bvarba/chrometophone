@@ -17,6 +17,7 @@
 package com.google.android.chrometophone.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,157 +33,156 @@ import com.google.android.c2dm.server.C2DMessaging;
 import com.google.appengine.api.channel.ChannelServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.oauth.OAuthService;
-import com.google.appengine.api.oauth.OAuthServiceFactory;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.repackaged.org.json.JSONArray;
+import com.google.appengine.repackaged.org.json.JSONException;
+import com.google.appengine.repackaged.org.json.JSONObject;
 
 @SuppressWarnings("serial")
 public class RegisterServlet extends HttpServlet {
     private static final Logger log =
         Logger.getLogger(RegisterServlet.class.getName());
     private static final String OK_STATUS = "OK";
-    private static final String LOGIN_REQUIRED_STATUS = "LOGIN_REQUIRED";
     private static final String ERROR_STATUS = "ERROR";
 
-    private static int MAX_DEVICES = 5;
+    private static int MAX_DEVICES = 10;
 
     /**
-     * Get the user using the UserService.
-     *
-     * If not logged in, return an error message.
-     *
-     * @return user, or null if not logged in.
-     * @throws IOException
+     * For debug - and possibly show the info, allow device selection.
      */
-    static User checkUser(HttpServletRequest req, HttpServletResponse resp,
-            boolean errorIfNotLoggedIn) throws IOException {
-        // Is it OAuth ?
-        User user = null;
-        OAuthService oauthService = OAuthServiceFactory.getOAuthService();
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        
+        RequestInfo reqInfo = RequestInfo.processRequest(req, resp, getServletContext());
+        if (reqInfo == null) {
+            return;
+        }
+        
+        resp.setContentType("application/json");
+        JSONObject regs = new JSONObject();
         try {
-            user = oauthService.getCurrentUser();
-            if (user != null) {
-                log.info("Found OAuth user " + user);
-                return user;
+            regs.put("user", reqInfo.userName);
+
+            JSONArray devices = new JSONArray();
+            for (DeviceInfo di: reqInfo.devices) {
+                JSONObject dijson = new JSONObject();
+                dijson.put("key", di.getKey().toString());
+                dijson.put("name", di.getName());
+                dijson.put("type", di.getType());
+                dijson.put("regid", di.getDeviceRegistrationID());
+                dijson.put("ts", di.getRegistrationTimestamp());
+                devices.put(dijson);
             }
-        } catch (Throwable t) {
-            user = null;
-        }
+            regs.put("devices", devices);
 
-        UserService userService = UserServiceFactory.getUserService();
-        user = userService.getCurrentUser();
-        if (user == null && errorIfNotLoggedIn) {
-            // TODO: redirect to OAuth/user service login, or send the URL
-            // TODO: 401 instead of 400
-            resp.setStatus(400);
-            resp.getWriter().println(LOGIN_REQUIRED_STATUS);
+            PrintWriter out = resp.getWriter();
+            regs.write(out);
+        } catch (JSONException e) {
+            throw new IOException(e);
         }
-        return user;
+        
     }
-
+    
+    
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
-        // Basic XSRF protection
-        if (req.getHeader("X-Same-Domain") == null) {
-            log.warning("Blocked XSRF");
-            resp.setStatus(400);
-            resp.getWriter().println(ERROR_STATUS + " (Missing X-Same-Domain header)");
+        RequestInfo reqInfo = RequestInfo.processRequest(req, resp, 
+                getServletContext());
+        if (reqInfo == null) {
             return;
         }
-
-        String deviceRegistrationId = req.getParameter("devregid");
-        if (deviceRegistrationId == null || "".equals(deviceRegistrationId.trim())) {
+        
+        if (reqInfo.deviceRegistrationID == null) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + "(Must specify devregid)");
             log.severe("Missing registration id ");
             return;
         }
 
-        String deviceName = req.getParameter("deviceName");
+        String deviceName = reqInfo.getParameter("deviceName");
         if (deviceName == null) {
             deviceName = "Phone";
         }
+        // TODO: generate the device name by adding a number suffix for multiple
+        // devices of same type. Change android app to send model/type. 
 
-        String deviceType = req.getParameter("deviceType");
+        String deviceType = reqInfo.getParameter("deviceType");
         if (deviceType == null) {
             deviceType = "ac2dm";
         }
 
         // Because the deviceRegistrationId isn't static, we use a static
         // identifier for the device. (Can be null in older clients)
-        String deviceId = req.getParameter("deviceId");
+        String deviceId = reqInfo.getParameter("deviceId");
+        
+        // Context-shared PMF.
+        PersistenceManager pm =
+            C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
 
-        User user = checkUser(req, resp, true);
-        if (user != null) {
-            // Context-shared PMF.
-            PersistenceManager pm =
-                C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
-
-            try {
-                List<DeviceInfo> registrations = DeviceInfo.getDeviceInfoForUser(pm,
-                        user.getEmail());
-
-                if (registrations.size() > MAX_DEVICES) {
-                    // we could return an error - but user can't handle it yet.
-                    // we can't let it grow out of bounds.
-                    // TODO: we should also define a 'ping' message and expire/remove
-                    // unused registrations
-                    DeviceInfo oldest = registrations.get(0);
-                    if (oldest.getRegistrationTimestamp() == null) {
-                        pm.deletePersistent(oldest);
-                    } else {
-                        long oldestTime = oldest.getRegistrationTimestamp().getTime();
-                        for (int i = 1; i < registrations.size(); i++) {
-                            if (registrations.get(i).getRegistrationTimestamp().getTime() <
-                                    oldestTime) {
-                                oldest = registrations.get(i);
-                                oldestTime = oldest.getRegistrationTimestamp().getTime();
-                            }
+        try {
+            List<DeviceInfo> registrations = reqInfo.devices;
+            
+            if (registrations.size() > MAX_DEVICES) {
+                // we could return an error - but user can't handle it yet.
+                // we can't let it grow out of bounds.
+                // TODO: we should also define a 'ping' message and expire/remove
+                // unused registrations
+                DeviceInfo oldest = registrations.get(0);
+                if (oldest.getRegistrationTimestamp() == null) {
+                    pm.deletePersistent(oldest);
+                } else {
+                    long oldestTime = oldest.getRegistrationTimestamp().getTime();
+                    for (int i = 1; i < registrations.size(); i++) {
+                        if (registrations.get(i).getRegistrationTimestamp().getTime() <
+                                oldestTime) {
+                            oldest = registrations.get(i);
+                            oldestTime = oldest.getRegistrationTimestamp().getTime();
                         }
-                        pm.deletePersistent(oldest);
                     }
+                    pm.deletePersistent(oldest);
                 }
-
-                // Get device if it already exists, else create
-                String suffix =
-                        (deviceId != null ? "#" + Long.toHexString(Math.abs(deviceId.hashCode())) : "");
-                Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(),
-                        user.getEmail() + suffix);
-
-                DeviceInfo device = null;
-                try {
-                    device = pm.getObjectById(DeviceInfo.class, key);
-                } catch (JDOObjectNotFoundException e) { }
-                if (device == null) {
-                    device = new DeviceInfo(key, deviceRegistrationId);
-                    device.setType(deviceType);
-                } else {
-                    // update registration id
-                    device.setDeviceRegistrationID(deviceRegistrationId);
-                    device.setRegistrationTimestamp(new Date());
-                }
-
-                device.setName(deviceName);  // update display name
-                pm.makePersistent(device);
-
-                if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
-                    String channelId =
-                        ChannelServiceFactory.getChannelService().createChannel(deviceRegistrationId);
-                    resp.getWriter().println(OK_STATUS + " " + channelId);
-                } else {
-                    resp.getWriter().println(OK_STATUS);
-                }
-            } catch (Exception e) {
-                resp.setStatus(500);
-                resp.getWriter().println(ERROR_STATUS + " (Error registering device)");
-                log.log(Level.WARNING, "Error registering device.", e);
-            } finally {
-                pm.close();
             }
+
+            // Get device if it already exists, else create
+            String suffix =
+                (deviceId != null ? "#" + Long.toHexString(Math.abs(deviceId.hashCode())) : "");
+            Key key = KeyFactory.createKey(DeviceInfo.class.getSimpleName(),
+                    reqInfo.userName + suffix);
+
+            DeviceInfo device = null;
+            try {
+                device = pm.getObjectById(DeviceInfo.class, key);
+            } catch (JDOObjectNotFoundException e) { }
+            if (device == null) {
+                device = new DeviceInfo(key, reqInfo.deviceRegistrationID);
+                device.setType(deviceType);
+            } else {
+                // update registration id
+                device.setDeviceRegistrationID(reqInfo.deviceRegistrationID);
+                device.setRegistrationTimestamp(new Date());
+            }
+
+            device.setName(deviceName);  // update display name
+            // TODO: only need to write if something changed, for chrome nothing
+            // changes, we just create a new channel
+            pm.makePersistent(device);
+            log.log(Level.INFO, "Registered device " + reqInfo.userName + " " + 
+                    deviceType);
+
+            if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                String channelId =
+                    ChannelServiceFactory.getChannelService().createChannel(reqInfo.deviceRegistrationID);
+                resp.getWriter().println(OK_STATUS + " " + channelId);
+            } else {
+                resp.getWriter().println(OK_STATUS);
+            }
+        } catch (Exception e) {
+            resp.setStatus(500);
+            resp.getWriter().println(ERROR_STATUS + " (Error registering device)");
+            log.log(Level.WARNING, "Error registering device.", e);
+        } finally {
+            pm.close();
         }
     }
 }
