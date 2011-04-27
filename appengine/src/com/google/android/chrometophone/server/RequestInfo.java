@@ -124,7 +124,7 @@ public class RequestInfo {
         }
         
         if (ri.userName == null) {
-            resp.setStatus(400); // what android app expects. Should fix this
+            resp.setStatus(200);
             resp.getWriter().println(LOGIN_REQUIRED_STATUS);
             log.warning("Missing user");
             return null;
