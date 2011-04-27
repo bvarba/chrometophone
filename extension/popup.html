@@ -54,7 +54,7 @@ function loadHandler() {
   }   
 }
 
-function sendToPhoneListener(status) {
+function sendToPhoneListener(status, responseText) {
   if (status == STATUS_SUCCESS) {
     document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sent_message');
     activateSignOutLink();  
@@ -65,7 +65,7 @@ function sendToPhoneListener(status) {
     activateSignOutLink();
   } else { 
     document.getElementById('msg').innerHTML =  
-        chrome.i18n.getMessage('error_sending_message', req.responseText);
+        chrome.i18n.getMessage('error_sending_message', responseText);
     activateSignOutLink();
   }
 }

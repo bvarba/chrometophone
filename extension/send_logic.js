@@ -26,7 +26,10 @@ if (deviceRegistrationId == undefined || deviceRegistrationId == null) {
 // use javascript console
 var host = localStorage['c2dmHost'];
 if (host == undefined) {
-	host = "chrometophone.appspot.com";
+    // This won't work very well, there is a cert validation issue (cert 
+    // is for *.appspot.com ), workaround is to open the URL in the browser
+    // and accept the cert warnings.
+	host = "9.chrometophone.appspot.com";
 }
 var baseUrl = 'https://' + host;
 var sendUrl = baseUrl + '/send?ver=' + apiVersion;
@@ -71,14 +74,14 @@ function sendToPhone(title, url, msgType, selection, listener) {
             if (req.status == 200) {
                 var body = req.responseText;
                 if (body.indexOf('OK') == 0) {
-                    listener(STATUS_SUCCESS);
+                    listener(STATUS_SUCCESS, "");
                 } else if (body.indexOf('LOGIN_REQUIRED') == 0) {
-                    listener(STATUS_LOGIN_REQUIRED);
+                    listener(STATUS_LOGIN_REQUIRED, responseText);
                 } else if (body.indexOf('DEVICE_NOT_REGISTERED') == 0) {
-                    listener(STATUS_DEVICE_NOT_REGISTERED);
+                    listener(STATUS_DEVICE_NOT_REGISTERED, responseText);
                 }
             } else {
-                listener(STATUS_GENERAL_ERROR);
+                listener(STATUS_GENERAL_ERROR, responseText);
             }
         }, {
             'method': 'POST',
@@ -90,7 +93,7 @@ function sendToPhone(title, url, msgType, selection, listener) {
         });
         return;
     } else {
-        listener(STATUS_LOGIN_REQUIRED);
+        listener(STATUS_LOGIN_REQUIRED, "Login required");
     }
 }
 
