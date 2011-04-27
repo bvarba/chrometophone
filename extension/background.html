@@ -18,6 +18,8 @@
 
 
 <script src="http://chrometophone.appspot.com/_ah/channel/jsapi"></script>
+<script src="chrome_ex_oauthsimple.js"></script>
+<script src="chrome_ex_oauth.js"></script>
 <script src="send_logic.js"></script>
 <script>
 function onClickHandler(info, tab) {
@@ -34,6 +36,9 @@ function onClickHandler(info, tab) {
   var bg = chrome.extension.getBackgroundPage();
   bg.sendToPhone(tab.title, url, msgType, sel, function(status) {
     if (status == STATUS_LOGIN_REQUIRED) {
+        // user will have to click the link again
+        // TODO: encode the parameters, re-do the post after login
+        // or TODO: display the 'loigin required' message first, if regToken is null
       chrome.tabs.create({url: signInUrl});
     } 
   });

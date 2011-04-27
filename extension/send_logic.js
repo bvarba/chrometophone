@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-var apiVersion = 5;
-var baseUrl = 'https://chrometophone.appspot.com';
+var apiVersion = 6;
+
+var deviceRegistrationId = localStorage['deviceRegistrationId'];
+if (deviceRegistrationId == undefined || deviceRegistrationId == null) {
+  deviceRegistrationId = (Math.random() + '').substring(3);
+  localStorage['deviceRegistrationId'] = deviceRegistrationId;
+}
+
+// For dev purpose can be changed to custom server or specific version,
+// use javascript console
+var host = localStorage['c2dmHost'];
+if (host == undefined) {
+	host = "chrometophone.appspot.com";
+}
+var baseUrl = 'https://' + host;
 var sendUrl = baseUrl + '/send?ver=' + apiVersion;
-var signInUrl = baseUrl + '/signin?extret=' +
-    encodeURIComponent(chrome.extension.getURL('help.html')) + '%23signed_in&ver=' + apiVersion;
-var signOutUrl = baseUrl + '/signout?extret=' +
-    encodeURIComponent(chrome.extension.getURL('signed_out.html')) + '&ver=' + apiVersion;
+
 var registerUrl =  baseUrl + '/register?ver=' + apiVersion;
 
 var STATUS_SUCCESS = 'success';
@@ -28,90 +38,156 @@ var STATUS_LOGIN_REQUIRED = 'login_required';
 var STATUS_DEVICE_NOT_REGISTERED = 'device_not_registered';
 var STATUS_GENERAL_ERROR = 'general_error';
 
+var oauth = ChromeExOAuth.initBackgroundPage({
+    'request_url' : baseUrl + '/_ah/OAuthGetRequestToken',
+    'authorize_url' : baseUrl + '/_ah/OAuthAuthorizeToken',
+    'access_url' : baseUrl + '/_ah/OAuthGetAccessToken',
+    'consumer_key' : 'anonymous',
+    'consumer_secret' : 'anonymous',
+    'scope' : baseUrl,
+    'app_name' : 'Chrome To Phone'
+});
+
+
 var channel;
 var socket;
-var req = new XMLHttpRequest();
 
 function sendToPhone(title, url, msgType, selection, listener) {
-  req.open('POST', sendUrl, true);
-  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
-
-  req.onreadystatechange = function() {
-    if (this.readyState == 4) {
-      if (req.status == 200) {
-        var body = req.responseText;
-        if (body.indexOf('OK') == 0) {
-          listener(STATUS_SUCCESS);
-        } else if (body.indexOf('LOGIN_REQUIRED') == 0) {
-          listener(STATUS_LOGIN_REQUIRED);
-        } else if (body.indexOf('DEVICE_NOT_REGISTERED') == 0) {
-          listener(STATUS_DEVICE_NOT_REGISTERED);
-        }
-      } else {
-        listener(STATUS_GENERAL_ERROR);
-      }
+    if (oauth.hasToken()) {
+        // OAuth1 and url-encoded is a nightmare ( well, Oauth1 is a nightmare in all cases,
+        // this is worse )
+        var params = {
+                "title": title,
+                "url": url, 
+                "sel": selection,
+                "type": msgType,
+                "deviceType":"ac2dm",
+                "debug": "1",
+                "token": localStorage['deviceRegistrationId'] 
+        };
+        // no longer passing device name - this may be customized
+        var data = JSON.stringify(params);
+        oauth.sendSignedRequest(baseUrl + "/send", function(responseText, req) {
+            if (req.status == 200) {
+                var body = req.responseText;
+                if (body.indexOf('OK') == 0) {
+                    listener(STATUS_SUCCESS);
+                } else if (body.indexOf('LOGIN_REQUIRED') == 0) {
+                    listener(STATUS_LOGIN_REQUIRED);
+                } else if (body.indexOf('DEVICE_NOT_REGISTERED') == 0) {
+                    listener(STATUS_DEVICE_NOT_REGISTERED);
+                }
+            } else {
+                listener(STATUS_GENERAL_ERROR);
+            }
+        }, {
+            'method': 'POST',
+            'body': data,
+            'headers': {
+                'X-Same-Domain': 'true',
+                'Content-Type': 'application/json'  
+            }
+        });
+        return;
+    } else {
+        listener(STATUS_LOGIN_REQUIRED);
     }
-  };
-
-  var data = 'title=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url) +
-      '&sel=' + encodeURIComponent(selection) + '&type=' + encodeURIComponent(msgType) +
-      '&deviceType=ac2dm&deviceName=Phone,Tablet';  // TODO: add deviceName chooser
-  req.send(data);
 }
 
 function initializeBrowserChannel() {
-  console.log('Initializing browser channel');
-
-  var deviceRegistrationId = localStorage['deviceRegistrationId'];
-  if (deviceRegistrationId == undefined) {
-    deviceRegistrationId = (Math.random() + '').substring(3);
-    localStorage['deviceRegistrationId'] = deviceRegistrationId;
+  if (!oauth.hasToken()) {
+	  console.log('registration required for initializeBrowserChannel');
+	  return;
   }
-
-  req.open('POST', registerUrl, true);
-  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
-
-  req.onreadystatechange = function() {
-    if (this.readyState == 4) {
-      if (req.status == 200) {
-        var channelId = req.responseText.substring(3).trim();  // expect 'OK <id>';
-        channel = new goog.appengine.Channel(channelId);
-        socket = channel.open();
-        socket.onopen = function() {
-          console.log('Browser channel initialized');
-        }
-        socket.onclose = function() {
-          console.log('Browser channel closed');
-          setTimeout('initializeBrowserChannel()', 0); 
-        }
-        socket.onerror = function(error) {
-          if (error.code == 401) {  // token expiry
-            console.log('Browser channel token expired - reconnecting');
-          } else {
-            console.log('Browser channel error');
-            // Automatically reconnects
-          }
-        }
-        socket.onmessage = function(evt) {
-          var url = unescape(evt.data);
-          var regex = /http[s]?:\/\//;
-          if (regex.test(url)) { 
-            chrome.tabs.create({url: url})
-          }
-        }
-      } else if (req.status == 400) {
-        if (req.responseText.indexOf('LOGIN_REQUIRED') == 0) {
-          console.log('Not initializing browser channel because user not logged in');
-        } else if (req.responseText.indexOf('NOT_ENABLED') == 0) {
-          console.log('Not initializing browser channel because feature not enabled for user');
-        } 
-      }
-    }
+  console.log('Initializing browser channel');
+  var params = {
+		  "devregid": deviceRegistrationId,
+		  "deviceId": deviceRegistrationId,
+		  "ver": apiVersion,
+		  "deviceType": "chrome",
+		  "debug":"1",
+		  "deviceName":"Chrome"
   };
-  var data = 'devregid=' + deviceRegistrationId + '&deviceId=' + deviceRegistrationId +
-      '&deviceType=chrome' + '&deviceName=Chrome';  // TODO: Allow device name to be configured
-  req.send(data);
+  var data = JSON.stringify(params);
+  
+  oauth.sendSignedRequest(baseUrl + "/register", function(responseText, req) {
+	        if (req.status == 200) {
+	          var channelId = req.responseText.substring(3).trim();  // expect 'OK <id>';
+	          channel = new goog.appengine.Channel(channelId);
+              console.log('Attempting to open ' + channelId);
+	          socket = channel.open();
+	          socket.onopen = function() {
+	                console.log('Browser channel initialized');
+	          }
+	          socket.onclose = function() {
+	            console.log('Browser channel closed');
+	            setTimeout('initializeBrowserChannel()', 0); 
+	          }
+	          socket.onerror = function(error) {
+	            if (error.code == 401) {  // token expiry
+	              console.log('Browser channel token expired - reconnecting');
+	            } else {
+	              console.log('Browser channel error');
+	              // Automatically reconnects
+	            }
+	          }
+	          socket.onmessage = function(evt) {
+	            console.log("Onmessage " + evt.data);
+	            var url = unescape(evt.data);
+	            var regex = /http[s]?:\/\//;
+	            if (regex.test(url)) { 
+	              chrome.tabs.create({url: url})
+	            }
+	          }
+	        } else if (req.status == 400) {
+	          if (req.responseText.indexOf('LOGIN_REQUIRED') == 0) {
+	            console.log('Not initializing browser channel because user not logged in');
+	          } else if (req.responseText.indexOf('NOT_ENABLED') == 0) {
+	            console.log('Not initializing browser channel because feature not enabled for user');
+	          }
+	        }
+     }, {
+	  'method': 'POST',
+	  'body': data,
+	  'headers': {
+		  'X-Same-Domain': 'true',
+		  'Content-Type': 'application/json'  
+	  }
+  });
+}
+
+// Callback from oauth - we can now register the chrome channel
+function oauthGotTokenCallback(token, secret) {
+      initializeBrowserChannel();
+}
+
+
+function setSignOutVisibility(visible) {
+	  var signOutLink = document.getElementById('signout');
+	  signOutLink.style.visibility = visible ? 'visible' : 'hidden';
+	  var sep = document.getElementById('sep');
+	  if (sep != null) {
+	    sep.style.visibility = visible ? 'visible' : 'hidden';
+	  }
+}
+
+function activateSignOutLink() {
+	  setSignOutVisibility(true);
+	  var signOutLink = document.getElementById('signout');
+      signOutLink.innerHTML = chrome.i18n.getMessage('sign_out_message');
+	  signOutLink.style.color = 'blue';
+	  signOutLink.onclick = function() {
+		  oauth.clearTokens();
+		  chrome.tabs.create({url: 'help.html'})
+	  }	  
+}
+
+function activateSignInLink(onclick) {
+    var link = '<a href="#" onclick="' + onclick + '">' +
+       chrome.i18n.getMessage('sign_in_message') + '</a>';
+    document.getElementById('msg').innerHTML =
+       chrome.i18n.getMessage('sign_in_required_message', link);
+    setSignOutVisibility(false);
+    
 }
 

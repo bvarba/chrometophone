@@ -28,22 +28,41 @@ body,td {
 }
 </style>
 
+<script src="chrome_ex_oauthsimple.js"></script>
+<script src="chrome_ex_oauth.js"></script>
+<script src="send_logic.js"></script>
+
 <script type="text/javascript">
   function loadHandler() {
-    if (document.location.hash == '#signed_in') {
-      var bg = chrome.extension.getBackgroundPage();
-      bg.initializeBrowserChannel();
-      document.getElementById('signed_in_div').innerHTML = '<p><b><font color="#00A000">' +
-          chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
-    }
+	  // We may be called directly, as options, or as result of a 
+	  // redirect from OAuth1 flow
+	  var params = ChromeExOAuth.getQueryStringParams();
+	  if (params['chromeexoauthcallback'] == 'true') {
+              // End of the oauth flow, convert access token with refresh one
+	      oauth.initOAuthFlow(oauthGotTokenCallback);
+              document.getElementById('signed_in_div').innerHTML = '<p><b><font color="#00A000">' +
+                 chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
+	  }
+          if (oauth.hasToken()) {
+              activateSignOutLink();
+          } else {
+              if (params['fromPopup'] == '1') {
+                  // Popup clicked 'login'
+                  oauth.initOAuthFlow(oauthGotTokenCallback);
+                  return;
+              }
+              activateSignInLink("oauth.initOAuthFlow(oauthGotTokenCallback)");        	  
+          }
   }
 </script>
 </head>
 
 <body onload="loadHandler()">
+<!-- Signin or signout link ( same as in popup.html ) -->
+<b><div id="msg"></div></b><a id="signout" href="#" style="color: gray;"></a></p>
 <h1><img src="icon_128.png" width="64" height="64" valign="bottom">&nbsp;Google Chrome to Phone Extension</h1>
+<br>
 
-<div id="signed_in_div"></div>
 
 <h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_title_message'));</script></h2>
 <p style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_message'));</script></p>
@@ -83,10 +102,8 @@ body,td {
   </tr>
 </table>
 <br>
-
 <div align="center">&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html"><script>document.write(chrome.i18n.getMessage('about_google_message'));</script></a> - 
 <a href="http://www.google.com/privacy.html"><script>document.write(chrome.i18n.getMessage('privacy_message'));</script></a> -
 <script>document.write('<a href="http://chrome.google.com/extensions/intl/' + window.navigator.language.substring(0, 2) + '/gallery_tos.html">' + chrome.i18n.getMessage('tos_message') + '</a>');</script></div>
-
 </body>
 </html>
