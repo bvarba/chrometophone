@@ -181,7 +181,8 @@ function activateSignOutLink() {
 	  signOutLink.style.color = 'blue';
 	  signOutLink.onclick = function() {
 		  oauth.clearTokens();
-		  chrome.tabs.create({url: 'help.html'})
+		  chrome.tabs.create({url: 'help.html'});
+		  window.close();
 	  }	  
 }
 

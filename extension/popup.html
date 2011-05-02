@@ -40,6 +40,7 @@ function loadHandler() {
   if (oauth.hasToken()) {
       document.getElementById('msg').innerHTML = chrome.i18n.getMessage('sending_message');
       document.getElementById('signout').innerHTML = chrome.i18n.getMessage('sign_out_message');
+
       chrome.tabs.getSelected(null, function(tab) {
     	    if (tab.url.indexOf('http:') == 0 ||
     	        tab.url.indexOf('https:') == 0) {
