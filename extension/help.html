@@ -17,8 +17,9 @@
 <html>
 <head>
 <title>Google Chrome to Phone Extension</title>
+
 <style type="text/css">
-body,td {
+body, td {
   min-width: 320px;
   overflow-x: hidden;
   font-family: verdana;
@@ -34,35 +35,21 @@ body,td {
 
 <script type="text/javascript">
   function loadHandler() {
-	  // We may be called directly, as options, or as result of a 
-	  // redirect from OAuth1 flow
-	  var params = ChromeExOAuth.getQueryStringParams();
-	  if (params['chromeexoauthcallback'] == 'true') {
-              // End of the oauth flow, convert access token with refresh one
-	      oauth.initOAuthFlow(oauthGotTokenCallback);
-              document.getElementById('signed_in_div').innerHTML = '<p><b><font color="#00A000">' +
-                 chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
-	  }
-          if (oauth.hasToken()) {
-              activateSignOutLink();
-          } else {
-              if (params['fromPopup'] == '1') {
-                  // Popup clicked 'login'
-                  oauth.initOAuthFlow(oauthGotTokenCallback);
-                  return;
-              }
-              activateSignInLink("oauth.initOAuthFlow(oauthGotTokenCallback)");        	  
-          }
+    if (oauth.hasToken()) {
+      document.getElementById('sign_in_out_div').innerHTML =
+          '<a href="help.html" onclick="chrome.extension.getBackgroundPage().closeBrowserChannel(); oauth.clearTokens()">' + chrome.i18n.getMessage('sign_out_message');
+    } else {
+      document.getElementById('sign_in_out_div').innerHTML =
+          '<a href="oauth_interstitial.html">' + chrome.i18n.getMessage('sign_in_message');;
+    }
   }
 </script>
 </head>
 
 <body onload="loadHandler()">
-<!-- Signin or signout link ( same as in popup.html ) -->
-<div id="signed_in_div"></div>
+<div id="sign_in_out_div"></div>
 <b><div id="msg"></div></b><a id="signout" href="#" style="color: gray;"></a></p>
 <h1><img src="icon_128.png" width="64" height="64" valign="bottom">&nbsp;Google Chrome to Phone Extension</h1>
-<br>
 
 <h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_title_message'));</script></h2>
 <p style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_message'));</script></p>

@@ -38,7 +38,7 @@ function onClickHandler(info, tab) {
     if (status == STATUS_LOGIN_REQUIRED) {
         // user will have to click the link again
         // TODO: encode the parameters, re-do the post after login
-        // or TODO: display the 'loigin required' message first, if regToken is null
+        // or TODO: display the 'login required' message first, if regToken is null
       chrome.tabs.create({url: signInUrl});
     } 
   });
