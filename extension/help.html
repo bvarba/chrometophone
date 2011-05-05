@@ -39,8 +39,10 @@ body, td {
       document.getElementById('sign_in_out_div').innerHTML =
           '<a href="help.html" onclick="chrome.extension.getBackgroundPage().closeBrowserChannel(); oauth.clearTokens()">' + chrome.i18n.getMessage('sign_out_message');
     } else {
+      var sign_in_message = chrome.i18n.getMessage('sign_in_message');
+      sign_in_message = sign_in_message.substring(0, 1).toUpperCase() + sign_in_message.substring(1);  // TODO: Get a new title case string translated
       document.getElementById('sign_in_out_div').innerHTML =
-          '<a href="oauth_interstitial.html">' + chrome.i18n.getMessage('sign_in_message');;
+          '<a href="oauth_interstitial.html">' + sign_in_message;
     }
   }
 </script>
