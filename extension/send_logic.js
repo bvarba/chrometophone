@@ -118,7 +118,6 @@ function initializeBrowserChannel(callback) {
     if (req.status == 200) {
       var channelId = req.responseText.substring(3).trim();  // expect 'OK <id>';
       channel = new goog.appengine.Channel(channelId);
-      console.log('Attempting to open ' + channelId);
       socket = channel.open();
       socket.onopen = function() {
         console.log('Browser channel initialized');
@@ -134,7 +133,7 @@ function initializeBrowserChannel(callback) {
           console.log('Browser channel token expired - reconnecting');
         } else {
           console.log('Browser channel error');
-          // Automatically reconnects
+          setTimeout('initializeBrowserChannel()', 0);
         }
       }
       socket.onmessage = function(evt) {
