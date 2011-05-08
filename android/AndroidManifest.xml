@@ -37,7 +37,8 @@
                   android:label="@string/app_name">
         </activity>
         
-        <activity android:name=".ShareLinkActivity">
+        <activity android:name=".ShareLinkActivity"
+                  android:theme="@style/Theme.Translucent">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

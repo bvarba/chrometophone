@@ -38,7 +38,6 @@ import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -46,14 +45,14 @@ import android.util.Log;
  * AppEngine client. Handles auth.
  */
 public class AppEngineClient {
-    private static final String TAG = "AppEngineClient";
-
-    static final String BASE_URL = "https://chrometophone.appspot.com";
+    static final String BASE_URL = "https://9.chrometophone.appspot.com";
     private static final String AUTH_URL = BASE_URL + "/_ah/login";
     private static final String AUTH_TOKEN_TYPE = "ah";
 
     private final Context mContext;
     private final String mAccountName;
+
+    private static final String TAG = "AppEngineClient";
 
     public AppEngineClient(Context context, String accountName) {
         this.mContext = context;
@@ -70,11 +69,10 @@ public class AppEngineClient {
 
     private HttpResponse makeRequestNoRetry(String urlPath, List<NameValuePair> params, boolean newToken)
             throws Exception {
-
         // Get auth token for account
         Account account = new Account(mAccountName, "com.google");
         String authToken = getAuthToken(mContext, account);
-        if (authToken == null) throw new PendingAuthException(mAccountName);
+
         if (newToken) {  // invalidate the cached token
             AccountManager accountManager = AccountManager.get(mContext);
             accountManager.invalidateAuthToken(account.type, authToken);
@@ -121,7 +119,7 @@ public class AppEngineClient {
         return res;
     }
 
-    private String getAuthToken(Context context, Account account) {
+    private String getAuthToken(Context context, Account account) throws PendingAuthException {
         String authToken = null;
         AccountManager accountManager = AccountManager.get(context);
         try {
@@ -129,12 +127,8 @@ public class AppEngineClient {
                     accountManager.getAuthToken (account, AUTH_TOKEN_TYPE, false, null, null);
             Bundle bundle = future.getResult();
             authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
-            // User will be asked for "App Engine" permission.
             if (authToken == null) {
-                // No auth token - will need to ask permission from user.
-                Intent intent = new Intent(SetupActivity.AUTH_PERMISSION_ACTION);
-                intent.putExtra("AccountManagerBundle", bundle);
-                context.sendBroadcast(intent);
+                throw new PendingAuthException(bundle);
             }
         } catch (OperationCanceledException e) {
             Log.w(TAG, e.getMessage());
@@ -148,8 +142,14 @@ public class AppEngineClient {
 
     public class PendingAuthException extends Exception {
         private static final long serialVersionUID = 1L;
-        public PendingAuthException(String message) {
-            super(message);
+        private final Bundle mAccountManagerBundle;
+        public PendingAuthException(Bundle accountManagerBundle) {
+            super();
+            mAccountManagerBundle = accountManagerBundle;
+        }
+
+        public Bundle getAccountManagerBundle() {
+            return mAccountManagerBundle;
         }
     }
 }

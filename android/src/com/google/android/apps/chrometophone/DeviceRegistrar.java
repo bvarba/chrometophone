@@ -27,9 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.provider.Settings.Secure;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.WindowManager;
 
 /**
  * Register/unregister with the Chrome to Phone App Engine server.
@@ -69,7 +67,10 @@ public class DeviceRegistrar {
                     }
                     context.sendBroadcast(updateUIIntent);
                 } catch (AppEngineClient.PendingAuthException pae) {
-                    // Ignore - we'll reregister later
+                    // Get setup activity to ask permission from user.
+                    Intent intent = new Intent(SetupActivity.AUTH_PERMISSION_ACTION);
+                    intent.putExtra("AccountManagerBundle", pae.getAccountManagerBundle());
+                    context.sendBroadcast(intent);
                 } catch (Exception e) {
                     Log.w(TAG, "Registration error " + e.getMessage());
                     updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
@@ -86,20 +87,19 @@ public class DeviceRegistrar {
                 Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
                 try {
                     HttpResponse res = makeRequest(context, deviceRegistrationID, UNREGISTER_PATH);
-                    if (res.getStatusLine().getStatusCode() == 200) {
-                        SharedPreferences settings = Prefs.get(context);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.remove("deviceRegistrationID");
-                        editor.commit();
-                        updateUIIntent.putExtra(STATUS_EXTRA, UNREGISTERED_STATUS);
-                    } else {
+                    if (res.getStatusLine().getStatusCode() != 200) {
                         Log.w(TAG, "Unregistration error " +
                                 String.valueOf(res.getStatusLine().getStatusCode()));
-                        updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
                     }
                 } catch (Exception e) {
-                    updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
-                    Log.w(TAG, "Unegistration error " + e.getMessage());
+                    Log.w(TAG, "Unregistration error " + e.getMessage());
+                } finally {
+                    SharedPreferences settings = Prefs.get(context);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("deviceRegistrationID");
+                    editor.remove("accountName");
+                    editor.commit();
+                    updateUIIntent.putExtra(STATUS_EXTRA, UNREGISTERED_STATUS);
                 }
 
                 // Update dialog activity

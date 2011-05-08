@@ -29,6 +29,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
  */
 public class HistoryActivity extends Activity implements OnChildClickListener {
     private static final int DIALOG_LINK_ACTION = 1;
+    private static final int SETUP_ACTIVITY_REQUEST_CODE = 1;
 
     private ExpandableListView mList;
     private HistoryExpandableListAdapter mListAdapter;
@@ -77,7 +78,8 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
                 return true;
             }
             case R.id.settings: {
-                startActivity(new Intent(this, SetupActivity.class));
+                startActivityForResult(new Intent(this, SetupActivity.class),
+                        SETUP_ACTIVITY_REQUEST_CODE);
                 return true;
             }
             case R.id.help: {
@@ -86,6 +88,16 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
             }
             default: {
                 return super.onOptionsItemSelected(item);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (requestCode == SETUP_ACTIVITY_REQUEST_CODE) {
+            SharedPreferences prefs = Prefs.get(this);
+            if (prefs.getString("deviceRegistrationID", null) == null) {
+                finish();  // user asked to exit
             }
         }
     }
