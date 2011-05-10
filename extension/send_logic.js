@@ -96,7 +96,7 @@ function sendToPhone(title, url, msgType, selection, listener) {
     }
 }
 
-function initializeBrowserChannel(callback) {
+function initializeBrowserChannel() {
   if (!oauth.hasToken()) {
     console.log('Login required for initializeBrowserChannel');
     return;

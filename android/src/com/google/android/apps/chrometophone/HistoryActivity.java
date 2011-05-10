@@ -122,7 +122,7 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
         case DIALOG_LINK_ACTION:
             if (mSelectedLink != null) {
                 return new AlertDialog.Builder(this)
-                    .setTitle(ellipsis(mSelectedLink.mTitle))
+                    .setTitle(mSelectedLink.mTitle)
                     .setItems(R.array.link_action_dialog_items, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == 0) {  // Open
@@ -156,16 +156,7 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
 
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
-        dialog.setTitle(ellipsis(mSelectedLink.mTitle));
-    }
-
-    private String ellipsis(String string) {
-        int MAX_LENGTH = 50;
-        if (string.length() > MAX_LENGTH - 3) {
-            string = string.substring(0, MAX_LENGTH - 3);
-            string += "...";
-        }
-        return string;
+        dialog.setTitle(mSelectedLink.mTitle);
     }
 
     class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
