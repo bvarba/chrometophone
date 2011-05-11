@@ -79,9 +79,7 @@ public class ShareLinkActivity extends Activity implements Handler.Callback {
                 try {
                     List<NameValuePair> params = new ArrayList<NameValuePair>();
                     params.add(new BasicNameValuePair("url", mPendingLink));
-                    params.add(new BasicNameValuePair("deviceName", "Chrome," +
-                            (DeviceRegistrar.isTablet(ShareLinkActivity.this) ? "Phone" : "Tablet")));
-
+                    params.add(new BasicNameValuePair("deviceName", "Chrome"));
                     SharedPreferences settings = Prefs.get(ShareLinkActivity.this);
                     final String accountName = settings.getString("accountName", null);
                     if (accountName == null) {

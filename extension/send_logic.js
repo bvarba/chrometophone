@@ -150,6 +150,10 @@ function initializeBrowserChannel() {
       } else if (req.responseText.indexOf('NOT_ENABLED') == 0) {
         console.log('Not initializing browser channel because feature not enabled for user');
       }
+    } else {  // server not happy, random backoff
+      var delay = Math.random() * 20000;
+      console.log('Failed to register browser channel (' + req.status + '), retrying in ' + delay + 'ms');
+      setTimeout('initializeBrowserChannel()', delay);
     }
   }, {
       'method': 'POST',

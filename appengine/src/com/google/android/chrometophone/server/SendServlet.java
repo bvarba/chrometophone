@@ -120,6 +120,9 @@ public class SendServlet extends HttpServlet {
                             deviceInfo, reqDebug);
                 }
 
+                // ***** TEMP LOGGING for debugging on test version. Remove before production push *****
+                log.info("Sending " + url + " to " + deviceInfo.getDeviceRegistrationID());
+
                 if (res) {
                     log.info("Link sent to phone! collapse_key:" + collapseKey);
                     ok = true;
