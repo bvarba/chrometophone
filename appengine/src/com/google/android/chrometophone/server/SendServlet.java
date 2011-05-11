@@ -41,12 +41,12 @@ public class SendServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
-        RequestInfo reqInfo = RequestInfo.processRequest(req, resp, 
+        RequestInfo reqInfo = RequestInfo.processRequest(req, resp,
                 getServletContext());
         if (reqInfo == null) {
             return;
         }
-        
+
         String sel = reqInfo.getParameter("sel");
         if (sel == null) sel = "";  // optional
 
@@ -59,23 +59,24 @@ public class SendServlet extends HttpServlet {
             resp.getWriter().println(ERROR_STATUS + " (Must specify url parameter)");
             return;
         }
+        logUrlType(url, sel);
 
         String deviceName = reqInfo.getParameter("deviceName");
-        String[] deviceNames = deviceName != null ? 
+        String[] deviceNames = deviceName != null ?
                 deviceName.split(",") : null;
 
         String deviceType = reqInfo.getParameter("deviceType");
 
         String id = doSendToDevice(url, title, sel, reqInfo,
                 deviceNames, deviceType);
-        
+
         if (id.startsWith(ERROR_STATUS)) {
             resp.setStatus(500);
         }
         resp.getWriter().println(id);
     }
 
-    protected String doSendToDevice(String url, String title, 
+    protected String doSendToDevice(String url, String title,
             String sel, RequestInfo reqInfo,
             String deviceNames[], String deviceType) throws IOException {
 
@@ -87,11 +88,11 @@ public class SendServlet extends HttpServlet {
         boolean res = false;
 
         String collapseKey = "" + url.hashCode();
-        
+
         boolean reqDebug = "1".equals(reqInfo.getParameter("debug"));
 
         int ac2dmCnt = 0;
-        
+
         for (DeviceInfo deviceInfo : reqInfo.devices) {
             if ("ac2dm".equals(deviceInfo.getType())) {
                 ac2dmCnt++;
@@ -123,7 +124,7 @@ public class SendServlet extends HttpServlet {
                     log.info("Link sent to phone! collapse_key:" + collapseKey);
                     ok = true;
                 } else {
-                    log.warning("Error: Unable to send link to device: " + 
+                    log.warning("Error: Unable to send link to device: " +
                             deviceInfo.getDeviceRegistrationID());
                 }
             } catch (IOException ex) {
@@ -144,7 +145,7 @@ public class SendServlet extends HttpServlet {
             return OK_STATUS;
         } else {
             // Show the 'no devices' if only the browser is registered.
-            // We should also clarify that 'error status' mean no matching 
+            // We should also clarify that 'error status' mean no matching
             // device found ( when the extension allow specifying the destination )
             if (ac2dmCnt == 0 && "ac2dm".equals(deviceType)) {
                 log.warning("No device registered for " + reqInfo.userName);
@@ -189,5 +190,18 @@ public class SendServlet extends HttpServlet {
         ChannelServiceFactory.getChannelService().sendMessage(
                 new ChannelMessage(channelToken, url));
         return true;
+    }
+
+    private void logUrlType(String url, String sel) {
+        String type = "link";  // default
+        if (sel != null && sel.matches("([Tt]el[:]?)?\\s?[+]?(\\(?[0-9|\\s|\\-|\\.]\\)?)+")) {
+            type = "phone number";
+        } else if (url.matches("http://maps\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?[/?].*") ||
+                url.matches("http://www\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?/maps.*")) {
+            type = "Maps";
+        } else if (url.matches("http://www\\.youtube\\.[a-z]{2,3}(\\.[a-z]{2})?/.*")) {
+            type = "YouTube";
+        }
+        log.info("URL type: " + type);
     }
 }
