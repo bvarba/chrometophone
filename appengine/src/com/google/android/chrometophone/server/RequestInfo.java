@@ -28,7 +28,7 @@ import com.google.appengine.repackaged.org.json.JSONObject;
 
 /**
  * Common code and helpers to handle a request and manipulate device info.
- * 
+ *
  */
 public class RequestInfo {
     private static final Logger log =
@@ -37,7 +37,7 @@ public class RequestInfo {
     private static final String LOGIN_REQUIRED_STATUS = "LOGIN_REQUIRED";
 
     public List<DeviceInfo> devices = new ArrayList<DeviceInfo>();
-    
+
     public String userName;
 
     private ServletContext ctx;
@@ -47,21 +47,21 @@ public class RequestInfo {
     // code.
     Map<String, String[]> parameterMap;
     JSONObject jsonParams;
-    
-    
+
+
     public boolean isAuth() {
         return userName != null;
     }
-    
+
     /**
      * Authenticate the user, check headers and pull the registration data.
-     * 
+     *
      * @return null if authentication fails.
-     * @throws IOException 
+     * @throws IOException
      */
-    public static RequestInfo processRequest(HttpServletRequest req, 
+    public static RequestInfo processRequest(HttpServletRequest req,
             HttpServletResponse resp, ServletContext ctx) throws IOException {
-        
+
         // Basic XSRF protection
         if (req.getHeader("X-Same-Domain") == null) {
             resp.setStatus(400);
@@ -69,7 +69,7 @@ public class RequestInfo {
             log.warning("Missing X-Same-Domain");
             return null;
         }
-        
+
         User user = null;
         RequestInfo ri = new RequestInfo();
         ri.ctx= ctx;
@@ -80,7 +80,7 @@ public class RequestInfo {
                 ri.userName = user.getEmail();
             }
         } catch (Throwable t) {
-            log.log(Level.SEVERE, "Oauth error ", t);
+            log.log(Level.INFO, "Non-OAuth request");
             user = null;
         }
 
@@ -92,10 +92,10 @@ public class RequestInfo {
                 ri.userName = user.getEmail();
             }
         }
-        
+
         if ("application/json".equals(req.getContentType())) {
             Reader reader = req.getReader();
-            // where is readFully ? 
+            // where is readFully ?
             char[] tmp = new char[2048];
             StringBuffer body = new StringBuffer();
             while (true) {
@@ -114,7 +114,7 @@ public class RequestInfo {
         } else {
             ri.parameterMap = req.getParameterMap();
         }
-        
+
         ri.deviceRegistrationID = ri.getParameter("devregid");
         if (ri.deviceRegistrationID != null) {
             ri.deviceRegistrationID = ri.deviceRegistrationID.trim();
@@ -122,19 +122,19 @@ public class RequestInfo {
                 ri.deviceRegistrationID = null;
             }
         }
-        
+
         if (ri.userName == null) {
             resp.setStatus(200);
             resp.getWriter().println(LOGIN_REQUIRED_STATUS);
             log.warning("Missing user");
             return null;
         }
-        
+
         if (ctx != null) {
             ri.initDevices(ctx);
         }
-        
-        
+
+
         return ri;
     }
 
@@ -149,17 +149,18 @@ public class RequestInfo {
             return res[0];
         }
     }
- 
+
     /**
      *  Authenticate using the req, fetch devices.
      */
     private RequestInfo() {
     }
 
+    @Override
     public String toString() {
         return userName + " " + devices.size() + " " + jsonParams;
     }
-    
+
     public RequestInfo(String userN, ServletContext ctx) {
         this.userName = userN;
         this.ctx= ctx;
@@ -185,7 +186,7 @@ public class RequestInfo {
                 if (oldKey.toString().indexOf("#") < 0) {
                     log.warning("Removing old-style key " + oldKey.toString());
                     // multiple devices, first is old-style.
-                    devices.remove(0); 
+                    devices.remove(0);
                     pm.deletePersistent(first);
                 }
             }
@@ -193,10 +194,10 @@ public class RequestInfo {
             log.log(Level.WARNING, "Error loading registrations ", e);
         } finally {
             pm.close();
-        }        
-        
+        }
+
     }
-    
+
     // We need to iterate again - can be avoided with a query.
     // delete will fail if the pm is different than the one used to
     // load the object - we must close the object when we're done
