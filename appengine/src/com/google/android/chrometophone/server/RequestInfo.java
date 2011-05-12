@@ -126,7 +126,7 @@ public class RequestInfo {
         if (ri.userName == null) {
             resp.setStatus(200);
             resp.getWriter().println(LOGIN_REQUIRED_STATUS);
-            log.warning("Missing user");
+            log.info("Missing user, login required");
             return null;
         }
 
