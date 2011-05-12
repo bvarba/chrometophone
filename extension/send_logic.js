@@ -102,7 +102,7 @@ function initializeBrowserChannel() {
     return;
   }
 
-  console.log('Initializing browser channel');
+  console.log(new Date().toTimeString() + ' Initializing browser channel');
   socketCloseRequested = false;
   var params = {
     "devregid": deviceRegistrationId,
@@ -120,19 +120,19 @@ function initializeBrowserChannel() {
       channel = new goog.appengine.Channel(channelId);
       socket = channel.open();
       socket.onopen = function() {
-        console.log('Browser channel initialized');
+        console.log(new Date().toTimeString() + ' Browser channel initialized');
       }
       socket.onclose = function() {
-        console.log('Browser channel closed');
+        console.log(new Date().toTimeString() + ' Browser channel closed');
         if (!socketCloseRequested) {
           setTimeout('initializeBrowserChannel()', 0);
         } 
       }
       socket.onerror = function(error) {
         if (error.code == 401) {  // token expiry
-          console.log('Browser channel token expired - reconnecting');
+          console.log(new Date().toTimeString() + ' Browser channel token expired - reconnecting');
         } else {
-          console.log('Browser channel error');
+          console.log(new Date().toTimeString() + ' Browser channel error - reconnecting');
           setTimeout('initializeBrowserChannel()', 0);
         }
       }
@@ -146,13 +146,11 @@ function initializeBrowserChannel() {
       }
     } else if (req.status == 400) {
       if (req.responseText.indexOf('LOGIN_REQUIRED') == 0) {
-        console.log('Not initializing browser channel because user not logged in');
-      } else if (req.responseText.indexOf('NOT_ENABLED') == 0) {
-        console.log('Not initializing browser channel because feature not enabled for user');
+        console.log(new Date().toTimeString() + ' Not initializing browser channel because user not logged in');
       }
     } else {  // server not happy, random backoff
       var delay = Math.random() * 20000;
-      console.log('Failed to register browser channel (' + req.status + '), retrying in ' + delay + 'ms');
+      console.log(new Date().toTimeString() + ' Failed to register browser channel (' + req.status + '), retrying in ' + delay + 'ms');
       setTimeout('initializeBrowserChannel()', delay);
     }
   }, {
