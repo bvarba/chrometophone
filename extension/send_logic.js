@@ -131,6 +131,7 @@ function initializeBrowserChannel() {
       socket.onerror = function(error) {
         if (error.code == 401) {  // token expiry
           console.log(new Date().toTimeString() + ' Browser channel token expired - reconnecting');
+          // Reconnects in onclose()
         } else {
           console.log(new Date().toTimeString() + ' Browser channel error - reconnecting');
           setTimeout('initializeBrowserChannel()', 0);
@@ -149,7 +150,7 @@ function initializeBrowserChannel() {
         console.log(new Date().toTimeString() + ' Not initializing browser channel because user not logged in');
       }
     } else {  // server not happy, random backoff
-      var delay = Math.random() * 20000;
+      var delay = Math.round(Math.random() * 20000);
       console.log(new Date().toTimeString() + ' Failed to register browser channel (' + req.status + '), retrying in ' + delay + 'ms');
       setTimeout('initializeBrowserChannel()', delay);
     }
