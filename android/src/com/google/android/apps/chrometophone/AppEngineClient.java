@@ -45,7 +45,7 @@ import android.util.Log;
  * AppEngine client. Handles auth.
  */
 public class AppEngineClient {
-    static final String BASE_URL = "https://9.chrometophone.appspot.com";
+    static final String BASE_URL = "https://chrometophone.appspot.com";
     private static final String AUTH_URL = BASE_URL + "/_ah/login";
     private static final String AUTH_TOKEN_TYPE = "ah";
 

@@ -26,10 +26,11 @@ if (deviceRegistrationId == undefined || deviceRegistrationId == null) {
 // use javascript console
 var host = localStorage['c2dmHost'];
 if (host == undefined) {
-  // This won't work very well, there is a cert validation issue (cert 
-  // is for *.appspot.com ), workaround is to open the URL in the browser
-  // and accept the cert warnings.
-  host = "9.chrometophone.appspot.com";
+  // This won't work very well if the URL is x.chrometophone.appspot.com,
+  // there is a cert validation issue (cert is for *.appspot.com ), 
+  // workaround is to open the URL in the browser and accept the cert
+  // warnings.
+  host = "chrometophone.appspot.com";
 }
 var baseUrl = 'https://' + host;
 var sendUrl = baseUrl + '/send?ver=' + apiVersion;
