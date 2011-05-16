@@ -119,6 +119,7 @@ function initializeBrowserChannel() {
     if (req.status == 200) {
       var channelId = req.responseText.substring(3).trim();  // expect 'OK <id>';
       channel = new goog.appengine.Channel(channelId);
+      console.log(new Date().toTimeString() + ' Opening channel...');
       socket = channel.open();
       socket.onopen = function() {
         console.log(new Date().toTimeString() + ' Browser channel initialized');
@@ -126,17 +127,18 @@ function initializeBrowserChannel() {
       socket.onclose = function() {
         console.log(new Date().toTimeString() + ' Browser channel closed');
         if (!socketCloseRequested) {
+          console.log(new Date().toTimeString() + ' Reconnecting...');
           setTimeout('initializeBrowserChannel()', 0);
         } 
       }
       socket.onerror = function(error) {
         if (error.code == 401) {  // token expiry
-          console.log(new Date().toTimeString() + ' Browser channel token expired - reconnecting');
-          // Reconnects in onclose()
+          console.log(new Date().toTimeString() + ' Browser channel token expired');
         } else {
-          console.log(new Date().toTimeString() + ' Browser channel error - reconnecting');
-          setTimeout('initializeBrowserChannel()', 0);
+          console.log(new Date().toTimeString() + ' Browser channel error');
+          socket.close();
         }
+        // Reconnects in onclose()
       }
       socket.onmessage = function(evt) {
         console.log("Onmessage " + evt.data);

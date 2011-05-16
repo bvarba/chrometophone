@@ -38,6 +38,10 @@ body, td {
     if (oauth.hasToken()) {
       document.getElementById('sign_in_out_div').innerHTML =
           '<a href="help.html" onclick="chrome.extension.getBackgroundPage().closeBrowserChannel(); oauth.clearTokens()">' + chrome.i18n.getMessage('sign_out_message');
+      if (document.location.hash == '#just_signed_in') {
+        document.getElementById('just_signed_in_div').innerHTML = '<p><b><font color="#00A000">' +
+            chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
+      }
     } else {
       var sign_in_message = chrome.i18n.getMessage('sign_in_message');
       sign_in_message = sign_in_message.substring(0, 1).toUpperCase() + sign_in_message.substring(1);  // TODO: Get a new title case string translated
@@ -52,6 +56,8 @@ body, td {
 <div id="sign_in_out_div"></div>
 <b><div id="msg"></div></b><a id="signout" href="#" style="color: gray;"></a></p>
 <h1><img src="icon_128.png" width="64" height="64" valign="bottom">&nbsp;Google Chrome to Phone Extension</h1>
+
+<div id="just_signed_in_div"></div>
 
 <h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_title_message'));</script></h2>
 <p style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_message'));</script></p>
