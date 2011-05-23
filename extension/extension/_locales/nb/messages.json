@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "Kun http- eller https-sider håndteres."
+  },
+  "signed_out_title_message": {
+    "message": "Logget av"
+  },
+  "features_message1": {
+    "message": "Send nettleserkoblinger fra Chrome til telefonen."
+  },
+  "help_message": {
+    "message": "Hjelp"
+  },
+  "features_message3": {
+    "message": "YouTube-koblinger starter YouTube-programmet på Android."
+  },
+  "step2_message": {
+    "message": "Søk etter «Chrome to Phone» på chrome.google.com/extensions."
+  },
+  "step3_message": {
+    "message": "Installer utvidelsen Chrome to Phone, og klikk på verktøylinjeikonet for å logge deg på."
+  },
+  "about_title_message": {
+    "message": "Om"
+  },
+  "features_message5": {
+    "message": "Når du velger tekst på en nettside, kopieres teksten til utklippstavlen i Android (trykk og hold inne en tekstboks for å lime inn på Android)."
+  },
+  "features_title_message": {
+    "message": "Funksjoner"
+  },
+  "about_message": {
+    "message": "Med utvidelsen Chrome to Phone fra Google kan du sende koblinger og annen informasjon fra Chrome til Android-enheten. Chrome to Phone  består av en Chrome-nettleserutvidelse og et Android-program."
+  },
+  "signed_out_message": {
+    "message": "Du er nå logget av Chrome to Phone."
+  },
+  "app_desc": {
+    "message": "Med Google-utvidelsen «Chrome to Phone» kan du sende koblinger og annen informasjon fra Chrome til Android-enheten."
+  },
+  "step5_message": {
+    "message": "Installer Android-programmet Chrome to Phone, og fullfør konfigurasjonsprosessen."
+  },
+  "app_name": {
+    "message": "Google Chrome to Phone Extension"
+  },
+  "sign_in_required_message": {
+    "message": "$link$ Chrome to Phone.",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "Pålogget. Du kan nå sende koblinger til telefonen."
+  },
+  "about_google_message": {
+    "message": "Om"
+  },
+  "step6_message": {
+    "message": "Klikk på verktøylinjeikonet for å sende koblingen eller markert tekst til telefonen."
+  },
+  "error_sending_message": {
+    "message": "Feil ved sending til telefon: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "Søk etter «Chrome to Phone» på Market på Android-enheten."
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "Vilkår for bruk"
+  },
+  "sign_in_message": {
+    "message": "logg på"
+  },
+  "features_message4": {
+    "message": "Når du velger et telefonnummer, åpnes ringepanelet automatisk med nummeret fylt i."
+  },
+  "device_not_registered_message": {
+    "message": "Enheten er ikke registrert for brukeren."
+  },
+  "privacy_message": {
+    "message": "Personvern"
+  },
+  "sent_message": {
+    "message": "Sendt til telefonen."
+  },
+  "sending_message": {
+    "message": "Sender til telefon ..."
+  },
+  "features_message2": {
+    "message": "Google Maps-koblinger starter Google Maps-programmet på Android."
+  },
+  "connectivity_error_message": {
+    "message": "Tilkoblingsfeil."
+  },
+  "sign_out_message": {
+    "message": "Logg av"
+  }
+}

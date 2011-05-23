@@ -1,0 +1,104 @@
+<!--
+    Copyright 2010 Google Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<html>
+<head>
+<title>Google Chrome to Phone Extension</title>
+
+<style type="text/css">
+body, td {
+  min-width: 320px;
+  overflow-x: hidden;
+  font-family: verdana;
+  font-size: 12px;
+  color: black;
+  background-color: white;
+}
+</style>
+
+<script src="chrome_ex_oauthsimple.js"></script>
+<script src="chrome_ex_oauth.js"></script>
+<script src="send_logic.js"></script>
+
+<script type="text/javascript">
+  function loadHandler() {
+    if (oauth.hasToken()) {
+      document.getElementById('sign_in_out_div').innerHTML =
+          '<a href="help.html" onclick="chrome.extension.getBackgroundPage().closeBrowserChannel(); oauth.clearTokens()">' + chrome.i18n.getMessage('sign_out_message');
+      if (document.location.hash == '#just_signed_in') {
+        document.getElementById('just_signed_in_div').innerHTML = '<p><b><font color="#00A000">' +
+            chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
+      }
+    } else {
+      var sign_in_message = chrome.i18n.getMessage('sign_in_message');
+      sign_in_message = sign_in_message.substring(0, 1).toUpperCase() + sign_in_message.substring(1);  // TODO: Get a new title case string translated
+      document.getElementById('sign_in_out_div').innerHTML =
+          '<a href="oauth_interstitial.html">' + sign_in_message;
+    }
+  }
+</script>
+</head>
+
+<body onload="loadHandler()">
+<div id="sign_in_out_div"></div>
+<b><div id="msg"></div></b><a id="signout" href="#" style="color: gray;"></a></p>
+<h1><img src="icon_128.png" width="64" height="64" valign="bottom">&nbsp;Google Chrome to Phone Extension</h1>
+
+<div id="just_signed_in_div"></div>
+
+<h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_title_message'));</script></h2>
+<p style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_message'));</script></p>
+
+<h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('features_title_message'));</script></h2>
+
+<ul>
+  <li><script>document.write(chrome.i18n.getMessage('features_message1'));</script></li>
+  <li><script>document.write(chrome.i18n.getMessage('features_message2'));</script></li>
+  <li><script>document.write(chrome.i18n.getMessage('features_message3'));</script></li>
+  <li><script>document.write(chrome.i18n.getMessage('features_message4'));</script></li>
+  <li><script>document.write(chrome.i18n.getMessage('features_message5'));</script></li>
+</ul>
+
+<table width="1131px">
+  <tr>
+    <td width="33%"><img src="comic1.png"></td>
+    <td width="33%"><img src="comic2.png"></td>
+    <td width="33%"><img src="comic3.png"></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step2_message'));</script></td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step3_message'));</script></td>
+  </tr>
+  <tr>
+    <td width="33%"><img id="comic4" src="comic4.png"></td>
+    <td width="33%"><img src="comic5.png"></td>
+    <td width="33%"><img src="comic6.png"></td>
+  </tr>
+  <tr>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step4_message'));</script>
+      <b><a href="#" onmouseover="document.getElementById('comic4').src='qr_code.png'" onmouseout="document.getElementById('comic4').src='comic4.png'">(QR)</a></b>
+    </td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step5_message'));</script></td>
+    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step6_message'));</script></td>
+  </tr>
+</table>
+<br>
+<div align="center">&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html"><script>document.write(chrome.i18n.getMessage('about_google_message'));</script></a> - 
+<a href="http://www.google.com/privacy.html"><script>document.write(chrome.i18n.getMessage('privacy_message'));</script></a> -
+<script>document.write('<a href="http://chrome.google.com/extensions/intl/' + window.navigator.language.substring(0, 2) + '/gallery_tos.html">' + chrome.i18n.getMessage('tos_message') + '</a>');</script></div>
+</body>
+</html>

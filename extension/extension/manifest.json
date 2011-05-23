@@ -1,0 +1,27 @@
+{
+  "name": "__MSG_app_name__",
+  "description": "__MSG_app_desc__",
+  "version": "2.3.0",
+  "default_locale": "en",
+  "icons": {
+    "16": "icon_16.png",
+    "128": "icon_128.png"
+  },
+  "minimum_chrome_version": "6.0.0",
+  "options_page": "help.html",
+  "browser_action": {
+    "default_title": "__MSG_app_name__",
+    "default_icon": "icon_19.png",
+    "default_popup": "popup.html"
+  },
+  "background_page": "background.html",
+  "permissions": [
+    "contextMenus", "tabs", "http://*/*", "https://*/*"
+  ],
+  "content_scripts": [ 
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content_script.js"]
+    }
+  ]  
+}

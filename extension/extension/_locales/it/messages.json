@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "Sono supportate solo le pagine http o https."
+  },
+  "signed_out_title_message": {
+    "message": "Uscito"
+  },
+  "features_message1": {
+    "message": "Invia link del browser da Google Chrome al tuo telefono."
+  },
+  "help_message": {
+    "message": "Guida"
+  },
+  "features_message3": {
+    "message": "I link di YouTube avviano l'applicazione YouTube su Android."
+  },
+  "step2_message": {
+    "message": "Cerca 'Chrome to Phone' all'indirizzo chrome.google.com/extensions."
+  },
+  "step3_message": {
+    "message": "Installa l'estensione Chrome to Phone e fai clic sull'icona nella barra degli strumenti per eseguire l'accesso."
+  },
+  "about_title_message": {
+    "message": "Informazioni"
+  },
+  "features_message5": {
+    "message": "Se selezioni il testo in una pagina web copierai gli appunti su Android (tieni premuto su una casella di testo per incollare in Android)."
+  },
+  "features_title_message": {
+    "message": "Funzioni"
+  },
+  "about_message": {
+    "message": "Il servizio Chrome to Phone, offerto da Google, ti consente di inviare link e altre informazioni da Google Chrome al tuo dispositivo Android. Chrome to Phone è formato da un'estensione per il browser Chrome e da un'applicazione Android."
+  },
+  "signed_out_message": {
+    "message": "Chrome to Phone: utente disconnesso."
+  },
+  "app_desc": {
+    "message": "L'estensione 'Chrome to Phone' ti consente di inviare link e altre informazioni da Google Chrome al tuo dispositivo Android."
+  },
+  "step5_message": {
+    "message": "Installa l'applicazione Android Chrome to Phone e completa la semplice procedura di configurazione."
+  },
+  "app_name": {
+    "message": "Google Chrome to Phone Extension"
+  },
+  "sign_in_required_message": {
+    "message": "$link$ a Chrome to Phone.",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "Accesso eseguito. Ora sei pronto per inviare link al tuo telefono."
+  },
+  "about_google_message": {
+    "message": "Informazioni"
+  },
+  "step6_message": {
+    "message": "Fai clic sull'icona nella barra degli strumenti per inviare il link o il testo attualmente selezionato al tuo telefono."
+  },
+  "error_sending_message": {
+    "message": "Errore nell'invio al telefono: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "Cerca 'Google Chrome to Phone' in Market sul tuo dispositivo Android."
+  },
+  "app_name_short": {
+    "message": "Google Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "Termini di servizio"
+  },
+  "sign_in_message": {
+    "message": "accedi"
+  },
+  "features_message4": {
+    "message": "Se selezioni un numero di telefono, verrà automaticamente avviata l'applicazione Telefono con il numero già inserito."
+  },
+  "device_not_registered_message": {
+    "message": "Dispositivo non registrato in relazione all'utente."
+  },
+  "privacy_message": {
+    "message": "Privacy"
+  },
+  "sent_message": {
+    "message": "Inviato al telefono."
+  },
+  "sending_message": {
+    "message": "Invio al telefono in corso..."
+  },
+  "features_message2": {
+    "message": "I link di Google Maps avviano l'applicazione Google Maps su Android."
+  },
+  "connectivity_error_message": {
+    "message": "Errore di connessione."
+  },
+  "sign_out_message": {
+    "message": "Esci"
+  }
+}
