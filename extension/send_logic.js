@@ -98,6 +98,9 @@ function sendToPhone(title, url, msgType, selection, listener) {
 }
 
 function initializeBrowserChannel() {
+  // Disabled pending more QA
+  return;
+
   if (!oauth.hasToken()) {
     console.log('Login required for initializeBrowserChannel');
     return;
