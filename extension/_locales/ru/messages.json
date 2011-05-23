@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "Поддерживаются только страницы http и https."
+  },
+  "signed_out_title_message": {
+    "message": "Выполнен выход"
+  },
+  "features_message1": {
+    "message": "Отправляйте ссылки из браузера Chrome на телефон."
+  },
+  "help_message": {
+    "message": "Справка"
+  },
+  "features_message3": {
+    "message": "Ссылки YouTube запускают приложение YouTube на устройстве Android."
+  },
+  "step2_message": {
+    "message": "Найдите Chrome –> телефон на сайте chrome.google.com/extensions/?hl=ru."
+  },
+  "step3_message": {
+    "message": "Установите расширение Chrome to Phone и нажмите значок на панели инструментов, чтобы выполнить вход."
+  },
+  "about_title_message": {
+    "message": "О программе"
+  },
+  "features_message5": {
+    "message": "Выделенный на веб-странице текст будет скопирован в буфер обмена устройства Android (нажмите и удерживайте текстовое поле, чтобы вставить текст в устройство Android)."
+  },
+  "features_title_message": {
+    "message": "Возможности"
+  },
+  "about_message": {
+    "message": "Расширение Google Chrome to Phone позволяет отправлять ссылки и другую информацию из Chrome на устройство Android. Chrome to Phone состоит из расширения браузера Chrome и приложения Android."
+  },
+  "signed_out_message": {
+    "message": "Вы вышли из Chrome to Phone."
+  },
+  "app_desc": {
+    "message": "Расширение Google Chrome to Phone позволяет отправлять ссылки и другую информацию из Chrome на устройство Android."
+  },
+  "step5_message": {
+    "message": "Установите приложение Android для Chrome to Phone и настройте его."
+  },
+  "app_name": {
+    "message": "Google Chrome to Phone Extension"
+  },
+  "sign_in_required_message": {
+    "message": "$link$ в Chrome to Phone.",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "Вход выполнен. Теперь вы можете отправлять ссылки на свой телефон."
+  },
+  "about_google_message": {
+    "message": "О программе"
+  },
+  "step6_message": {
+    "message": "Нажмите значок на панели инструментов, чтобы отправить ссылку или выделенный текст на телефон."
+  },
+  "error_sending_message": {
+    "message": "Ошибка при отправке на телефон: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "На своем устройстве Android найдите в Маркете расширение Chrome to Phone."
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "Условия предоставления услуг"
+  },
+  "sign_in_message": {
+    "message": "Войдите"
+  },
+  "features_message4": {
+    "message": "При выделении номера телефона будет автоматически запущено приложение 'Телефон' с уже введенным номером."
+  },
+  "device_not_registered_message": {
+    "message": "Устройство не зарегистрировано для пользователя."
+  },
+  "privacy_message": {
+    "message": "Конфиденциальность"
+  },
+  "sent_message": {
+    "message": "Отправлено на телефон."
+  },
+  "sending_message": {
+    "message": "Отправка на телефон..."
+  },
+  "features_message2": {
+    "message": "Ссылки Карт Google запускают приложение Карты Google на Android."
+  },
+  "connectivity_error_message": {
+    "message": "Ошибка соединения."
+  },
+  "sign_out_message": {
+    "message": "Выйти"
+  }
+}
