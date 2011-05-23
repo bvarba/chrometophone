@@ -172,6 +172,6 @@ function initializeBrowserChannel() {
 
 function closeBrowserChannel() {
   socketCloseRequested = true;
-  socket.close();
+  if (socket) socket.close();
 }
 
