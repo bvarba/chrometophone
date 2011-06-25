@@ -125,16 +125,16 @@ var sendtophone = {
 					{
 						var imgData = this.detectQR( images[i].src );
 						if (imgData)
-							QRs.push({data: imgData, img: images[i]});
+							QRs.push({imgData: imgData, img: images[i]});
 					}
 
 					if (QRs.length==1)
 					{
-						var data = QRs[0].data;
+						var data = QRs[0].imgData;
 						if (pref == 0)
 						{
-							var question = this.getString("ConfirmQR").replace("%s", data.substring(0, 80)) ;
-							var answer = this.confirm( question );
+							var question = this.getString("ConfirmQR").replace("%s", data.substring(0, 80)),
+								answer = this.confirm( question );
 							pref = (answer.confirm ? 1 : 2 );
 							if (answer.remember)
 								this.prefs.setIntPref("SearchQR", pref);
@@ -226,7 +226,7 @@ var sendtophone = {
 
 	isMapsURL: function(url)
 	{
-		return url.match("http://maps\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?[/?].*") ||	url.match("http://www\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?/maps.*");
+		return url.match("http://maps\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?[/?].*") || url.match("http://www\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?/maps.*");
 	},
 
 	validURI: function(uri)
@@ -276,9 +276,9 @@ var sendtophone = {
 		// Get the data
 		clip.getData(trans, clip.kGlobalClipboard);
 
-		var str       = new Object();
-		var strLength = new Object();
-		var pastetext;
+		var str       = new Object(),
+			strLength = new Object(),
+			pastetext;
 
 		trans.getTransferData("text/unicode", str, strLength);
 

@@ -1,24 +1,24 @@
-<!ENTITY sendtophoneToolbarButton.label "Fox To Phone³ÌÐò">
-<!ENTITY sendtophoneToolbarButton.tooltip "·¢ËÍÕâ¸öÒ³Ãæµ½ÄãµÄ°²×¿ÊÖ»ú">
-<!ENTITY sendtophoneContext.label "·¢ËÍÕâ¸öÁ´½Óµ½ÄãµÄ°²×¿ÊÖ»ú">
+ï»¿<!ENTITY sendtophoneToolbarButton.label "Fox To Phoneç¨‹åº">
+<!ENTITY sendtophoneToolbarButton.tooltip "å‘é€è¿™ä¸ªé¡µé¢åˆ°ä½ çš„å®‰å“æ‰‹æœº">
+<!ENTITY sendtophoneContext.label "å‘é€è¿™ä¸ªé“¾æŽ¥åˆ°ä½ çš„å®‰å“æ‰‹æœº">
 <!ENTITY sendtophoneContext.accesskey "A">
-<!ENTITY sendtophoneContextImage.label "·¢ËÍÕâÕÅÍ¼Æ¬µ½ÄãµÄ°²×¿ÊÖ»ú">
+<!ENTITY sendtophoneContextImage.label "å‘é€è¿™å¼ å›¾ç‰‡åˆ°ä½ çš„å®‰å“æ‰‹æœº">
 <!ENTITY sendtophoneContextImage.accesskey "A">
-<!ENTITY sendtophoneContextText.label "·¢ËÍÕâ¸öÎÄ±¾µ½ÄãµÄ°²×¿ÊÖ»ú">
+<!ENTITY sendtophoneContextText.label "å‘é€è¿™ä¸ªæ–‡æœ¬åˆ°ä½ çš„å®‰å“æ‰‹æœº">
 <!ENTITY sendtophoneContextText.accesskey "A">
-<!ENTITY sendtophoneContextPage.label "·¢ËÍÕâ¸öÒ³Ãæµ½ÄãµÄ°²×¿ÊÖ»ú">
+<!ENTITY sendtophoneContextPage.label "å‘é€è¿™ä¸ªé¡µé¢åˆ°ä½ çš„å®‰å“æ‰‹æœº">
 <!ENTITY sendtophoneContextPage.accesskey "A">
-<!ENTITY sendtophoneContextLogout.label "ÍË³öµÇÂ¼">
+<!ENTITY sendtophoneContextLogout.label "é€€å‡ºç™»å½•">
 <!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Fox To Phone ÉèÖÃ">
-<!ENTITY sendtophoneProtocols.label "Ð­Òé">
-<!ENTITY sendtophoneContextSendFile.label "·¢ËÍÎÄ¼þ...">
+<!ENTITY sendtophoneOptions.title "Fox To Phone è®¾ç½®">
+<!ENTITY sendtophoneProtocols.label "åè®®">
+<!ENTITY sendtophoneContextSendFile.label "å‘é€æ–‡ä»¶...">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
-<!ENTITY sendtophoneContextSendFolder.label "·¢ËÍÎÄ¼þ¼Ð...">
+<!ENTITY sendtophoneContextSendFolder.label "å‘é€æ–‡ä»¶å¤¹...">
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
-<!ENTITY sendtophoneContextQrImage.label "°Ñ½âÂëµÄQRÁ´½Ó·¢ËÍµ½°²×¿ÊÖ»ú">
+<!ENTITY sendtophoneContextQrImage.label "æŠŠè§£ç çš„QRé“¾æŽ¥å‘é€åˆ°å®‰å“æ‰‹æœº">
 <!ENTITY sendtophoneContextQrImage.accesskey "Q">
-<!ENTITY sendtophoneContextSendClipboard.label "·¢ËÍ¼ôÌù°åÄÚÈÝ">
+<!ENTITY sendtophoneContextSendClipboard.label "å‘é€å‰ªè´´æ¿å†…å®¹">
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
-<!ENTITY sendtophoneContextVideo.label "·¢ËÍÕâ¸öÊÓÆµµ½ÄãµÄ°²×¿ÊÖ»ú">
+<!ENTITY sendtophoneContextVideo.label "å‘é€è¿™ä¸ªè§†é¢‘åˆ°ä½ çš„å®‰å“æ‰‹æœº">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
