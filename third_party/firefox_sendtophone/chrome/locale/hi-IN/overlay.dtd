@@ -2,23 +2,3 @@
 <!ENTITY sendtophoneToolbarButton.tooltip "अपने Android फोन करने के लिए इस पृष्ठ को भेजें">
 <!ENTITY sendtophoneContext.label "भेजें Android के लिए इस कड़ी">
 <!ENTITY sendtophoneContext.accesskey "A">
-<!ENTITY sendtophoneContextImage.label "Send this image to Android">
-<!ENTITY sendtophoneContextImage.accesskey "A">
-<!ENTITY sendtophoneContextText.label "Send this text to Android">
-<!ENTITY sendtophoneContextText.accesskey "A">
-<!ENTITY sendtophoneContextPage.label "Send this page to Android">
-<!ENTITY sendtophoneContextPage.accesskey "A">
-<!ENTITY sendtophoneContextLogout.label "Logout">
-<!ENTITY sendtophoneContextLogout.accesskey "L">
-<!ENTITY sendtophoneOptions.title "Fox to Phone Preferences">
-<!ENTITY sendtophoneProtocols.label "Protocols">
-<!ENTITY sendtophoneContextSendFile.label "Send files...">
-<!ENTITY sendtophoneContextSendFile.accesskey "S">
-<!ENTITY sendtophoneContextSendFolder.label "Send folder...">
-<!ENTITY sendtophoneContextSendFolder.accesskey "F">
-<!ENTITY sendtophoneContextQrImage.label "Send decoded QR Link to Android">
-<!ENTITY sendtophoneContextQrImage.accesskey "Q">
-<!ENTITY sendtophoneContextSendClipboard.label "Send Clipboard">
-<!ENTITY sendtophoneContextSendClipboard.accesskey "C">
-<!ENTITY sendtophoneContextVideo.label "Send Video to Android">
-<!ENTITY sendtophoneContextVideo.accesskey "V">
