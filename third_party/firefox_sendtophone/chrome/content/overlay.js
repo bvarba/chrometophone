@@ -34,7 +34,7 @@ var sendtophone = {
  		me.strings = document.getElementById("sendtophone-strings");
 
 		me.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-										.getService(Ci.nsIPrefService)
+										.getService(Components.interfaces.nsIPrefService)
 										.getBranch("extensions.sendtophone.") ;
 
 		me.init();
@@ -175,7 +175,7 @@ var sendtophone = {
 	alert: function(text)
 	{
 		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-							.getService(Ci.nsIPromptService);
+							.getService(Components.interfaces.nsIPromptService);
 		promptService.alert(window, this.getString("SendToPhoneTitle"),
 			text);
 	},
@@ -184,7 +184,7 @@ var sendtophone = {
 	confirm: function(text)
 	{
 		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-							.getService(Ci.nsIPromptService);
+							.getService(Components.interfaces.nsIPromptService);
 
 		// https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIPromptService#confirmEx
 		var check = {value: false};
@@ -250,7 +250,7 @@ var sendtophone = {
 
 	clipboardHasText : function()
 	{
-		var clip = Cc["@mozilla.org/widget/clipboard;1"].getService(Ci.nsIClipboard);
+		var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
 		if (!clip) return false;
 
 		if (!clip.hasDataMatchingFlavors(["text/unicode"], 1, clip.kGlobalClipboard))
@@ -263,13 +263,13 @@ var sendtophone = {
 	{
 		// https://developer.mozilla.org/en/using_the_clipboard
 		// Access Clipboard
-		var clip = Cc["@mozilla.org/widget/clipboard;1"].getService(Ci.nsIClipboard);
+		var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
 		if (!clip) return;
 
 		if (!clip.hasDataMatchingFlavors(["text/unicode"], 1, clip.kGlobalClipboard))
 			return;
 
-		var trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
+		var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
 		if (!trans) return;
 		trans.addDataFlavor("text/unicode");
 

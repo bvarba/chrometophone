@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-  <Description about="urn:mozilla:install-manifest">
-    <em:id>sendtophone@martinezdelizarrondo.com</em:id>
-    <em:type>2</em:type>
-    <em:name>Fox To Phone</em:name>
-    <em:version>1.1.3</em:version>
-    <em:creator>Alfonso &amp; Patrick</em:creator>
-    <em:description>Send links to your Android 2.2 phone using the new C2DM service. Based on the ChromeToPhone extension.</em:description>
+	<Description about="urn:mozilla:install-manifest">
+		<em:id>sendtophone@martinezdelizarrondo.com</em:id>
+		<em:type>2</em:type>
+		<em:name>Fox To Phone</em:name>
+		<em:version>1.1.4</em:version>
+		<em:creator>Alfonso &amp; Patrick</em:creator>
+		<em:description>Send links to your Android 2.2 phone using the new C2DM service. Based on the ChromeToPhone extension.</em:description>
 
-	<em:iconURL>chrome://sendtophone/skin/icon.png</em:iconURL>
-	<em:homepageURL>http://www.foxtophone.com</em:homepageURL>
-	<em:optionsURL>chrome://sendtophone/content/options.xul</em:optionsURL>
-	<em:contributor>Anil K Solanki (icons)</em:contributor>
-	<em:contributor>BabelZilla translators:</em:contributor>
-	<em:contributor>markh van BabelZilla.org (Dutch)</em:contributor>
-	<em:contributor>Goofy (French)</em:contributor>
-	<em:contributor>Emanuel S. (German)</em:contributor>
-	<em:contributor>ДакСРБИЈА (Serbian)</em:contributor>
-	<em:contributor>Martin Zubek (Czech)</em:contributor>
-	<em:contributor>mjy (Japanese)</em:contributor>
-	<em:contributor>Marcelo Ghelman (ghelman.net) (Portuguese (Brazilian))</em:contributor>
-	<em:contributor>LA (Russian)</em:contributor>
-	<em:contributor>yongdong7 (Chinese simplified)</em:contributor>
-	<em:contributor>Xutao (Chinese simplified)</em:contributor>
+		<em:iconURL>chrome://sendtophone/skin/icon.png</em:iconURL>
+		<em:homepageURL>http://www.foxtophone.com</em:homepageURL>
+		<em:optionsURL>chrome://sendtophone/content/options.xul</em:optionsURL>
+		<em:contributor>Anil K Solanki (icons)</em:contributor>
+		<em:contributor>BabelZilla translators:</em:contributor>
+		<em:contributor>markh van BabelZilla.org (Dutch)</em:contributor>
+		<em:contributor>Goofy (French)</em:contributor>
+		<em:contributor>Emanuel S. (German)</em:contributor>
+		<em:contributor>ДакСРБИЈА (Serbian)</em:contributor>
+		<em:contributor>Martin Zubek (Czech)</em:contributor>
+		<em:contributor>mjy (Japanese)</em:contributor>
+		<em:contributor>Marcelo Ghelman (ghelman.net) (Portuguese (Brazilian))</em:contributor>
+		<em:contributor>LA (Russian)</em:contributor>
+		<em:contributor>yongdong7 (Chinese simplified)</em:contributor>
+		<em:contributor>Xutao (Chinese simplified)</em:contributor>
 
-    <em:targetApplication>
-      <Description>
-        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
-        <em:minVersion>3.5</em:minVersion>
-        <em:maxVersion>6.*</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-  </Description>
+		<em:targetApplication>
+			<Description>
+				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
+				<em:minVersion>3.5</em:minVersion>
+				<em:maxVersion>6.*</em:maxVersion>
+			</Description>
+		</em:targetApplication>
+
+		<em:targetApplication>
+			<Description>
+				<!-- SeaMonkey -->
+				<em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
+				<em:minVersion>2.1</em:minVersion>
+				<em:maxVersion>2.2.*</em:maxVersion>
+			</Description>
+		</em:targetApplication>
+
+	  </Description>
 </RDF>
