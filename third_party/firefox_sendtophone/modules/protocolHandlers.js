@@ -1,3 +1,5 @@
+"use strict";
+
 /* This js module doesn't export anything, it's meant to handle the protocol registration/unregistration */
 var EXPORTED_SYMBOLS = [];
 

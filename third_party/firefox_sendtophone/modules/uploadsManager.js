@@ -1,3 +1,5 @@
+"use strict";
+
 var EXPORTED_SYMBOLS = ["sendtophoneUploadsManager"];
 
 const Cc = Components.classes;
@@ -8,13 +10,13 @@ var sendtophoneUploadsManager = {
 	_counter : 0,
 
 	_listeners: [],
-	
+
 	// Add a listener that will be called when there's any change on the uploads
 	addListener: function( obj )
 	{
 		this._listeners.push( obj );
 	},
-	
+
 	// Remove an existing listener object
 	removeListener: function( obj )
 	{
@@ -27,7 +29,7 @@ var sendtophoneUploadsManager = {
 			}
 		}
 	},
-	
+
 	/**
 	* Adds a new upload
 	* nsFile: The file that it's being send
@@ -40,7 +42,7 @@ var sendtophoneUploadsManager = {
 
 		req.upload.addEventListener("progress", function(evt)
 			{
-				if (evt.lengthComputable) {  
+				if (evt.lengthComputable) {
 					sendtophoneUploadsManager.updateProgress(id, evt.loaded, evt.total);
 				}
 			}, false);
@@ -65,33 +67,33 @@ var sendtophoneUploadsManager = {
 			}, false);
 
 	},
-	
+
 	/**
 	* Adds a zip (it's not an upload, but this way we can show that something is going on)
 	* nsFolder: a nsFile object pointing to the folder being compressed
-	* When the compression has finished, the external code has to call .finishedUpload(id) 
+	* When the compression has finished, the external code has to call .finishedUpload(id)
 	* with the id returned in this method.
 	*/
 	addZip: function(nsFolder)
 	{
 		return this._addToUploads( {file:nsFolder, state:1} );
 	},
-	
+
 	_addToUploads: function( obj )
 	{
 		initShowTest();
 
-		// Creates a counter to automatically assign new ids to each upload	
+		// Creates a counter to automatically assign new ids to each upload
 		let id = this._counter++;
 		obj.id = id;
 		this.uploads[id] = obj;
 
 		for(let i=0, listener; listener = this._listeners[i]; i++)
 			listener.fileAdded( obj );
-		
+
 		return id;
 	},
-		
+
 	showWindow: function()
 	{
 		// Open the tab
@@ -102,7 +104,7 @@ var sendtophoneUploadsManager = {
 	{
 		let upload = this.uploads[id];
 
-		// The progress events are fired when the data is sent,  
+		// The progress events are fired when the data is sent,
 		// but that leads to wrong speed because we don't know how long
 		//  it has really taken to process the packet
 		// As long as the upload progress the speed converges to a more correct value
@@ -114,15 +116,15 @@ var sendtophoneUploadsManager = {
 		{
 			upload.adjusted = true;
 //			let elapsed = Date.now() - upload.firstPacket; // time to send a packet to the server and get back
-			let elapsed = Date.now() - upload.startTime; // 
+			let elapsed = Date.now() - upload.startTime; //
 			upload.startTime = upload.startTime - elapsed;
 		}
 
 		upload.currBytes = loaded;
 		upload.maxBytes = total;
 
-		this._listeners.forEach( function( listener ) {  
-			listener.progressUpdate( upload );	
+		this._listeners.forEach( function( listener ) {
+			listener.progressUpdate( upload );
 		});
 	},
 
@@ -137,31 +139,22 @@ var sendtophoneUploadsManager = {
 			count++;
 		if (count == 0)
 			cancelShowTimer();
-		
+
 		// Notify the listeners
-		this._listeners.forEach( function( listener ) {  
+		this._listeners.forEach( function( listener ) {
 			listener.fileFinished( upload );
 		});
 	},
-	
+
 	cancelUpload: function(id)
 	{
 		let upload = this.uploads[id];
-		upload.req.abort();	
-	
+		upload.req.abort();
+
 	},
 
-	// For use while debugging
-	toConsole: function(text)
-	{
-		var aConsoleService = Cc["@mozilla.org/consoleservice;1"]
-				.getService(Ci.nsIConsoleService);
-
-		aConsoleService.logStringMessage( text );
-	},
-	
  	// Check if we might need to show the window.
-  	// Either some folder is being compressed, 
+  	// Either some folder is being compressed,
   	// or there's some file that might take longer than 2 seconds.
   	// If there's some file that we still don't know the speed
   	// then consider it also as needed.
@@ -170,20 +163,19 @@ var sendtophoneUploadsManager = {
 		for (let id in this.uploads)
 		{
 			let upload = this.uploads[id] ;
-			
+
 			// zipping folder: if takes so long to compress it, it will also take some time to upload it
 			if (upload.state==1)
 				return true;
-				
+
 			// If it still hasn't uploaded anything then something might be wrong
 			if (upload.currBytes==0)
 				return true;
-				
-			let elapsedTime = (Date.now() - upload.startTime) / 1000;			
+
+			let elapsedTime = (Date.now() - upload.startTime) / 1000;
 			let speed = upload.currBytes/elapsedTime;
 			let remainingSecs = (upload.maxBytes - upload.currBytes) / speed;
-//			this.toConsole(elapsedTime + " " + speed + " " + remainingSecs);
-			
+
 			if (remainingSecs > 2)
 				return true;
 
@@ -202,9 +194,9 @@ let showTimer = null;
 
 // we need a nsITimerCallback compatible...
 // ... interface for the callbacks.
-var showTimerEvent = 
+var showTimerEvent =
 {
-	notify: function(timer) 
+	notify: function(timer)
 	{
 		if (sendtophoneUploadsManager.isWindowNeeded())
 		{
@@ -213,13 +205,13 @@ var showTimerEvent =
 		}
 	}
 }
- 
+
 function initShowTest()
 {
 	if (showTimer)
 		return;
-		
-	// Now it is time to create the timer...  
+
+	// Now it is time to create the timer...
 	showTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
  	showTimer.initWithCallback(showTimerEvent, 400, Ci.nsITimer.TYPE_REPEATING_SLACK);
 }

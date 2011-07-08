@@ -24,3 +24,5 @@ overlay	chrome://navigator/content/navigator.xul	chrome://sendtophone/content/ff
 
 style chrome://global/content/customizeToolbar.xul chrome://sendtophone/skin/overlay.css
 
+# Support for Mac 
+override chrome://sendtophone/skin/uploads.css chrome://sendtophone/skin/uploads-mac.css os=Darwin

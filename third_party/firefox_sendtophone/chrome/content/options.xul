@@ -12,6 +12,7 @@
 			<preference id="extensions.sendtophone.protocols.sms" name="extensions.sendtophone.protocols.sms" type="bool"/>
 			<preference id="extensions.sendtophone.protocols.smsto" name="extensions.sendtophone.protocols.smsto" type="bool"/>
 			<preference id="extensions.sendtophone.protocols.tel" name="extensions.sendtophone.protocols.tel" type="bool"/>
+			<preference id="extensions.sendtophone.fileServerUrl" name="extensions.sendtophone.fileServerUrl" type="string"/>
 		</preferences>
 		
 		<groupbox style="padding:1em;" label="ProtocolsGroup">
@@ -29,6 +30,35 @@
 					label="tel:" />
 		</groupbox>
 	
+		<groupbox style="padding:1em; min-height:10em;" label="FileServer">
+			<caption label="File transfers" />
+			<hbox align="center">
+				<label value="Server" 
+					flex="1"
+					control="extensionsSendToPhoneFileServer"/>
+
+				<menulist id="extensionsSendToPhoneFileServer">
+					<menupopup>
+						<menuitem value="" label="None" />
+						<menuitem value="http://min.us" label="Min.us" />
+						<menuitem value="Custom" label="Custom" />
+					</menupopup>
+				</menulist>
+
+				<description style="width: 300px;height:3em;" id="foxtophoneDisclaimer">
+				Disclaimer: We (FoxToPhone developers) are not affiliated 
+				with any of the third party hosting services listed here.
+				You should read their Terms Of Service before using them.
+				</description>
+			</hbox>
+
+
+			<hbox align="center" id="hboxFileServerUrl">
+				<textbox id="extensionsSendToPhoneFileServerUrl" flex="1" preference="extensions.sendtophone.fileServerUrl" />
+			</hbox>
+		</groupbox>
+
 	</prefpane>
+	<script type="application/x-javascript" src="options.js" />
 
 </prefwindow>

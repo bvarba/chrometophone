@@ -1,63 +1,63 @@
-#UploadsBox {
-  -moz-appearance: none;
-  margin: 0;
-  padding: 0;
-  border-width: 0;
+
+#sendtophoneUploadsWindow {
+  background-color: ThreeDFace;
+}
+
+/* Upload View */
+@media not all and (-moz-windows-classic) {
+  #UploadsBox {
+    -moz-appearance: none;
+    margin: 0;
+    border-bottom: 2px solid;
+    -moz-border-bottom-colors: ThreeDHighlight ThreeDLightShadow;
+  }
 }
 
 /* Upload View Items */
 richlistitem[type="upload"] {
-  padding: 5px;
-  min-height: 44px !important;
-  border: 1px solid transparent;
+  padding: 4px 8px 4px 4px;
+  min-height: 46px;
+  border-bottom: 1px solid ThreeDLightShadow;
 }
 
-richlistitem[type="upload"]:not([selected="true"]):nth-child(odd) {
-  background-color: -moz-oddtreerow;
+richlistitem[type="upload"][selected="true"] {
+  background-image: url(chrome://mozapps/skin/extensions/itemEnabledFader.png);
 }
 
-richlistitem[type="upload"] .status {
-  font-size: smaller;
-  color: #555;
+richlistitem[type="upload"] .name {
+  font-size: larger;
 }
 
-richlistitem[selected="true"][type="upload"] {
-  outline: none;
-}
-
-richlistbox:focus > richlistitem[selected="true"][type="upload"] .status {
-  color: highlighttext;
-}
-
-richlistitem[type="upload"] button {
+.mini-button {
   -moz-appearance: none;
-  min-height: 16px;
-  min-width: 16px;
-  max-height: 16px;
-  max-width: 16px;
+  list-style-image: url(chrome://mozapps/skin/downloads/downloadButtons.png);
+  background-color: transparent;
+  border: none;
   padding: 0;
-  margin: 0 1px 0 1px;
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
 }
 
-/**
- * Images for buttons in the interface
- */
-richlistitem[type="upload"] button {
-  list-style-image: url(chrome://mozapps/skin/downloads/buttons.png);
+.mini-button > .button-box {
+  padding: 0 !important;
 }
+
 .cancel {
-  -moz-image-region: rect(0px, 16px, 16px, 0px);
-}
-.cancel:hover {
   -moz-image-region: rect(0px, 32px, 16px, 16px);
 }
-.cancel:hover:active {
-  -moz-image-region: rect(0px, 48px, 16px, 32px);
+.cancel:hover {
+  -moz-image-region: rect(16px, 32px, 32px, 16px);
+}
+.cancel:active {
+  -moz-image-region: rect(32px, 32px, 48px, 16px);
+}
+.cancel[disabled="true"] {
+  -moz-image-region: rect(48px, 32px, 64px, 16px);
 }
 
 /* prevent flickering when changing states */
 .uploadTypeIcon {
   min-height: 32px;
   min-width: 32px;
-  -moz-padding-end: 2px;
 }

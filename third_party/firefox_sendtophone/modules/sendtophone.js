@@ -13,6 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
+"use strict";
 
 // https://developer.mozilla.org/en/JavaScript_code_modules/Using_JavaScript_code_modules
 var EXPORTED_SYMBOLS = ["sendtophoneCore"];
@@ -332,9 +333,9 @@ var sendtophoneCore = {
 					sendtophoneUploadsManager.finishedUpload( progressId );
 
 					// Send the zip and delete it afterwards
-					sendtophoneCore.sendFile(nsZip, function() { nsZip.remove(false) });
+					sendtophoneCore.sendFile(nsZip, function() { nsZip.remove(false); });
 				}
-			)
+			);
 			return;
 		}
 
@@ -344,6 +345,32 @@ var sendtophoneCore = {
 			return;
 		}
 
+		if ( uri == "http://min.us" )
+		{
+			Minus.SendFile(nsFile, callback);
+			return;
+		}
+
+		this.sendFileXHR( nsFile, callback, uri, 'upload', function(target, uploadName)
+		{
+			var body = target.responseXML,
+				uploads;
+
+			// FoxToPhone custom script
+			if (body && (uploads = body.documentElement.getElementsByTagName("upload")) && uploads[0])
+			{
+				var url = uploads[0].firstChild.data;
+				sendtophoneCore.send(uploadName, url, "");
+				return;
+			}
+
+			// error.
+			sendtophoneCore.alert(uri + "\r\n" + event.target.responseText);
+		});
+	},
+
+	sendFileXHR: function( nsFile, callback, uri, formElementName, onSuccess )
+	{
 		let size = Math.round(nsFile.fileSize / 1024);
 		let maxSize = this.prefs.getIntPref( "fileUploadMaxKb" );
 		if (maxSize>0 && size>maxSize)
@@ -356,9 +383,9 @@ var sendtophoneCore = {
 		// Try to determine the MIME type of the file
 		var mimeType = "text/plain";
 		try {
-		var mimeService = Cc["@mozilla.org/mime;1"]
-			.getService(Ci.nsIMIMEService);
-		mimeType = mimeService.getTypeFromFile(nsFile); // nsFile is an nsIFile instance
+			var mimeService = Cc["@mozilla.org/mime;1"]
+				.getService(Ci.nsIMIMEService);
+			mimeType = mimeService.getTypeFromFile(nsFile); // nsFile is an nsIFile instance
 		}
 		catch(e) { /* eat it; just use text/plain */ }
 
@@ -371,20 +398,20 @@ var sendtophoneCore = {
 		bufInStream.init(inStream, 4096);
 
 		//Setup the boundary start stream
-		var boundary = "--SendToPhone-------------" + Math.random();
+		var boundary = "--SendToPhone-------------" + Math.random().toString(16).substr(2);
 		var startBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
 			.createInstance(Ci.nsIStringInputStream);
-		startBoundryStream.setData("\r\n--"+boundary+"\r\n",-1);
+		startBoundryStream.setData("--"+boundary+"\r\n",-1);
 
 		// Setup the boundary end stream
 		var endBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
 				.createInstance(Ci.nsIStringInputStream);
-		endBoundryStream.setData("\r\n--"+boundary+"--",-1);
+		endBoundryStream.setData("\r\n\r\n--"+boundary+"--\r\n",-1);
 
 		// Setup the mime-stream - the 'part' of a multi-part mime type
 		var mimeStream = Cc["@mozilla.org/network/mime-input-stream;1"].createInstance(Ci.nsIMIMEInputStream);
 		mimeStream.addContentLength = false;
-		mimeStream.addHeader("Content-disposition","form-data; charset: utf-8; name=\"upload\"; filename=\"" + this.toUTF8(uploadName) + "\"");
+		mimeStream.addHeader("Content-disposition",'form-data; charset: utf-8; name="' + formElementName + '"; filename="' + this.toUTF8(uploadName) + '"');
 		mimeStream.addHeader("Content-type", mimeType);
 		mimeStream.setData(bufInStream);
 
@@ -404,25 +431,16 @@ var sendtophoneCore = {
 		req.open('POST', uri, true);
 
 		req.setRequestHeader("Content-length",multiStream.available());
-		req.setRequestHeader("Content-type","multipart/form-data; charset: utf-8; boundary="+boundary);
+		req.setRequestHeader("Content-type","multipart/form-data; boundary="+boundary);
 		req.addEventListener("load", function(event)
 		{
 			// If there's a callback (to delete temporary files) we call it now
 			if (callback)
 				callback();
 
-			var body = event.target.responseXML;
-			var uploads;
-			if (body && (uploads = body.documentElement.getElementsByTagName("upload")))
-			{
-				var data = uploads[0].firstChild.data;
-//				sendtophoneCore.toConsole(data);
-				sendtophoneCore.send(uploadName, data, "");
-				return;
-			}
-			// error.
-			sendtophoneCore.alert(uri + "\r\n" + event.target.responseText);
+			onSuccess(event.target, uploadName);
 		}, false);
+
 		// Handle errors or aborted uploads
 		req.addEventListener("error", function(evt)
 		{
@@ -432,6 +450,7 @@ var sendtophoneCore = {
 			if (callback)
 				callback();
 		}, false);
+
 		req.addEventListener("abort", function(evt)
 		{
 			// Silent.
@@ -451,8 +470,45 @@ var sendtophoneCore = {
 		*/
 		req.send(multiStream);
 	}
+};
+
+// http://min.us/
+var Minus = {
+	prefix: 'http://min.us/api/',
+
+	SendFile : function(nsFile, callback) {
+		// Create a gallery
+		sendtophoneCore.processXHR( Minus.prefix + 'CreateGallery', 'GET', null, function(req) {
+			var body = req.responseText;
+
+			if (body.substring(0, 1) != '{')
+			{
+				sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
+				return;
+			}
+
+			var gallery = JSON.parse( body );
+			// Send the file
+			sendtophoneCore.sendFileXHR(nsFile, callback, Minus.prefix +
+				'UploadItem?editor_id=' + gallery.editor_id + '&key=OK&filename=' + encodeURIComponent(nsFile.leafName), 'file',
+				function(target, uploadName)
+				{
+					var body = target.responseText;
+					if (body.substring(0, 1) != '{')
+					{
+						sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
+						return;
+					}
+					var file = JSON.parse( body );
+//					var url = "http://k.min.us/j" + file.id;
+					var url = "http://min.us/m" + gallery.reader_id;
+					sendtophoneCore.send(uploadName, url, "");
+				});
 
 
+		});
+
+    }
 };
 
 /* Zipping functions */
@@ -478,7 +534,7 @@ function zipFolder(folder, callback)
 
 	// Create a new file
 	nsFile.append( folder.leafName  + ".zip");
-	nsFile.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
+	nsFile.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, 438); // 438 (decimal) = 0666 (octal)
 
 	var zipWriter = Components.Constructor("@mozilla.org/zipwriter;1", "nsIZipWriter");
 	var zipW = new zipWriter();
@@ -497,7 +553,7 @@ function zipFolder(folder, callback)
 			// Notify that we're done. Now it must be sent and deleted afterwards
 			callback(nsFile);
 		}
-	}
+	};
 
 	zipW.processQueue(observer, null);
 }

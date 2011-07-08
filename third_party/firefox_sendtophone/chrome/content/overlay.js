@@ -14,7 +14,6 @@
     limitations under the License.
 */
 
-
 // Core functions
 Components.utils.import("resource://sendtophone/sendtophone.js");
 // Protocol handlers

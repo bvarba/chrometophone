@@ -181,7 +181,7 @@ sendtophone.pickFile = function(folder)
 	else
 	{
 		fp.init(window, this.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpenMultiple);
-		fp.appendFilters(Ci.nsIFilePicker.filterAll | Ci.nsIFilePicker.filterImages);
+		fp.appendFilters( Ci.nsIFilePicker.filterAll );
 	}
 
 	var rv = fp.show();
