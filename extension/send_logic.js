@@ -88,7 +88,7 @@ function sendToPhone(title, url, msgType, selection, listener) {
         'body': data,
         'headers': {
           'X-Same-Domain': 'true',
-          'Content-Type': 'application/json'  
+          'Content-Type': 'application/json;charset=UTF-8'  
         }
       });
       return;

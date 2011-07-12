@@ -93,7 +93,7 @@ public class RequestInfo {
             }
         }
 
-        if ("application/json".equals(req.getContentType())) {
+        if (req.getContentType().startsWith("application/json")) {
             Reader reader = req.getReader();
             // where is readFully ?
             char[] tmp = new char[2048];
