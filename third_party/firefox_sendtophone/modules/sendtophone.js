@@ -23,10 +23,9 @@ const Ci = Components.interfaces;
 
 var sendtophoneCore = {
 	req : null,
-	apiVersion : 4,
-	loggedInUrl : "http://code.google.com/p/chrometophone/logo?login",
-	loggedOutUrl : "http://code.google.com/p/chrometophone/logo?logout",
+	apiVersion : 6,
 	apkUrl : "http://code.google.com/p/chrometophone/wiki/AndroidApp",
+	returnOAuthUrl : "http://code.google.com/p/chrometophone/logo",
 	retryCount : 0,
 
 	init: function()
@@ -42,9 +41,29 @@ var sendtophoneCore = {
 		// Allow the people to use their own server if they prefer to not trust this server
 		var baseUrl = this.prefs.getCharPref( "appUrl" ) ;
 
-		this.sendUrl = baseUrl + '/send?ver=' + this.apiVersion;
-		this.logInUrl = baseUrl + '/signin?ver=' + this.apiVersion + '&extret=' + encodeURIComponent(this.loggedInUrl);
-		this.logOutUrl = baseUrl + '/signout?ver=' + this.apiVersion + '&extret=' + encodeURIComponent(this.loggedOutUrl);
+		this.deviceRegistrationId = this.prefs.getCharPref('deviceRegistrationId');
+		if (!this.deviceRegistrationId) {
+		  this.deviceRegistrationId = (Math.random() + '').substring(3);
+		  this.prefs.setCharPref('deviceRegistrationId', this.deviceRegistrationId);
+		}
+
+		this.sendUrl = baseUrl + '/send';
+		/* p2c */
+//		this.registerUrl =  baseUrl + '/register?ver=' + this.apiVersion;
+
+		if (typeof OAuthFactory == "undefined")
+			Components.utils.import("resource://sendtophone/OAuth.js");
+
+		this.oauth = OAuthFactory.init({
+			'request_url' : baseUrl + '/_ah/OAuthGetRequestToken',
+			'authorize_url' : baseUrl + '/_ah/OAuthAuthorizeToken',
+			'access_url' : baseUrl + '/_ah/OAuthGetAccessToken',
+			'consumer_key' : 'anonymous',
+			'consumer_secret' : 'anonymous',
+			'scope' : baseUrl,
+			'app_name' : 'Chrome To Phone',
+			'callback_page': this.returnOAuthUrl
+		});
 	},
 
 	getString: function(name)
@@ -55,10 +74,9 @@ var sendtophoneCore = {
 	// Shows a message in a modal alert
 	alert: function(text)
 	{
-		var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
-							.getService(Ci.nsIPromptService);
-		promptService.alert(null, this.getString("SendToPhoneTitle"),
-			text);
+		Cc["@mozilla.org/embedcomp/prompt-service;1"]
+			.getService(Ci.nsIPromptService)
+			.alert(null, this.getString("SendToPhoneTitle"), text);
 	},
 
 	// Shows a message in a growl-like notification
@@ -74,8 +92,8 @@ var sendtophoneCore = {
 			};
 
 			Cc['@mozilla.org/alerts-service;1']
-								.getService(Ci.nsIAlertsService)
-								.showAlertNotification(image, title, text, false, '', listener);
+					.getService(Ci.nsIAlertsService)
+					.showAlertNotification(image, title, text, false, '', listener);
 		} catch(e)
 		{
 			// prevents runtime error on platforms that don't implement nsIAlertsService
@@ -90,10 +108,9 @@ var sendtophoneCore = {
 	// For use while debugging
 	toConsole: function(text)
 	{
-		var aConsoleService = Cc["@mozilla.org/consoleservice;1"]
-				.getService(Ci.nsIConsoleService);
-
-		aConsoleService.logStringMessage( text );
+		Cc["@mozilla.org/consoleservice;1"]
+			.getService(Ci.nsIConsoleService)
+			.logStringMessage( text );
 	},
 
 	processXHR: function(url, method, data, callback)
@@ -120,11 +137,7 @@ var sendtophoneCore = {
 					if (redirectMatch)
 					{
 						var redirectUrl = redirectMatch[2].replace(/&amp;/g, '&');
-						if (redirectUrl == sendtophoneCore.loggedOutUrl)
-						{
-							sendtophoneCore.logoutSuccessful();
-							return;
-						}
+
 						// Do the redirect and use the original callback
 						sendtophoneCore.processXHR( redirectUrl, 'GET', null, callback);
 					}
@@ -133,10 +146,7 @@ var sendtophoneCore = {
 				}
 				else
 				{
-					if (req.status==500 && body.substr(0,27) =="ERROR (Unable to send link)"){
-						sendtophoneCore.openTab( "http://www.foxtophone.com/help/error-500/" );
-					}
-					else if (req.status==400&&this.retryCount<4){
+					if (req.status==400&&this.retryCount<4){
 						this.retryCount++;
 						this.processXHR(this.sendUrl, 'POST', this.pendingMessage, this.processSentData);
 					}
@@ -204,40 +214,82 @@ var sendtophoneCore = {
 		var data = 'title=' + encodeURIComponent(title) +
 				'&url=' + encodeURIComponent(url) + '&sel=' + encodeURIComponent(selection);
 
-		this.pendingMessage = data;
-		this.processXHR(this.sendUrl, 'POST', data, this.processSentData);
+		this.pendingMessage = {title:title, url: url, selection: selection};
+
+		if (!this.oauth.hasToken())
+		{
+			this.doLogin();
+		}
+		else
+		{
+			var msgType = (selection && selection.length > 0) ? 'selection' : 'page';
+
+			var params = {
+			  "title": title,
+			  "url": url,
+			  "sel": selection,
+			  "type": msgType,
+			  "deviceType":"ac2dm",
+			  "debug": "1",
+			  "token": sendtophoneCore.prefs.getCharPref('deviceRegistrationId')
+			};
+
+			// No longer passing device name - this may be customized
+			var data = JSON.stringify(params);
+			this.oauth.sendSignedRequest(this.sendUrl, this.processSentData, {
+				'method': 'POST',
+				'body': data,
+				'headers': {
+				  'X-Same-Domain': 'true',
+				  'Content-Type': 'application/json'
+				}
+			  });
+		}
 	},
 
-	processSentData : function(req)
+	doLogin: function()
 	{
-		var body = req.responseText;
+		this.popupNotification( this.getString("LoginRequired") );
+		//Open Google login page and close tab when done
+		this.oauth.initOAuthFlow( function() {sendtophoneCore.loginSuccessful();} );
+	},
+
+	processSentData : function(body, req)
+	{
+		var self = sendtophoneCore;
+
+		if (req.status==500 && body.substr(0,27) =="ERROR (Unable to send link)"){
+			sendtophoneCore.openTab( "http://www.foxtophone.com/help/error-500/" );
+			return;
+		}
+		if (req.status != 200) {
+			self.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
+			return;
+		}
 
 		if (body.substring(0, 2) == 'OK')
 		{
-			delete this.pendingMessage;
-			this.retryCount=0;
-			this.popupNotification(this.getString("InfoSent"));
+			delete self.pendingMessage;
+			self.retryCount=0;
+			self.popupNotification(self.getString("InfoSent"));
 			return;
 		}
+
 		if (body.indexOf('LOGIN_REQUIRED') == 0)
 		{
-			this.popupNotification( this.getString("LoginRequired") );
-
-			//Open Google login page and close tab when done
-			this.openTab(this.logInUrl, this.loggedInUrl, function() {sendtophoneCore.loginSuccessful();} );
-
+			self.doLogin();
 			return;
 		}
 		if (body.indexOf('DEVICE_NOT_REGISTERED') == 0)
 		{
-			this.popupNotification(this.getString("DeviceNotRegistered"));
+			self.popupNotification(self.getString("DeviceNotRegistered"));
 
 			// Open tab with apk download
-			this.openTab(this.apkUrl);
+			self.openTab(self.apkUrl);
 			return;
 		}
 
-		this.alert(this.getString("ErrorOnSend") + '\r\n' + body);
+		self.alert(self.getString("ErrorOnSend") + '\r\n' + body);
 	},
 
 	logout: function()
@@ -245,17 +297,8 @@ var sendtophoneCore = {
 		if (!this.prefs)
 			this.init();
 
-		// Open Google logout page, and close tab when finished
-		this.openTab(this.logOutUrl, this.loggedOutUrl, function() {sendtophoneCore.logoutSuccessful();} );
-
-/*
-		// This doesn't work if third party cookies are bloqued. Why???
-		this.processXHR(this.logOutUrl, 'GET', null, function(req)
-			{
-				// This will be called only if there's a problem
-				this.alert(this.getString("LogoutError") + '\r\n' + req.responseText );
-			});
-			*/
+		this.oauth.clearTokens();
+		this.logoutSuccessful()
 	},
 
 	openTab: function(url, successUrl, callback)
@@ -296,7 +339,7 @@ var sendtophoneCore = {
 		this.popupNotification( this.getString("LoginSuccessful") );
 
 		// Send pending message
-		this.processXHR(this.sendUrl, 'POST', this.pendingMessage, this.processSentData);
+		this.send(this.pendingMessage.title, this.pendingMessage.url, this.pendingMessage.selection);
 	},
 
 	toUTF8: function(str)
@@ -460,14 +503,13 @@ var sendtophoneCore = {
 				callback();
 		}, false);
 
-		/*
-		if required for cookies... don't think so.
+		// Enable cookies
 		try {
 		  req.channel.QueryInterface(Ci.nsIHttpChannelInternal).
 			forceAllowThirdPartyCookie = true;
 		}
 		catch(ex) {}
-		*/
+
 		req.send(multiStream);
 	}
 };

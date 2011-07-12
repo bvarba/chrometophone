@@ -1,5 +1,6 @@
 pref("extensions.sendtophone.installedButton", false);
 pref("extensions.sendtophone.appUrl", "https://chrometophone.appspot.com");
+pref("extensions.sendtophone.deviceRegistrationId", "");
 
 pref("extensions.sendtophone.proxyUrl", "http://foxtophone.com/f2p.php?link=");
 pref("extensions.sendtophone.fileServerUrl", "");

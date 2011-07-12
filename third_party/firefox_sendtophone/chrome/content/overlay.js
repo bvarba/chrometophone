@@ -225,7 +225,7 @@ var sendtophone = {
 
 	isMapsURL: function(url)
 	{
-		return url.match("http://maps\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?[/?].*") || url.match("http://www\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?/maps.*");
+		return url.match(/^https?:\/\/maps\.google\./) || url.match(/^https?:\/\/www\.google\.[a-z]{2,3}(\.[a-z]{2})?\/maps/);
 	},
 
 	validURI: function(uri)
