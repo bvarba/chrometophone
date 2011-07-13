@@ -61,7 +61,7 @@ var sendtophoneCore = {
 			'consumer_key' : 'anonymous',
 			'consumer_secret' : 'anonymous',
 			'scope' : baseUrl,
-			'app_name' : 'Chrome To Phone',
+			'app_name' : 'Fox To Phone',
 			'callback_page': this.returnOAuthUrl
 		});
 	},
@@ -113,16 +113,20 @@ var sendtophoneCore = {
 			.logStringMessage( text );
 	},
 
-	processXHR: function(url, method, data, callback)
+	processXHR: function(url, method, headers, data, callback)
 	{
 		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
 						.createInstance(Ci.nsIXMLHttpRequest);
 
 		req.open(method, url, true);
-		req.setRequestHeader('X-Same-Domain', 'true');  // XSRF protector
 
-		if (method=='POST')
-			req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		if (headers) {
+			for (var header in headers) {
+			  if (headers.hasOwnProperty(header)) {
+				req.setRequestHeader(header, headers[header]);
+			  }
+			}
+		}
 
 		req.onreadystatechange = function()
 		{
@@ -139,19 +143,14 @@ var sendtophoneCore = {
 						var redirectUrl = redirectMatch[2].replace(/&amp;/g, '&');
 
 						// Do the redirect and use the original callback
-						sendtophoneCore.processXHR( redirectUrl, 'GET', null, callback);
+						sendtophoneCore.processXHR( redirectUrl, 'GET', null, null, callback);
 					}
 					else
 						callback.call( sendtophoneCore, req );
 				}
 				else
 				{
-					if (req.status==400&&this.retryCount<4){
-						this.retryCount++;
-						this.processXHR(this.sendUrl, 'POST', this.pendingMessage, this.processSentData);
-					}
-					else
-						sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
+					sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
 				}
 			}
 		};
@@ -209,6 +208,24 @@ var sendtophoneCore = {
 			proxyUrl = this.prefs.getCharPref( "proxyUrl" );
 			if (proxyUrl)
 				url = proxyUrl + encodeURIComponent( url);
+		}
+
+		// Seems that the server fails with URLs larger than 990 bytes, so let's shorten it in those cases
+		// http://code.google.com/p/chrometophone/issues/detail?id=315
+		if (url.length>900) {
+			var self = this;
+			this.processXHR("https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDfmYwz1EevIW18Ifda3YeS9dVPhKsDUQo", "POST", {'Content-Type':'application/json'},
+				JSON.stringify( {"longUrl": url} ), function(req) {
+					var body = req.responseText,
+						response = (body && body[0]=='{' && JSON.parse( body ) );
+					// If OK then perform now the action
+					if (response && response.kind == "urlshortener#url")
+						self.send(title, response.id, selection);
+					else
+						this.alert( body );
+				})
+
+			return
 		}
 
 		var data = 'title=' + encodeURIComponent(title) +
@@ -520,7 +537,7 @@ var Minus = {
 
 	SendFile : function(nsFile, callback) {
 		// Create a gallery
-		sendtophoneCore.processXHR( Minus.prefix + 'CreateGallery', 'GET', null, function(req) {
+		sendtophoneCore.processXHR( Minus.prefix + 'CreateGallery', 'GET', null, null, function(req) {
 			var body = req.responseText;
 
 			if (body.substring(0, 1) != '{')

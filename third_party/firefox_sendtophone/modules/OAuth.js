@@ -315,11 +315,7 @@ ChromeExOAuth.sendRequest = function(method, url, headers, body, callback) {
     }
   }
 
-// The server is expecting an exact content-type header (line 96 of RequestInfo.java)
-// but Firefox adds the charset, so let's workaround the problem
-// https://bugzilla.mozilla.org/show_bug.cgi?id=416178#c31
-//  xhr.send(body);
-  xhr.sendAsBinary(body);
+  xhr.send(body);
 };
 
 /**
