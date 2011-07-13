@@ -158,10 +158,14 @@ var sendtophoneUploadsManager = {
   	// or there's some file that might take longer than 2 seconds.
   	// If there's some file that we still don't know the speed
   	// then consider it also as needed.
-	isWindowNeeded: function()
+	isWindowNeeded: function( alreadyOpen )
 	{
 		for (let id in this.uploads)
 		{
+			// If the progress window is already open and there's something pending then leave the window open
+			if (alreadyOpen)
+				return true;
+
 			let upload = this.uploads[id] ;
 
 			// zipping folder: if takes so long to compress it, it will also take some time to upload it
@@ -198,7 +202,7 @@ var showTimerEvent =
 {
 	notify: function(timer)
 	{
-		if (sendtophoneUploadsManager.isWindowNeeded())
+		if (sendtophoneUploadsManager.isWindowNeeded(false))
 		{
 			cancelShowTimer();
 			sendtophoneUploadsManager.showWindow();
@@ -260,7 +264,7 @@ function openAndReuseOneTabPerURL(url) {
     var recentWindow = wm.getMostRecentWindow("navigator:browser");
     if (recentWindow) {
       // Use an existing browser window
-      recentWindow.delayedOpenTab(url, null, null, null, null);
+      recentWindow.getBrowser().loadOneTab( url, null, null, null, false, null );
     }
     else {
       // No browser windows are open, so open a new one.

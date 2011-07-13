@@ -31,24 +31,22 @@
 		</groupbox>
 	
 		<groupbox style="padding:1em; min-height:10em;" label="FileServer">
-			<caption label="File transfers" />
+			<caption label="&sendtophoneFileTransfers.label;" />
 			<hbox align="center">
-				<label value="Server" 
+				<label value="&sendtophoneFileServer.label;" 
 					flex="1"
 					control="extensionsSendToPhoneFileServer"/>
 
 				<menulist id="extensionsSendToPhoneFileServer">
 					<menupopup>
-						<menuitem value="" label="None" />
+						<menuitem value="" label="&sendtophoneFileServer.None;" />
 						<menuitem value="http://min.us" label="Min.us" />
-						<menuitem value="Custom" label="Custom" />
+						<menuitem value="Custom" label="&sendtophoneFileServer.Custom;" />
 					</menupopup>
 				</menulist>
 
 				<description style="width: 300px;height:3em;" id="foxtophoneDisclaimer">
-				Disclaimer: We (FoxToPhone developers) are not affiliated 
-				with any of the third party hosting services listed here.
-				You should read their Terms Of Service before using them.
+				&sendtophoneFileServer.Disclaimer;
 				</description>
 			</hbox>
 

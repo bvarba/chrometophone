@@ -162,7 +162,7 @@ sendtophone.doDrop = function(event)
 			for (var i = 0; i < dt.mozItemCount; i++)
 			{
 				var file = dt.mozGetDataAt("application/x-moz-file", i);
-				if (file instanceof Ci.nsIFile )
+				if (file instanceof Components.interfaces.nsIFile )
 					sendtophoneCore.sendFile(file);
 				else
 					this.alert(this.getString("InvalidFile"));
@@ -173,26 +173,31 @@ sendtophone.doDrop = function(event)
 
 sendtophone.pickFile = function(folder)
 {
-	var fp = Cc["@mozilla.org/filepicker;1"]
-				.createInstance(Ci.nsIFilePicker);
+	var fp = Components.classes["@mozilla.org/filepicker;1"]
+				.createInstance(Components.interfaces.nsIFilePicker);
 
 	if (folder)
-		fp.init(window, this.getString("SendFolderToPhone"), Ci.nsIFilePicker.modeGetFolder);
+		fp.init(window, this.getString("SendFolderToPhone"), Components.interfaces.nsIFilePicker.modeGetFolder);
 	else
 	{
-		fp.init(window, this.getString("SendFileToPhone"), Ci.nsIFilePicker.modeOpenMultiple);
-		fp.appendFilters( Ci.nsIFilePicker.filterAll );
+		fp.init(window, this.getString("SendFileToPhone"), Components.interfaces.nsIFilePicker.modeOpenMultiple);
+		fp.appendFilters( Components.interfaces.nsIFilePicker.filterAll );
 	}
 
 	var rv = fp.show();
 
-	if (rv == Ci.nsIFilePicker.returnOK)
+	if (rv == Components.interfaces.nsIFilePicker.returnOK)
 	{
-		var files = fp.files;
-		while (files.hasMoreElements())
+		if (folder)
+			sendtophoneCore.sendFile( fp.file );
+		else
 		{
-			var file = files.getNext().QueryInterface(Ci.nsILocalFile);
-			sendtophoneCore.sendFile( file );
+			var files = fp.files;
+			while (files.hasMoreElements())
+			{
+				var file = files.getNext().QueryInterface(Components.interfaces.nsILocalFile);
+				sendtophoneCore.sendFile( file );
+			}
 		}
 	}
 

@@ -22,3 +22,8 @@
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
 <!ENTITY sendtophoneContextVideo.label "Send Video to Android">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneFileTransfers.label "File transfers">
+<!ENTITY sendtophoneFileServer.label "Server">
+<!ENTITY sendtophoneFileServer.None "None">
+<!ENTITY sendtophoneFileServer.Custom "Custom">
+<!ENTITY sendtophoneFileServer.Disclaimer "Disclaimer: We (FoxToPhone developers) are not affiliated with any of the third party hosting services listed here. You should read their Terms Of Service before using them.">

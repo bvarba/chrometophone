@@ -393,7 +393,7 @@ var sendtophoneCore = {
 					sendtophoneUploadsManager.finishedUpload( progressId );
 
 					// Send the zip and delete it afterwards
-					sendtophoneCore.sendFile(nsZip, function() { nsZip.remove(false); });
+					sendtophoneCore.sendFile(nsZip, function() { nsZip.remove(false); if (callback) callback(); } );
 				}
 			);
 			return;

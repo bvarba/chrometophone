@@ -34,6 +34,8 @@ let gUploadListener = {
 
 		// If no more pending uploads, close the tab.
 		//		Use a 0 ms timeout to avoid flicker while compress -> upload a folder
+		//		The trick won't work if in order to upload the file itself we have to perform an extra request before
+		// (like creating a gallery in min.us)
 		let checkTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 	 	checkTimer.initWithCallback( this.checkTimerEvent, 0, Ci.nsITimer.TYPE_ONE_SHOT );
 	},
@@ -42,7 +44,7 @@ let gUploadListener = {
 	{
 		notify: function(timer)
 		{
-			if (!sendtophoneUploadsManager.isWindowNeeded())
+			if (!sendtophoneUploadsManager.isWindowNeeded(true))
 			{
 				if (gUploadListener.UploadsView.children.length==0)
 					window.close();

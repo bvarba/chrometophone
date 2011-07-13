@@ -236,11 +236,9 @@ var sendtophone = {
 	initPopup: function()
 	{
 		var fileServerUrl = this.prefs.getCharPref( "fileServerUrl" );
-		if (!fileServerUrl)
-		{
-			document.getElementById("sendtophoneContextMenuSendFiles").hidden = true;
-			document.getElementById("sendtophoneContextMenuSendFolder").hidden = true;
-		}
+		document.getElementById("sendtophoneContextMenuSendFiles").hidden = !fileServerUrl;
+		document.getElementById("sendtophoneContextMenuSendFolder").hidden = !fileServerUrl;
+
 		document.getElementById("sendtophoneContextMenuSendClipboard").disabled = !this.clipboardHasText();
 
 		// returning true will make the popup show

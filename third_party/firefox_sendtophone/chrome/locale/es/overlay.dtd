@@ -22,3 +22,8 @@
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
 <!ENTITY sendtophoneContextVideo.label "Enviar video a Android">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneFileTransfers.label "Envío de ficheros">
+<!ENTITY sendtophoneFileServer.label "Servidor">
+<!ENTITY sendtophoneFileServer.None "Ninguno">
+<!ENTITY sendtophoneFileServer.Custom "Personalizado">
+<!ENTITY sendtophoneFileServer.Disclaimer "Aviso: Nosotros (los desarrolladores de Fox to Phone) no estamos relacionados con ninguno de los servidores de alojamiento mostrados aquí. Debes leer sus Terminos de Servicio antes de usarlos.">
