@@ -22,3 +22,8 @@
 <!ENTITY sendtophoneContextSendClipboard.accesskey "Т">
 <!ENTITY sendtophoneContextVideo.label "Пошаљи видео на Андроид">
 <!ENTITY sendtophoneContextVideo.accesskey "Д">
+<!ENTITY sendtophoneFileTransfers.label "Пренос датотека">
+<!ENTITY sendtophoneFileServer.label "Сервер">
+<!ENTITY sendtophoneFileServer.None "Ниједан">
+<!ENTITY sendtophoneFileServer.Custom "Прилагођени">
+<!ENTITY sendtophoneFileServer.Disclaimer "Напомена: ми, аутори додатка FoxToPhone, нсимо повезани ни са једним хостингом наведеним овде. Требало би да прочитате њихове услове коришћења пре него што их почнете користити.">

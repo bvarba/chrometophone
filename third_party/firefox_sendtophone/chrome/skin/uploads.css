@@ -1,6 +1,6 @@
 
 #sendtophoneUploadsWindow {
-  background-color: ThreeDFace;
+  background-color: ThreeDFace; 
 }
 
 /* Upload View */
@@ -11,6 +11,12 @@
     border-bottom: 2px solid;
     -moz-border-bottom-colors: ThreeDHighlight ThreeDLightShadow;
   }
+}
+
+ #UploadsBox {
+    -moz-appearance: none;
+  background-color: ThreeDFace; 
+  border:none;
 }
 
 /* Upload View Items */

@@ -25,7 +25,7 @@ var sendtophoneCore = {
 	req : null,
 	apiVersion : 6,
 	apkUrl : "http://code.google.com/p/chrometophone/wiki/AndroidApp",
-	returnOAuthUrl : "http://code.google.com/p/chrometophone/logo",
+	returnOAuthUrl : "https://code.google.com/p/chrometophone/logo",
 	retryCount : 0,
 
 	init: function()

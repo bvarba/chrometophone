@@ -25,6 +25,14 @@ sendtophone.init = function()
 
 	document.getElementById("contentAreaContextMenu").
 		addEventListener("popupshowing", function (e){ sendtophone.showFirefoxContextMenu(e); }, false);
+
+	// Hide URL bar and other chrome on the uploads window
+	var prevFunc = XULBrowserWindow.hideChromeForLocation;
+
+	XULBrowserWindow.hideChromeForLocation = function(aLocation) {
+	  return (aLocation=='chrome://sendtophone/content/uploads.xul') || prevFunc.apply(XULBrowserWindow, [aLocation]);
+	}
+
 }
 
 sendtophone.installToolbarButton = function()

@@ -1,14 +1,10 @@
 "use strict";
 
-let Cc = Components.classes;
-let Ci = Components.interfaces;
-let Cu = Components.utils;
+Components.utils.import("resource://gre/modules/DownloadUtils.jsm");
+Components.utils.import("resource://gre/modules/PluralForm.jsm");
+Components.utils.import("resource://sendtophone/uploadsManager.js");
 
-Cu.import("resource://gre/modules/DownloadUtils.jsm");
-Cu.import("resource://gre/modules/PluralForm.jsm");
-Cu.import("resource://sendtophone/uploadsManager.js");
-
-let gUploadListener = {
+let FoxToPhoneUploadListener = {
 	UploadsView: null,
 
 	fileAdded: function(data)
@@ -36,8 +32,8 @@ let gUploadListener = {
 		//		Use a 0 ms timeout to avoid flicker while compress -> upload a folder
 		//		The trick won't work if in order to upload the file itself we have to perform an extra request before
 		// (like creating a gallery in min.us)
-		let checkTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-	 	checkTimer.initWithCallback( this.checkTimerEvent, 0, Ci.nsITimer.TYPE_ONE_SHOT );
+		let checkTimer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+	 	checkTimer.initWithCallback( this.checkTimerEvent, 0, Components.interfaces.nsITimer.TYPE_ONE_SHOT );
 	},
 
 	checkTimerEvent :
@@ -46,7 +42,7 @@ let gUploadListener = {
 		{
 			if (!sendtophoneUploadsManager.isWindowNeeded(true))
 			{
-				if (gUploadListener.UploadsView.children.length==0)
+				if (FoxToPhoneUploadListener.UploadsView.children.length==0)
 					window.close();
 			}
 		}
@@ -83,17 +79,17 @@ let FoxToPhoneUploadWindow = {
 	{
 		this.UploadManager = sendtophoneUploadsManager;
 
-		gUploadListener.UploadsView = document.getElementById("UploadsBox");
+		FoxToPhoneUploadListener.UploadsView = document.getElementById("UploadsBox");
 
-		this.UploadManager.addListener(gUploadListener);
+		this.UploadManager.addListener(FoxToPhoneUploadListener);
 
 		for (let id in this.UploadManager.uploads)
-			gUploadListener.addFile( this.UploadManager.uploads[id] );
+			FoxToPhoneUploadListener.addFile( this.UploadManager.uploads[id] );
 	},
 
 	Shutdown: function()
 	{
-		this.UploadManager.removeListener(gUploadListener);
+		this.UploadManager.removeListener(FoxToPhoneUploadListener);
 	},
 
 	performCancelCommand: function(aItem)

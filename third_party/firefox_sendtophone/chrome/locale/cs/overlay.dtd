@@ -22,3 +22,8 @@
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
 <!ENTITY sendtophoneContextVideo.label "Odeslat video do telefonu">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneFileTransfers.label "Přenos souborů">
+<!ENTITY sendtophoneFileServer.label "Server">
+<!ENTITY sendtophoneFileServer.None "Žádný">
+<!ENTITY sendtophoneFileServer.Custom "Vlastní">
+<!ENTITY sendtophoneFileServer.Disclaimer "Upozornění: My (vývojáři FoxToPhone) nejsme spojeni s žádným z provozovatelů hostingových služeb. Měli by jste si přečíst Právní Podmínky před použitím jejich služeb.">

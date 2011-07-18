@@ -8,7 +8,9 @@
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	 id="sendtophoneUploadsWindow"
         onload="FoxToPhoneUploadWindow.Startup();" onunload="FoxToPhoneUploadWindow.Shutdown();"
-        onclose="return closeWindow(false);">
+        onclose="return closeWindow(false);"
+	title="Fox To Phone - &sendtophoneFileTransfers.label;"
+	>
 
 	<script type="application/javascript" src="chrome://sendtophone/content/uploads.js"/>
 

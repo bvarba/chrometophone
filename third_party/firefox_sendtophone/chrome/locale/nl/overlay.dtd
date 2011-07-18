@@ -22,3 +22,8 @@
 <!ENTITY sendtophoneContextSendClipboard.accesskey "K">
 <!ENTITY sendtophoneContextVideo.label "Video naar Android verzenden">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneFileTransfers.label "Bestandsoverdrachten">
+<!ENTITY sendtophoneFileServer.label "Server">
+<!ENTITY sendtophoneFileServer.None "Geen">
+<!ENTITY sendtophoneFileServer.Custom "Aangepast">
+<!ENTITY sendtophoneFileServer.Disclaimer "Disclaimer: Wij (de ontwikkelaars van FoxToPhone) zijn niet gelieerd aan de hier genoemde externe hostingdiensten. U dient de erbij behorende servicevoorwaarden te lezen voordat u er gebruik van maakt.">
