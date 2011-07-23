@@ -26,7 +26,6 @@ var sendtophoneCore = {
 	apiVersion : 6,
 	apkUrl : "http://code.google.com/p/chrometophone/wiki/AndroidApp",
 	returnOAuthUrl : "https://code.google.com/p/chrometophone/logo",
-	retryCount : 0,
 
 	init: function()
 	{
@@ -231,7 +230,18 @@ var sendtophoneCore = {
 		var data = 'title=' + encodeURIComponent(title) +
 				'&url=' + encodeURIComponent(url) + '&sel=' + encodeURIComponent(selection);
 
-		this.pendingMessage = {title:title, url: url, selection: selection};
+		if (!this.pendingMessage)
+			this.pendingMessage = {title:title, url: url, selection: selection, retries: 3};
+		else
+		{
+			this.pendingMessage.retries -= 1;
+			if (this.pendingMessage.retries == 0)
+			{
+				delete this.pendingMessage;
+				this.alert("Too many retries");
+				return;
+			}
+		}
 
 		if (!this.oauth.hasToken())
 		{
@@ -287,7 +297,6 @@ var sendtophoneCore = {
 		if (body.substring(0, 2) == 'OK')
 		{
 			delete self.pendingMessage;
-			self.retryCount=0;
 			self.popupNotification(self.getString("InfoSent"));
 			return;
 		}
@@ -440,47 +449,6 @@ var sendtophoneCore = {
 		}
 
 		let uploadName = nsFile.leafName;
-		// Try to determine the MIME type of the file
-		var mimeType = "text/plain";
-		try {
-			var mimeService = Cc["@mozilla.org/mime;1"]
-				.getService(Ci.nsIMIMEService);
-			mimeType = mimeService.getTypeFromFile(nsFile); // nsFile is an nsIFile instance
-		}
-		catch(e) { /* eat it; just use text/plain */ }
-
-		// Buffer the upload file
-		var inStream = Cc["@mozilla.org/network/file-input-stream;1"]
-			.createInstance(Ci.nsIFileInputStream);
-		inStream.init(nsFile, 1, 1, inStream.CLOSE_ON_EOF);
-		var bufInStream = Cc["@mozilla.org/network/buffered-input-stream;1"]
-			.createInstance(Ci.nsIBufferedInputStream);
-		bufInStream.init(inStream, 4096);
-
-		//Setup the boundary start stream
-		var boundary = "--SendToPhone-------------" + Math.random().toString(16).substr(2);
-		var startBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
-			.createInstance(Ci.nsIStringInputStream);
-		startBoundryStream.setData("--"+boundary+"\r\n",-1);
-
-		// Setup the boundary end stream
-		var endBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
-				.createInstance(Ci.nsIStringInputStream);
-		endBoundryStream.setData("\r\n\r\n--"+boundary+"--\r\n",-1);
-
-		// Setup the mime-stream - the 'part' of a multi-part mime type
-		var mimeStream = Cc["@mozilla.org/network/mime-input-stream;1"].createInstance(Ci.nsIMIMEInputStream);
-		mimeStream.addContentLength = false;
-		mimeStream.addHeader("Content-disposition",'form-data; charset: utf-8; name="' + formElementName + '"; filename="' + this.toUTF8(uploadName) + '"');
-		mimeStream.addHeader("Content-type", mimeType);
-		mimeStream.setData(bufInStream);
-
-		// Setup a multiplex stream
-		var multiStream = Cc["@mozilla.org/io/multiplex-input-stream;1"]
-			.createInstance(Ci.nsIMultiplexInputStream);
-		multiStream.appendStream(startBoundryStream);
-		multiStream.appendStream(mimeStream);
-		multiStream.appendStream(endBoundryStream);
 
 		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
 				.createInstance(Ci.nsIXMLHttpRequest);
@@ -490,8 +458,6 @@ var sendtophoneCore = {
 
 		req.open('POST', uri, true);
 
-		req.setRequestHeader("Content-length",multiStream.available());
-		req.setRequestHeader("Content-type","multipart/form-data; boundary="+boundary);
 		req.addEventListener("load", function(event)
 		{
 			// If there's a callback (to delete temporary files) we call it now
@@ -527,7 +493,72 @@ var sendtophoneCore = {
 		}
 		catch(ex) {}
 
-		req.send(multiStream);
+		var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+								.getService(Components.interfaces.nsIXULAppInfo);
+		var majorVersion = /(\d+)\./.exec( appInfo.platformVersion )[1];
+
+		if (majorVersion>=8)
+		{
+		this.toConsole("using formData")
+
+			var formData = Components.classes["@mozilla.org/files/formdata;1"]
+					.createInstance(Components.interfaces.nsIDOMFormData);
+
+			var file = new File( nsFile );
+
+			formData.append( formElementName, file );
+			req.send( formData );
+		}
+		else
+		{
+			// Try to determine the MIME type of the file
+			var mimeType = "text/plain";
+			try {
+				var mimeService = Cc["@mozilla.org/mime;1"]
+					.getService(Ci.nsIMIMEService);
+				mimeType = mimeService.getTypeFromFile(nsFile); // nsFile is an nsIFile instance
+			}
+			catch(e) { /* eat it; just use text/plain */ }
+
+			// Buffer the upload file
+			var inStream = Cc["@mozilla.org/network/file-input-stream;1"]
+				.createInstance(Ci.nsIFileInputStream);
+			inStream.init(nsFile, 1, 1, inStream.CLOSE_ON_EOF);
+			var bufInStream = Cc["@mozilla.org/network/buffered-input-stream;1"]
+				.createInstance(Ci.nsIBufferedInputStream);
+			bufInStream.init(inStream, 4096);
+
+			//Setup the boundary start stream
+			var boundary = "--SendToPhone-------------" + Math.random().toString(16).substr(2);
+			var startBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
+				.createInstance(Ci.nsIStringInputStream);
+			startBoundryStream.setData("--"+boundary+"\r\n",-1);
+
+			// Setup the boundary end stream
+			var endBoundryStream = Cc["@mozilla.org/io/string-input-stream;1"]
+					.createInstance(Ci.nsIStringInputStream);
+			endBoundryStream.setData("\r\n\r\n--"+boundary+"--\r\n",-1);
+
+			// Setup the mime-stream - the 'part' of a multi-part mime type
+			var mimeStream = Cc["@mozilla.org/network/mime-input-stream;1"].createInstance(Ci.nsIMIMEInputStream);
+			mimeStream.addContentLength = false;
+			mimeStream.addHeader("Content-disposition",'form-data; charset: utf-8; name="' + formElementName + '"; filename="' + this.toUTF8(uploadName) + '"');
+			mimeStream.addHeader("Content-type", mimeType);
+			mimeStream.setData(bufInStream);
+
+			// Setup a multiplex stream
+			var multiStream = Cc["@mozilla.org/io/multiplex-input-stream;1"]
+				.createInstance(Ci.nsIMultiplexInputStream);
+			multiStream.appendStream(startBoundryStream);
+			multiStream.appendStream(mimeStream);
+			multiStream.appendStream(endBoundryStream);
+
+			req.setRequestHeader("Content-length",multiStream.available());
+			req.setRequestHeader("Content-type","multipart/form-data; boundary="+boundary);
+
+			req.send(multiStream);
+		}
+
 	}
 };
 
