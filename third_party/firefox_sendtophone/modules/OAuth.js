@@ -71,7 +71,7 @@ function openTab(url, successUrl, callback)
  * @return {ChromeExOAuth} An initialized ChromeExOAuth object.
  */
 var OAuthFactory = {
-	init : function(oauth_config)
+	init : function(oauth_config, preferences)
 	{
 		var chromeExOAuth = new ChromeExOAuth(
 				oauth_config['request_url'],
@@ -91,22 +91,19 @@ var OAuthFactory = {
 
 		/*
 		LocalStorage isn't working for extensions
-		http://farter.users.sourceforge.net/blog/2011/03/07/using-localstorage-in-firefox-extensions-for-persistent-data-storage/
+		Use the preferences system with a branch for each account
 		*/
-		var url = oauth_config['scope'];
-		var ios = Components.classes["@mozilla.org/network/io-service;1"]
-				  .getService(Components.interfaces.nsIIOService);
-		var ssm = Components.classes["@mozilla.org/scriptsecuritymanager;1"]
-				  .getService(Components.interfaces.nsIScriptSecurityManager);
-		var dsm = Components.classes["@mozilla.org/dom/storagemanager;1"]
-				  .getService(Components.interfaces.nsIDOMStorageManager);
+		chromeExOAuth.setPreferencesBranch(preferences);
 
-		chromeExOAuth.localStorage = dsm.getLocalStorageForPrincipal(ssm.getCodebasePrincipal( ios.newURI(url, "", null) ) , "");
-
-	  return chromeExOAuth;
+		return chromeExOAuth;
 	}
 };
 
+ChromeExOAuth.prototype.setPreferencesBranch = function( branch ) {
+		this.prefs = Cc["@mozilla.org/preferences-service;1"]
+						.getService(Ci.nsIPrefService)
+						.getBranch(branch) ;
+}
 
 /**
  * Constructor - no need to invoke directly, call initBackgroundPage instead.
@@ -156,8 +153,8 @@ function ChromeExOAuth(url_request_token, url_auth_token, url_access_token,
  * "logout" of the configured OAuth API.
  */
 ChromeExOAuth.prototype.clearTokens = function() {
-  delete this.localStorage[this.key_token + encodeURI(this.oauth_scope)];
-  delete this.localStorage[this.key_token_secret + encodeURI(this.oauth_scope)];
+	try	{ this.prefs.clearUserPref(this.key_token);	} catch (e)	{}
+	try	{ this.prefs.clearUserPref(this.key_token_secret);	} catch (e)	{}
 };
 
 /**
@@ -414,7 +411,7 @@ ChromeExOAuth.addURLParam = function(url, key, value) {
  * @param {String} token The token to store.
  */
 ChromeExOAuth.prototype.setToken = function(token) {
-  this.localStorage[this.key_token + encodeURI(this.oauth_scope)] = token;
+  this.prefs.setCharPref(this.key_token, token);
 };
 
 /**
@@ -422,7 +419,9 @@ ChromeExOAuth.prototype.setToken = function(token) {
  * @return {String} The stored token.
  */
 ChromeExOAuth.prototype.getToken = function() {
-  return this.localStorage[this.key_token + encodeURI(this.oauth_scope)];
+	if (!this.prefs.prefHasUserValue(this.key_token))
+		return "";
+	return this.prefs.getCharPref(this.key_token);
 };
 
 /**
@@ -430,7 +429,7 @@ ChromeExOAuth.prototype.getToken = function() {
  * @param {String} secret The secret to store.
  */
 ChromeExOAuth.prototype.setTokenSecret = function(secret) {
-  this.localStorage[this.key_token_secret + encodeURI(this.oauth_scope)] = secret;
+  this.prefs.setCharPref(this.key_token_secret, secret);
 };
 
 /**
@@ -438,12 +437,13 @@ ChromeExOAuth.prototype.setTokenSecret = function(secret) {
  * @return {String} The stored secret.
  */
 ChromeExOAuth.prototype.getTokenSecret = function() {
-  return this.localStorage[this.key_token_secret + encodeURI(this.oauth_scope)];
+	if (!this.prefs.prefHasUserValue(this.key_token_secret))
+		return "";
+  return this.prefs.getCharPref(this.key_token_secret);
 };
 
 /**
- * Starts an OAuth authorization flow for the current page.  If a token exists,
- * no redirect is needed and the supplied callback is called immediately.
+ * Starts an OAuth authorization flow.
  * If this method detects that a redirect has finished, it grabs the
  * appropriate OAuth parameters from the URL and attempts to retrieve an
  * access token.  If no token exists and no redirect has happened, then
@@ -454,14 +454,21 @@ ChromeExOAuth.prototype.getTokenSecret = function() {
  *         secret {String} The OAuth access token secret.
  */
 ChromeExOAuth.prototype.initOAuthFlow = function(callback) {
-  if (!this.hasToken()) {
+
+	// Clear any existing credentials as they have failed
+	this.clearTokens();
 
 	var request_params = {
 		'url_callback_param' : 'chromeexoauthcallback',
 		'url_callback': this.callback_page
 	}
 	var self = this;
-	this.getRequestToken(function(url) {
+	this.getRequestToken(function(url, error) {
+		if (error)
+		{
+			callback(error);
+			return;
+		}
 		openTab( url, request_params.url_callback, function( url )
 			{
 				var params = ChromeExOAuth.getQueryStringParams( url );
@@ -476,9 +483,6 @@ ChromeExOAuth.prototype.initOAuthFlow = function(callback) {
 			});
 		}, request_params);
 
-  } else {
-    callback(this.getToken(), this.getTokenSecret());
-  }
 };
 
 /**
@@ -547,7 +551,8 @@ ChromeExOAuth.prototype.onRequestToken = function(callback, xhr) {
       }
       callback(url);
     } else {
-      throw new Error("Fetching request token failed. Status " + xhr.status);
+//      throw new Error("Fetching request token failed. Status " + xhr.status);
+		callback(null, "Fetching request token failed. Status " + xhr.status);
     }
   }
 };

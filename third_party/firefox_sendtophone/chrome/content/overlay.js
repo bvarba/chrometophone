@@ -233,6 +233,36 @@ var sendtophone = {
 		return (/^(https?|market|tel|sms(to)?|mailto|ftp):/i).test( uri );
 	},
 
+	fillAccountsMenu: function(menupopup)
+	{
+		var accounts = this.prefs.getCharPref("accounts").split(";"),
+			currentAccount = this.prefs.getCharPref('currentAccount');
+
+		while (menupopup.firstChild)
+			menupopup.removeChild(menupopup.firstChild);
+
+		for (var i=0; i<accounts.length ; i++)
+		{
+			var account = accounts[i],
+				title = this.prefs.getCharPref( account + '.title' );
+
+			var menuitem = document.createElement("menuitem");
+			menuitem.setAttribute("label", title);
+			menuitem.setAttribute("id", "sendtophone_" + account);
+			menuitem.setAttribute("type", "radio");
+			menuitem.setAttribute("name", "sendtophone_account");
+			if (currentAccount == account)
+				menuitem.setAttribute("checked", true);
+
+			// Select that account
+			menuitem.addEventListener("command", function(e) {
+				var id = e.target.getAttribute("id");
+				sendtophoneCore.setCurrentAccount( id.match(/_(.*)/)[1] );
+				}, false);
+			menupopup.appendChild(menuitem);
+		}
+	},
+
 	initPopup: function()
 	{
 		var fileServerUrl = this.prefs.getCharPref( "fileServerUrl" );
@@ -240,6 +270,8 @@ var sendtophone = {
 		document.getElementById("sendtophoneContextMenuSendFolder").hidden = !fileServerUrl;
 
 		document.getElementById("sendtophoneContextMenuSendClipboard").disabled = !this.clipboardHasText();
+
+		document.getElementById("sendtophoneContextMenuLogout").disabled = !sendtophoneCore.isLoggedIn();
 
 		// returning true will make the popup show
 		return true;

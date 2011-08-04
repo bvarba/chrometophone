@@ -27,3 +27,8 @@
 <!ENTITY sendtophoneFileServer.None "Ninguno">
 <!ENTITY sendtophoneFileServer.Custom "Personalizado">
 <!ENTITY sendtophoneFileServer.Disclaimer "Aviso: Nosotros (los desarrolladores de Fox to Phone) no estamos relacionados con ninguno de los servidores de alojamiento mostrados aquí. Debes leer sus Terminos de Servicio antes de usarlos.">
+<!ENTITY sendtophonePhoneAccounts.label "Cuentas">
+<!ENTITY sendtophonePhoneAccounts.description "Si usas varias cuentas de Google con tus aparatos, puedes cambiar entre ellas tras crearlas aquí.">
+<!ENTITY sendtophonePhoneAccounts.add "Añadir">
+<!ENTITY sendtophonePhoneAccounts.rename "Renombrar">
+<!ENTITY sendtophonePhoneAccounts.remove "Quitar">

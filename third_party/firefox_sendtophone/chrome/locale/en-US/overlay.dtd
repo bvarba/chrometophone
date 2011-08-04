@@ -27,3 +27,8 @@
 <!ENTITY sendtophoneFileServer.None "None">
 <!ENTITY sendtophoneFileServer.Custom "Custom">
 <!ENTITY sendtophoneFileServer.Disclaimer "Disclaimer: We (FoxToPhone developers) are not affiliated with any of the third party hosting services listed here. You should read their Terms Of Service before using them.">
+<!ENTITY sendtophonePhoneAccounts.label "Phone accounts">
+<!ENTITY sendtophonePhoneAccounts.description "If you are using several Google accounts with your devices, you can switch between them after creating them here.">
+<!ENTITY sendtophonePhoneAccounts.add "Add new">
+<!ENTITY sendtophonePhoneAccounts.rename "Rename">
+<!ENTITY sendtophonePhoneAccounts.remove "Remove">

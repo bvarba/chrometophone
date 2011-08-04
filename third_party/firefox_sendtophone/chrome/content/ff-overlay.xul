@@ -10,7 +10,7 @@
   </stringbundleset>
 
 	<popupset id="mainPopupSet">
-		<menupopup id="sendtophoneContextMenu" onpopupshowing="sendtophone.initPopup();">
+		<menupopup id="sendtophoneContextMenu" onpopupshowing="if (event.target == this) sendtophone.initPopup();">
 			<menuitem label="&sendtophoneContextSendClipboard.label;" 
 				  accesskey="&sendtophoneContextSendClipboard.accesskey;"
 				  oncommand="sendtophone.sendClipboard()" id="sendtophoneContextMenuSendClipboard"/>
@@ -23,8 +23,12 @@
 			<menu label="&sendtophoneProtocols.label;">
 				<menupopup id="menu_Protocols" onpopupshowing="sendtophone.onOptionsShowing(this)"> 
 					<menuitem type="checkbox" id="marketcheck" label="market:" oncommand="sendtophone.onToggleOption(this)" option="market"/>
-					<menuitem type="checkbox" id="smscheck" label="sms:"  oncommand="sendtophone.onToggleOption(this)" option="sms"/>
-					<menuitem type="checkbox" id="telcheck" label="tel:"  oncommand="sendtophone.onToggleOption(this)" option="tel"/>
+					<menuitem type="checkbox" id="smscheck" label="sms:" oncommand="sendtophone.onToggleOption(this)" option="sms"/>
+					<menuitem type="checkbox" id="telcheck" label="tel:" oncommand="sendtophone.onToggleOption(this)" option="tel"/>
+				</menupopup>
+			</menu>
+			<menu label="&sendtophonePhoneAccounts.label;">
+				<menupopup id="sendtophoneContextMenuAccountsPane" onpopupshowing="sendtophone.fillAccountsMenu(this)"> 
 				</menupopup>
 			</menu>
 			<menuitem label="&sendtophoneContextLogout.label;" 

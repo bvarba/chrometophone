@@ -53,6 +53,8 @@ var sendtophoneCore = {
 		if (typeof OAuthFactory == "undefined")
 			Components.utils.import("resource://sendtophone/OAuth.js");
 
+		var currentAccount = this.prefs.getCharPref('currentAccount');
+
 		this.oauth = OAuthFactory.init({
 			'request_url' : baseUrl + '/_ah/OAuthGetRequestToken',
 			'authorize_url' : baseUrl + '/_ah/OAuthAuthorizeToken',
@@ -62,7 +64,16 @@ var sendtophoneCore = {
 			'scope' : baseUrl,
 			'app_name' : 'Fox To Phone',
 			'callback_page': this.returnOAuthUrl
-		});
+		}, 'extensions.sendtophone.' + currentAccount + '.');
+	},
+
+	setCurrentAccount: function(account)
+	{
+		if (!this.prefs)
+			this.init();
+
+		this.prefs.setCharPref('currentAccount', account);
+		this.oauth.setPreferencesBranch('extensions.sendtophone.' + account + '.');
 	},
 
 	getString: function(name)
@@ -112,7 +123,7 @@ var sendtophoneCore = {
 			.logStringMessage( text );
 	},
 
-	processXHR: function(url, method, headers, data, callback)
+	processXHR: function(url, method, headers, data, callback, errorCallback)
 	{
 		var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
 						.createInstance(Ci.nsIXMLHttpRequest);
@@ -149,6 +160,11 @@ var sendtophoneCore = {
 				}
 				else
 				{
+					if (errorCallback)
+					{
+						errorCallback.call( sendtophoneCore, req);
+						return;
+					}
 					sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
 				}
 			}
@@ -274,11 +290,47 @@ var sendtophoneCore = {
 		}
 	},
 
+	// Detect if the user is logged in
+	isLoggedIn: function()
+	{
+		if (!this.oauth)
+			this.init();
+
+		return (this.oauth.hasToken());
+	},
+
 	doLogin: function()
 	{
 		this.popupNotification( this.getString("LoginRequired") );
 		//Open Google login page and close tab when done
-		this.oauth.initOAuthFlow( function() {sendtophoneCore.loginSuccessful();} );
+		this.oauth.initOAuthFlow( function(error) {
+			var self = sendtophoneCore;
+			if (error)
+			{
+				// Try to guess if the domain might be blocked. Not bulletprof, but friendlier that stating anything about "request token"
+				if (error == "Fetching request token failed. Status 0")
+				{
+					var url = self.prefs.getCharPref( "appUrl" );
+					// The expected response isn't hardcoded here as we don't know what are the plans.
+					self.processXHR( url, "GET", null, "",
+						function(req) {
+							// Don't really know why the login failed.
+							self.alert( error );
+						},
+						function(req) {
+							if ( req.status == 0)
+								self.alert("Unable to connect with " + url + "\r\nCheck that it isn't blocked with a firewall");
+							else
+								self.alert( error );
+						});
+				}
+				else
+					self.alert(error);
+
+				return;
+			}
+			self.loginSuccessful();
+			} );
 	},
 
 	processSentData : function(body, req)

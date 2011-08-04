@@ -6,6 +6,9 @@ pref("extensions.sendtophone.proxyUrl", "http://foxtophone.com/f2p.php?link=");
 pref("extensions.sendtophone.fileServerUrl", "");
 pref("extensions.sendtophone.fileUploadMaxKb", 50000);
 pref("extensions.sendtophone.SearchQR", 0);  // 0: search and prompt, 1: search and launch automatically, 2: don't search
+pref("extensions.sendtophone.accounts", "account0");
+pref("extensions.sendtophone.currentAccount", "account0");
+pref("extensions.sendtophone.account0.title", "default");
 
 pref("extensions.sendtophone.protocols.market", true);
 pref("extensions.sendtophone.protocols.sms", true);

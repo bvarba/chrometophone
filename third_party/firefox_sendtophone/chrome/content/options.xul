@@ -15,7 +15,7 @@
 			<preference id="extensions.sendtophone.fileServerUrl" name="extensions.sendtophone.fileServerUrl" type="string"/>
 		</preferences>
 		
-		<groupbox style="padding:1em;" label="ProtocolsGroup">
+		<groupbox style="padding:1em;">
 			<caption label="&sendtophoneProtocols.label;"/>
 		
 				<checkbox preference="extensions.sendtophone.protocols.market"
@@ -30,7 +30,38 @@
 					label="tel:" />
 		</groupbox>
 	
-		<groupbox style="padding:1em; min-height:10em;" label="FileServer">
+	<groupbox style="padding:1em;">
+		<caption label="&sendtophonePhoneAccounts.label;"/>
+
+		<description style="width:400px; height:2em;">
+		&sendtophonePhoneAccounts.description;
+		</description>
+
+		<hbox>
+			<listbox id="accountsList" flex="1" style="height: 8em; "
+				seltype="single"
+				onselect="foxToPhonePreferences.onAccountSelected();"
+				>
+			</listbox>
+
+			<vbox align="end">
+				<button id="btnAddAccount" 
+					icon="add" label="&sendtophonePhoneAccounts.add;"
+					oncommand="foxToPhonePreferences.addAccount();"/>
+
+				<button id="btnRenameAccount" disabled="true" 
+					label="&sendtophonePhoneAccounts.rename;"
+					oncommand="foxToPhonePreferences.renameAccount();"/>
+
+				<button id="btnRemoveAccount" disabled="true" 
+					icon="remove" label="&sendtophonePhoneAccounts.remove;"
+					oncommand="foxToPhonePreferences.removeAccount();"/>
+			</vbox>
+		</hbox>
+
+	</groupbox>
+
+		<groupbox style="padding:1em; min-height:10em;">
 			<caption label="&sendtophoneFileTransfers.label;" />
 			<hbox align="center">
 				<label value="&sendtophoneFileServer.label;" 
@@ -45,7 +76,7 @@
 					</menupopup>
 				</menulist>
 
-				<description style="width: 300px;height:3em;" id="foxtophoneDisclaimer">
+				<description style="width:300px; height:3em;" id="foxtophoneDisclaimer">
 				&sendtophoneFileServer.Disclaimer;
 				</description>
 			</hbox>
