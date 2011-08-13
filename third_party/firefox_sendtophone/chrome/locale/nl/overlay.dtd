@@ -27,3 +27,8 @@
 <!ENTITY sendtophoneFileServer.None "Geen">
 <!ENTITY sendtophoneFileServer.Custom "Aangepast">
 <!ENTITY sendtophoneFileServer.Disclaimer "Disclaimer: Wij (de ontwikkelaars van FoxToPhone) zijn niet gelieerd aan de hier genoemde externe hostingdiensten. U dient de erbij behorende servicevoorwaarden te lezen voordat u er gebruik van maakt.">
+<!ENTITY sendtophonePhoneAccounts.label "Telefoonaccounts">
+<!ENTITY sendtophonePhoneAccounts.description "Als u verscheidene Google-accounts gebruikt op uw apparaten kunt u ertussen wisselen nadat u ze hier hebt aangemaakt.">
+<!ENTITY sendtophonePhoneAccounts.add "Nieuw toevoegen">
+<!ENTITY sendtophonePhoneAccounts.rename "Hernoemen">
+<!ENTITY sendtophonePhoneAccounts.remove "Verwijderen">

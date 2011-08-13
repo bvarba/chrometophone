@@ -22,3 +22,13 @@
 <!ENTITY sendtophoneContextSendClipboard.accesskey "t">
 <!ENTITY sendtophoneContextVideo.label "Enviar vídeo para o Android">
 <!ENTITY sendtophoneContextVideo.accesskey "v">
+<!ENTITY sendtophoneFileTransfers.label "Transferências de arquivos">
+<!ENTITY sendtophoneFileServer.label "Servidor">
+<!ENTITY sendtophoneFileServer.None "Nenhum">
+<!ENTITY sendtophoneFileServer.Custom "Personalizado">
+<!ENTITY sendtophoneFileServer.Disclaimer "Declaração: Nós (desenvolvedores do FoxToPhone) não somos afiliados a nenhum dos serviços de hospedagem de terceiros listados aqui. Você deve ler seus termos de serviço antes de usá-los.">
+<!ENTITY sendtophonePhoneAccounts.label "Contas de telefone">
+<!ENTITY sendtophonePhoneAccounts.description "Se estiver usando várias contas do Google com os seus dispositivos, você pode alternar entre elas após criá-las aqui.">
+<!ENTITY sendtophonePhoneAccounts.add "Adicionar novo">
+<!ENTITY sendtophonePhoneAccounts.rename "Renomear">
+<!ENTITY sendtophonePhoneAccounts.remove "Remover">

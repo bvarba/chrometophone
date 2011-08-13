@@ -266,8 +266,8 @@ var sendtophone = {
 	initPopup: function()
 	{
 		var fileServerUrl = this.prefs.getCharPref( "fileServerUrl" );
-		document.getElementById("sendtophoneContextMenuSendFiles").hidden = !fileServerUrl;
-		document.getElementById("sendtophoneContextMenuSendFolder").hidden = !fileServerUrl;
+		document.getElementById("sendtophoneContextMenuSendFiles").disabled = !fileServerUrl;
+		document.getElementById("sendtophoneContextMenuSendFolder").disabled = !fileServerUrl;
 
 		document.getElementById("sendtophoneContextMenuSendClipboard").disabled = !this.clipboardHasText();
 

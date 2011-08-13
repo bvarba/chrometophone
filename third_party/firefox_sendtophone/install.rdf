@@ -4,7 +4,7 @@
 		<em:id>sendtophone@martinezdelizarrondo.com</em:id>
 		<em:type>2</em:type>
 		<em:name>Fox To Phone</em:name>
-		<em:version>1.2beta3</em:version>
+		<em:version>1.2beta4</em:version>
 		<em:creator>Alfonso &amp; Patrick</em:creator>
 		<em:description>Send links to your Android 2.2 phone using the new C2DM service. Based on the ChromeToPhone extension.</em:description>
 
@@ -23,6 +23,7 @@
 		<em:contributor>LA (Russian)</em:contributor>
 		<em:contributor>yongdong7 (Chinese simplified)</em:contributor>
 		<em:contributor>Xutao (Chinese simplified)</em:contributor>
+		<em:contributor>Michał Jakubowski :: revanmj (Polish)</em:contributor>
 
 		<em:targetApplication>
 			<Description>
@@ -37,7 +38,7 @@
 				<!-- SeaMonkey -->
 				<em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
 				<em:minVersion>2.1</em:minVersion>
-				<em:maxVersion>2.2.*</em:maxVersion>
+				<em:maxVersion>2.3.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 

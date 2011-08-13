@@ -466,7 +466,7 @@ ChromeExOAuth.prototype.initOAuthFlow = function(callback) {
 	this.getRequestToken(function(url, error) {
 		if (error)
 		{
-			callback(error);
+			callback(null, null, error);
 			return;
 		}
 		openTab( url, request_params.url_callback, function( url )

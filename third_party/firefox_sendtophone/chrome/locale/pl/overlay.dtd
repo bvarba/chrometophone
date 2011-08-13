@@ -1,0 +1,29 @@
+<!ENTITY sendtophoneToolbarButton.label "Fox To Phone">
+<!ENTITY sendtophoneToolbarButton.tooltip "Wyślij tę stronę do telefonu z systemem Android">
+<!ENTITY sendtophoneContext.label "Wyślij ten link">
+<!ENTITY sendtophoneContext.accesskey "A">
+<!ENTITY sendtophoneContextImage.label "Wyślij ten obrazek">
+<!ENTITY sendtophoneContextImage.accesskey "A">
+<!ENTITY sendtophoneContextText.label "Wyślij ten tekst">
+<!ENTITY sendtophoneContextText.accesskey "A">
+<!ENTITY sendtophoneContextPage.label "Wyślij tę stronę">
+<!ENTITY sendtophoneContextPage.accesskey "A">
+<!ENTITY sendtophoneContextLogout.label "Wyloguj">
+<!ENTITY sendtophoneContextLogout.accesskey "L">
+<!ENTITY sendtophoneOptions.title "Ustawienia Fox To Phone">
+<!ENTITY sendtophoneProtocols.label "Protokoły">
+<!ENTITY sendtophoneContextSendFile.label "Wyślij pliki...">
+<!ENTITY sendtophoneContextSendFile.accesskey "S">
+<!ENTITY sendtophoneContextSendFolder.label "Wyślij folder...">
+<!ENTITY sendtophoneContextSendFolder.accesskey "F">
+<!ENTITY sendtophoneContextQrImage.label "Wyślij rozkodowany kod QR">
+<!ENTITY sendtophoneContextQrImage.accesskey "Q">
+<!ENTITY sendtophoneContextSendClipboard.label "Wyślij zawartość schowka">
+<!ENTITY sendtophoneContextSendClipboard.accesskey "C">
+<!ENTITY sendtophoneContextVideo.label "Wyślij ten film">
+<!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneFileTransfers.label "Transfery plików">
+<!ENTITY sendtophoneFileServer.label "Serwer">
+<!ENTITY sendtophoneFileServer.None "Żadne">
+<!ENTITY sendtophoneFileServer.Custom "Własne">
+<!ENTITY sendtophoneFileServer.Disclaimer "Zastrzeżenie: My (twórcy FoxToPhone) nie jesteśmy powiązani z żadną widoczną tutaj usługą przechowywania plików. Powinieneś przeczytać ich Warunki użytkowania zanim zaczniesz korzystać z usługi.">

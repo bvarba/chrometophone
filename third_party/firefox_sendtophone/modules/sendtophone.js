@@ -303,7 +303,7 @@ var sendtophoneCore = {
 	{
 		this.popupNotification( this.getString("LoginRequired") );
 		//Open Google login page and close tab when done
-		this.oauth.initOAuthFlow( function(error) {
+		this.oauth.initOAuthFlow( function(token, secret, error) {
 			var self = sendtophoneCore;
 			if (error)
 			{
