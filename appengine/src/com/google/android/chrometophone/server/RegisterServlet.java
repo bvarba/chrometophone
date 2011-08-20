@@ -51,12 +51,12 @@ public class RegisterServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        
+
         RequestInfo reqInfo = RequestInfo.processRequest(req, resp, getServletContext());
         if (reqInfo == null) {
             return;
         }
-        
+
         resp.setContentType("application/json");
         JSONObject regs = new JSONObject();
         try {
@@ -79,20 +79,20 @@ public class RegisterServlet extends HttpServlet {
         } catch (JSONException e) {
             throw new IOException(e);
         }
-        
+
     }
-    
-    
+
+
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
 
-        RequestInfo reqInfo = RequestInfo.processRequest(req, resp, 
+        RequestInfo reqInfo = RequestInfo.processRequest(req, resp,
                 getServletContext());
         if (reqInfo == null) {
             return;
         }
-        
+
         if (reqInfo.deviceRegistrationID == null) {
             resp.setStatus(400);
             resp.getWriter().println(ERROR_STATUS + "(Must specify devregid)");
@@ -105,7 +105,7 @@ public class RegisterServlet extends HttpServlet {
             deviceName = "Phone";
         }
         // TODO: generate the device name by adding a number suffix for multiple
-        // devices of same type. Change android app to send model/type. 
+        // devices of same type. Change android app to send model/type.
 
         String deviceType = reqInfo.getParameter("deviceType");
         if (deviceType == null) {
@@ -115,14 +115,14 @@ public class RegisterServlet extends HttpServlet {
         // Because the deviceRegistrationId isn't static, we use a static
         // identifier for the device. (Can be null in older clients)
         String deviceId = reqInfo.getParameter("deviceId");
-        
+
         // Context-shared PMF.
         PersistenceManager pm =
             C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
 
         try {
             List<DeviceInfo> registrations = reqInfo.devices;
-            
+
             if (registrations.size() > MAX_DEVICES) {
                 // we could return an error - but user can't handle it yet.
                 // we can't let it grow out of bounds.
@@ -130,7 +130,7 @@ public class RegisterServlet extends HttpServlet {
                 // unused registrations
                 DeviceInfo oldest = registrations.get(0);
                 if (oldest.getRegistrationTimestamp() == null) {
-                    pm.deletePersistent(oldest);
+                    reqInfo.deleteRegistration(oldest.getDeviceRegistrationID());
                 } else {
                     long oldestTime = oldest.getRegistrationTimestamp().getTime();
                     for (int i = 1; i < registrations.size(); i++) {
@@ -140,7 +140,7 @@ public class RegisterServlet extends HttpServlet {
                             oldestTime = oldest.getRegistrationTimestamp().getTime();
                         }
                     }
-                    pm.deletePersistent(oldest);
+                    reqInfo.deleteRegistration(oldest.getDeviceRegistrationID());
                 }
             }
 
@@ -167,7 +167,7 @@ public class RegisterServlet extends HttpServlet {
             // TODO: only need to write if something changed, for chrome nothing
             // changes, we just create a new channel
             pm.makePersistent(device);
-            log.log(Level.INFO, "Registered device " + reqInfo.userName + " " + 
+            log.log(Level.INFO, "Registered device " + reqInfo.userName + " " +
                     deviceType);
 
             if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
