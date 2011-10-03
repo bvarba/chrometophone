@@ -43,11 +43,8 @@ sendtophone.installToolbarButton = function()
 		 if (curSet.indexOf("sendtophone-toolbar-button") == -1)
 		 {
 			 var set;
-			 // Place the button before the urlbar
-			 if (curSet.indexOf("urlbar-container") != -1)
-				 set = curSet.replace(/urlbar-container/, "urlbar-container,sendtophone-toolbar-button");
-			 else  // at the end
-				 set = curSet + ",sendtophone-toolbar-button";
+			 // Place the button at the end
+			 set = curSet + ",sendtophone-toolbar-button";
 			 firefoxnav.setAttribute("currentset", set);
 			 firefoxnav.currentSet = set;
 			 document.persist("nav-bar", "currentset");

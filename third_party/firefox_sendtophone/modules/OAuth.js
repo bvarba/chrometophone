@@ -12,7 +12,7 @@ function toConsole(text)
 		.logStringMessage( text );
 }
 
-function openTab(url, successUrl, callback)
+function openTab(url, successUrl, callback, referenceObject)
 {
 	var gBrowser = Cc["@mozilla.org/appshell/window-mediator;1"]
 		.getService(Ci.nsIWindowMediator)
@@ -26,19 +26,45 @@ function openTab(url, successUrl, callback)
 	if (successUrl && callback)
 	{
 		var c2pTab = gBrowser.getBrowserForTab(tab);
-		//Add listener for callback URL
-		c2pTab.addEventListener("load", function () {
-			var currentUrl = c2pTab.currentURI.spec;
 
-			if(successUrl==currentUrl.substr(0, successUrl.length)){
-				callback( currentUrl );
+		// Use nsIWebProgressListener to avoid problems with other extensions that might alter the load of images
+		referenceObject.LocationListener =
+		{
+			QueryInterface : function(aIID){
+				if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+					aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+					aIID.equals(Components.interfaces.nsISupports) )
+					return this;
 
-				// Close tab
-				gBrowser.removeTab(tab);
-				// ReFocus on tab being sent
-				gBrowser.selectedTab = gBrowser.tabContainer.childNodes[lastTabIndex];
-			}
-		}, true);
+				throw Components.results.NS_NOINTERFACE;
+			},
+
+			onLocationChange : function(aProgress, aRequest, originalURI)
+			{
+				var currentUrl = originalURI.spec;
+
+				if ( successUrl==currentUrl.substr(0, successUrl.length) )
+				{
+					c2pTab.removeProgressListener( referenceObject.LocationListener );
+					delete referenceObject.LocationListener;
+
+					callback( currentUrl );
+
+					// Close tab
+					gBrowser.removeTab(tab);
+					// ReFocus on tab being sent
+					gBrowser.selectedTab = gBrowser.tabContainer.childNodes[lastTabIndex];
+				}
+			},
+
+			onStateChange : function(aProgress,aRequest,flag,status){},
+			onProgressChange : function(aRequest,c,d,e,f){},
+			onStatusChange : function(aRequest,c,d){},
+			onSecurityChange : function(aRequest,c){}
+		};
+
+		// Add listener for callback URL
+		c2pTab.addProgressListener( referenceObject.LocationListener );
 	}
 }
 
@@ -480,7 +506,7 @@ ChromeExOAuth.prototype.initOAuthFlow = function(callback) {
 				}
 				else
 					throw ('No chromeexoauthcallback parameter returned. ' + url);
-			});
+			}, this);
 		}, request_params);
 
 };
