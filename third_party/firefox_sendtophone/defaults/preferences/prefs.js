@@ -1,4 +1,5 @@
 pref("extensions.sendtophone.installedButton", false);
+pref("extensions.sendtophone.latestNotice", 0); // If we have to show some upgrade. Store the last version that showed such a notice
 pref("extensions.sendtophone.appUrl", "https://chrometophone.appspot.com");
 pref("extensions.sendtophone.deviceRegistrationId", "");
 

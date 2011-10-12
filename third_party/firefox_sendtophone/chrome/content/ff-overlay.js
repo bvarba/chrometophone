@@ -21,6 +21,22 @@ sendtophone.init = function()
 	{
 		this.installToolbarButton();
 		this.prefs.setBoolPref( "installedButton", true ) ;
+		this.prefs.setIntPref( "latestNotice", 10202 ) ; // There's no need to show the 1.2.2 notice for new installs
+	}
+	else
+	{
+		if (this.prefs.getIntPref( "latestNotice" )<10202)
+		{
+			var firefoxnav = document.getElementById("nav-bar");
+			var curSet = firefoxnav.currentSet;
+			if (curSet.indexOf("sendtophone-toolbar-button") > -1)
+			{
+				// The button is on the toolbar, show upgrade notice
+				sendtophoneCore.openTab( "http://www.foxtophone.com/2011/10/sorry-we-made-a-mistake/" );
+			}
+
+			this.prefs.setIntPref( "latestNotice", 10202 ) ;
+		}
 	}
 
 	document.getElementById("contentAreaContextMenu").
