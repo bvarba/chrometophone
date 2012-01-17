@@ -93,12 +93,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                         return;
                     }
                 } else {
-                    if (sel != null && sel.length() > 0) {  // have selection
-                        LauncherUtils.generateNotification(context, sel,
-                                context.getString(R.string.copied_desktop_clipboard), launchIntent);
-                    } else {
-                        LauncherUtils.generateNotification(context, url, title, launchIntent);
-                    }
+                    LauncherUtils.generateNotification(context, url, title, launchIntent);
                 }
 
                 // Record history (for link/maps only)

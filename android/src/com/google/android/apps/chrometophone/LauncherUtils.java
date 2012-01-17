@@ -27,14 +27,6 @@ public class LauncherUtils {
             intent = new Intent(Intent.ACTION_DIAL,
                     Uri.parse("tel:" + number));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ClipboardManager cm =
-                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            cm.setText(number);
-        } else if (sel != null && sel.length() > 0) {
-            // No intent for selection - just copy to clipboard
-            ClipboardManager cm =
-                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            cm.setText(sel);
         } else {
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -49,6 +41,13 @@ public class LauncherUtils {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
         }
+
+        if (sel != null && sel.length() > 0) {
+            ClipboardManager cm =
+                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setText(sel);
+        }
+
         return intent;
     }
 
