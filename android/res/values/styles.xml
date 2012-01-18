@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.LightNoActionBar" parent="@android:style/Theme.Holo.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
     <style name="Theme.Translucent" parent="android:style/Theme.Translucent">
         <item name="android:windowBackground">@drawable/translucent_background</item>
         <item name="android:windowNoTitle">true</item>

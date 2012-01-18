@@ -2,10 +2,16 @@ package com.google.android.apps.chrometophone;
 
 import java.util.Locale;
 
+import com.google.android.apps.chrometophone.HistoryActivity.DateBinSorter;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 public class HelpActivity extends Activity {
