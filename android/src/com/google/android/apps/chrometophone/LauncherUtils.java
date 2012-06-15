@@ -1,8 +1,14 @@
 package com.google.android.apps.chrometophone;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +17,7 @@ import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.PowerManager;
 import android.text.ClipboardManager;
 
 /**
@@ -19,6 +26,7 @@ import android.text.ClipboardManager;
 public class LauncherUtils {
     private static final String GMM_PACKAGE_NAME = "com.google.android.apps.maps";
     private static final String GMM_CLASS_NAME = "com.google.android.maps.MapsActivity";
+    private static final String YT_PACKAGE_NAME = "com.google.android.youtube";
 
     public static Intent getLaunchIntent(Context context, String title, String url, String sel) {
         Intent intent = null;
@@ -32,6 +40,8 @@ public class LauncherUtils {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (isMapsURL(url)) {
                 intent.setClassName(GMM_PACKAGE_NAME, GMM_CLASS_NAME);
+            } else if (isYouTubeURL(url)) {
+                intent.setPackage(YT_PACKAGE_NAME);
             }
 
             // Fall back if we can't resolve intent (i.e. app missing)
@@ -110,11 +120,49 @@ public class LauncherUtils {
    }
 
    public static boolean isMapsURL(String url) {
-       return url.matches("http://maps\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?[/?].*") ||
-               url.matches("http://www\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?/maps.*");
+       return url.matches("http[s]://maps\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?[/?].*") ||
+               url.matches("http[s]://www\\.google\\.[a-z]{2,3}(\\.[a-z]{2})?/maps.*");
    }
 
    public static boolean isYouTubeURL(String url) {
-       return url.matches("http://www\\.youtube\\.[a-z]{2,3}(\\.[a-z]{2})?/.*");
+       return url.matches("http[s]://www\\.youtube\\.[a-z]{2,3}(\\.[a-z]{2})?/.*");
+   }
+
+   public static void sendIntentToApp(Context context, Intent intent) {
+       // Defer browser URLs until screen else the browser might drop the intent for security
+       // reasons. This is a little racey but in practice works fine.
+       if (isScreenOffOrLocked(context) &&
+               intent.getAction().equals(Intent.ACTION_VIEW) &&
+               (intent.getPackage() == null)) {
+           // Stuff away the intent URL
+           SharedPreferences prefs = Prefs.get(context);
+           SharedPreferences.Editor editor = prefs.edit();
+           Set<String> queuedUrls =
+                   prefs.getStringSet("queuedUrls", new LinkedHashSet<String>());
+           queuedUrls.add(intent.getDataString());
+           editor.putStringSet("queuedUrls", queuedUrls);
+           editor.commit();
+
+           // Enable broadcast receiver for user present - it will pick up the stored intent URL
+           PackageManager pm  = context.getPackageManager();
+           ComponentName componentName = new ComponentName(context, UserPresentReceiver.class);
+           pm.setComponentEnabledSetting(componentName,
+                   PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                   PackageManager.DONT_KILL_APP);
+       } else {  // user present, so send immediately
+           try {
+               context.startActivity(intent);
+           } catch (ActivityNotFoundException e) { }
+       }
+   }
+
+   private static boolean isScreenOffOrLocked(Context context) {
+       KeyguardManager keyguardManager =
+               (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+       PowerManager powerManager =
+               (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+       boolean off = !powerManager.isScreenOn();
+       off |= keyguardManager.inKeyguardRestrictedInputMode();
+       return off;
    }
 }
