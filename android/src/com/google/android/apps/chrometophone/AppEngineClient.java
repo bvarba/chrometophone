@@ -50,11 +50,9 @@ public class AppEngineClient {
     /*
      * When running AppEngine locally, set BASE_LOCAL_URL with your server's address.
      * (make sure to start AppEngine passing the -a server_address flag, otherwise it will run on
-     * localhost and the device won't be able to connect. 
+     * localhost and the device won't be able to connect.
      */
-//    static final String BASE_LOCAL_URL = null;
-    // TODO: tmp
-    static final String BASE_LOCAL_URL = "http://snpp.mtv.corp.google.com:8888";
+    static final String BASE_LOCAL_URL = null;
     private static final String AUTH_URL = BASE_URL + "/_ah/login";
     private static final String AUTH_TOKEN_TYPE = "ah";
 

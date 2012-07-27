@@ -175,7 +175,6 @@ public class SendServlet extends HttpServlet {
         }
 
         boolean res;
-        System.out.println(">>>>> REG_ID: " + deviceInfo.getDeviceRegistrationID()); // TODO: tmp
         res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
                 collapseKey,
                 "url", url,
