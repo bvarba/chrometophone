@@ -16,16 +16,16 @@
 
 package com.google.android.chrometophone.server;
 
+import com.google.android.c2dm.server.C2DMessaging;
+import com.google.appengine.api.channel.ChannelMessage;
+import com.google.appengine.api.channel.ChannelServiceFactory;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.android.c2dm.server.C2DMessaging;
-import com.google.appengine.api.channel.ChannelMessage;
-import com.google.appengine.api.channel.ChannelServiceFactory;
 
 @SuppressWarnings("serial")
 public class SendServlet extends HttpServlet {
@@ -75,7 +75,7 @@ public class SendServlet extends HttpServlet {
         }
         resp.getWriter().println(id);
     }
-
+    
     protected String doSendToDevice(String url, String title,
             String sel, RequestInfo reqInfo,
             String deviceNames[], String deviceType) throws IOException {
@@ -112,30 +112,29 @@ public class SendServlet extends HttpServlet {
                 continue;  // user-specified device type
             }
 
-            try {
-                if (deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
-                    res = doSendViaBrowserChannel(url, deviceInfo);
-                } else {
-                    res = doSendViaC2dm(url, title, sel, push, collapseKey,
-                            deviceInfo, reqDebug);
-                }
+            if (deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
+                res = doSendViaBrowserChannel(url, deviceInfo);
+            } else {
+                res = doSendViaC2dm(url, title, sel, push, collapseKey,
+                        deviceInfo, reqDebug);
+            }
 
-                if (res) {
-                    log.info("Link sent to phone! collapse_key:" + collapseKey);
-                    ok = true;
-                } else {
-                    log.warning("Error: Unable to send link to device: " +
-                            deviceInfo.getDeviceRegistrationID());
-                }
-            } catch (IOException ex) {
-                if ("NotRegistered".equals(ex.getMessage()) ||
-                        "InvalidRegistration".equals(ex.getMessage())) {
-                    // Prune device, it no longer works
-                    reqInfo.deleteRegistration(deviceInfo.getDeviceRegistrationID());
-                    reqInfo.devices.remove(deviceInfo);
-                    ac2dmCnt--;
-                } else {
-                    throw ex;
+            if (res) {
+                log.info("Link sent to phone! collapse_key:" + collapseKey);
+                ok = true;
+            } else {
+                log.warning("Error: Unable to send link to device: " +
+                        deviceInfo.getDeviceRegistrationID());
+                IOException ex = C2DMessaging.getC2dmException();
+                if (ex != null) {
+                    if ("InvalidRegistration".equals(ex.getMessage())) {
+                      // Prune device, it no longer works
+                      reqInfo.deleteRegistration(deviceInfo.getDeviceRegistrationID());
+                      reqInfo.devices.remove(deviceInfo);
+                      ac2dmCnt--;
+                    } else {
+                      throw ex;
+                    }
                 }
             }
         }
@@ -157,7 +156,7 @@ public class SendServlet extends HttpServlet {
     }
 
     private boolean doSendViaC2dm(String url, String title, String sel, C2DMessaging push,
-            String collapseKey, DeviceInfo deviceInfo, boolean reqDebug) throws IOException {
+            String collapseKey, DeviceInfo deviceInfo, boolean reqDebug) {
 
         // Trim title, sel if needed.
         if (url.length() + title.length() + sel.length() > 1000) {
@@ -176,6 +175,7 @@ public class SendServlet extends HttpServlet {
         }
 
         boolean res;
+        System.out.println(">>>>> REG_ID: " + deviceInfo.getDeviceRegistrationID()); // TODO: tmp
         res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
                 collapseKey,
                 "url", url,

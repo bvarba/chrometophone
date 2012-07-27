@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,7 +47,7 @@ public class C2DMRetryServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
 
         String registrationId = req.getParameter(C2DMessaging.PARAM_REGISTRATION_ID);
         String retryCount = req.getHeader(RETRY_COUNT);
@@ -61,6 +60,7 @@ public class C2DMRetryServlet extends HttpServlet {
             }
         }
         
+        @SuppressWarnings("unchecked")
         Map<String, String[]> params = req.getParameterMap();
         String collapse = req.getParameter(C2DMessaging.PARAM_COLLAPSE_KEY);
         boolean delayWhenIdle = 

@@ -48,6 +48,7 @@ public class DeviceRegistrar {
     public static void registerWithServer(final Context context,
           final String deviceRegistrationID) {
         new Thread(new Runnable() {
+            @Override
             public void run() {
                 Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
                 try {
@@ -83,6 +84,7 @@ public class DeviceRegistrar {
     public static void unregisterWithServer(final Context context,
             final String deviceRegistrationID) {
         new Thread(new Runnable() {
+            @Override
             public void run() {
                 Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
                 try {

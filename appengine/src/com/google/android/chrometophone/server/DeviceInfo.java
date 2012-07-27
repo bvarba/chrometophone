@@ -16,9 +16,15 @@
 
 package com.google.android.chrometophone.server;
 
+import com.google.appengine.api.datastore.Key;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -26,8 +32,6 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-
-import com.google.appengine.api.datastore.Key;
 
 /**
  * Registration info.
@@ -39,8 +43,12 @@ import com.google.appengine.api.datastore.Key;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class DeviceInfo {
+    private static final Logger log =
+      Logger.getLogger(DeviceInfo.class.getName());
+  
     public static final String TYPE_AC2DM = "ac2dm";
     public static final String TYPE_CHROME = "chrome";
+    public static final String TYPE_GCM = "gcm";
 
     /**
      * User-email # device-id
@@ -147,11 +155,11 @@ public class DeviceInfo {
     /**
      * Helper function - will query all registrations for a user.
      */
-    @SuppressWarnings("unchecked")
     public static List<DeviceInfo> getDeviceInfoForUser(PersistenceManager pm, String user) {
         Query query = pm.newQuery(DeviceInfo.class);
         query.setFilter("key >= '" +
                 user + "' && key < '" + user + "$'");
+        @SuppressWarnings("unchecked")
         List<DeviceInfo> qresult = (List<DeviceInfo>) query.execute();
         // Copy to array - we need to close the query
         List<DeviceInfo> result = new ArrayList<DeviceInfo>();
@@ -161,4 +169,27 @@ public class DeviceInfo {
         query.closeAll();
         return result;
     }
+    
+    /**
+     * Helper function - get number of devices registered by type.
+     */
+    public static Map<String, Integer> getDevicesUsage(PersistenceManager pm) {
+        Map<String, Integer> result = new HashMap<String, Integer>();
+        Query query = pm.newQuery(DeviceInfo.class);
+        addStats(query, result, TYPE_AC2DM);
+        addStats(query, result, TYPE_GCM);
+        addStats(query, result, TYPE_CHROME);
+        query.closeAll();
+        return result;
+    }
+
+    private static void addStats(Query query, Map<String, Integer> result, String type) {
+      query.setResult("count(this)");
+      query.setFilter("type == '" + type + "'");
+      Integer total = (Integer) query.execute();
+      log.log(Level.INFO, "Number of records of type {0}: {1}",
+          new Object[] {type, total});
+      result.put(type, total);
+    }
+    
 }

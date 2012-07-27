@@ -34,10 +34,10 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.labs.taskqueue.Queue;
-import com.google.appengine.api.labs.taskqueue.QueueFactory;
-import com.google.appengine.api.labs.taskqueue.TaskHandle;
-import com.google.appengine.api.labs.taskqueue.TaskOptions;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskHandle;
+import com.google.appengine.api.taskqueue.TaskOptions;
 
 /**
  */
@@ -243,8 +243,7 @@ public class C2DMessaging {
 
     public boolean sendNoRetry(String token, String collapseKey,
             String name1, String value1, String name2, String value2,
-            String name3, String value3)
-                throws IOException {
+            String name3, String value3) {
 
         Map<String, String[]> params = new HashMap<String, String[]>();
         if (value1 != null) params.put("data." + name1, new String[] {value1});
@@ -257,10 +256,16 @@ public class C2DMessaging {
             return false;
         }
     }
+    
+    private static final ThreadLocal<IOException> C2DM_EXCEPTION =
+        new ThreadLocal<IOException>();
+    
+    public static IOException getC2dmException() {
+      return C2DM_EXCEPTION.get();
+    }
 
     public boolean sendNoRetry(String token, String collapseKey,
-            String... nameValues)
-                throws IOException {
+            String... nameValues) {
 
         Map<String, String[]> params = new HashMap<String, String[]>();
         int len = nameValues.length;
@@ -276,8 +281,12 @@ public class C2DMessaging {
         }
 
         try {
+            C2DM_EXCEPTION.remove();
             return sendNoRetry(token, collapseKey, params, true);
         } catch (IOException ex) {
+            // save exception in a thread-local object so it can be cheked for
+            // unregistration later
+            C2DM_EXCEPTION.set(ex);
             return false;
         }
     }
@@ -287,7 +296,7 @@ public class C2DMessaging {
         Queue dmQueue = QueueFactory.getQueue("c2dm");
         try {
             TaskOptions url =
-                TaskOptions.Builder.url(C2DMRetryServlet.URI)
+                TaskOptions.Builder.withUrl(C2DMRetryServlet.URI)
                 .param(C2DMessaging.PARAM_REGISTRATION_ID, token)
                 .param(C2DMessaging.PARAM_COLLAPSE_KEY, collapseKey);
             if (delayWhileIdle) {

@@ -16,6 +16,9 @@
 
 package com.google.android.c2dm.server;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,14 +29,12 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-
 /**
  * Stores config information related to data messaging.
  * 
  */
 public class C2DMConfigLoader {
+    private static final String TOKEN_FILE = "/dataMessagingToken.txt";
     private final PersistenceManagerFactory PMF;
     private static final Logger log = Logger.getLogger(C2DMConfigLoader.class.getName());
 
@@ -72,8 +73,6 @@ public class C2DMConfigLoader {
     /**
      * Return the auth token from the database. Should be called 
      * only if the old token expired.
-     *
-     * @return
      */
     public String getToken() {
         if (currentToken == null) {
@@ -110,12 +109,19 @@ public class C2DMConfigLoader {
             dmConfig.setKey(key);
             // Must be in classpath, before sending. Do not checkin !
             try {
-                InputStream is = C2DMConfigLoader.class.getClassLoader().getResourceAsStream("/dataMessagingToken.txt");
+                InputStream is = C2DMConfigLoader.class.getClassLoader().getResourceAsStream(TOKEN_FILE);
+                String token;
                 if (is != null) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                    String token = reader.readLine();
-                    dmConfig.setAuthToken(token);
+                    token = reader.readLine();
+                } else {
+                  // happens on developement: delete entity from viewer, change
+                  // token below, and run it again
+                  log.log(Level.WARNING, "File " + TOKEN_FILE +
+                      " not found on classpath, using hardcoded token");
+                  token = "please_change_me";
                 }
+                dmConfig.setAuthToken(token);
             } catch (Throwable t) {
                 log.log(Level.SEVERE, 
                         "Can't load initial token, use admin console", t);

@@ -23,8 +23,8 @@ import com.google.appengine.api.oauth.OAuthServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.repackaged.org.json.JSONException;
-import com.google.appengine.repackaged.org.json.JSONObject;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 /**
  * Common code and helpers to handle a request and manipulate device info.
@@ -112,7 +112,9 @@ public class RequestInfo {
                 return null;
             }
         } else {
-            ri.parameterMap = req.getParameterMap();
+            @SuppressWarnings("unchecked")
+            Map<String, String[]> castMap = req.getParameterMap();
+            ri.parameterMap = castMap;
         }
 
         ri.deviceRegistrationID = ri.getParameter("devregid");
@@ -128,6 +130,15 @@ public class RequestInfo {
             resp.getWriter().println(LOGIN_REQUIRED_STATUS);
             log.info("Missing user, login required");
             return null;
+        }
+
+        // check if account was really set on development environment
+        if (ri.userName.endsWith("@example.com")) {
+          String account = req.getParameter("account");
+          if (account != null) {
+            log.log(Level.INFO, "Using " + account + " instead of " + ri.userName);
+            ri.userName = account;
+          }
         }
 
         if (ctx != null) {

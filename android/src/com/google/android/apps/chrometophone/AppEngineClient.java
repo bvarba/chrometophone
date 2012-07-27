@@ -29,6 +29,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
@@ -46,6 +47,14 @@ import android.util.Log;
  */
 public class AppEngineClient {
     static final String BASE_URL = "https://chrometophone.appspot.com";
+    /*
+     * When running AppEngine locally, set BASE_LOCAL_URL with your server's address.
+     * (make sure to start AppEngine passing the -a server_address flag, otherwise it will run on
+     * localhost and the device won't be able to connect. 
+     */
+//    static final String BASE_LOCAL_URL = null;
+    // TODO: tmp
+    static final String BASE_LOCAL_URL = "http://snpp.mtv.corp.google.com:8888";
     private static final String AUTH_URL = BASE_URL + "/_ah/login";
     private static final String AUTH_TOKEN_TYPE = "ah";
 
@@ -79,41 +88,53 @@ public class AppEngineClient {
             authToken = getAuthToken(mContext, account);
         }
 
-        // Get ACSID cookie
         DefaultHttpClient client = new DefaultHttpClient();
-        String continueURL = BASE_URL;
-        URI uri = new URI(AUTH_URL + "?continue=" +
-                URLEncoder.encode(continueURL, "UTF-8") +
-                "&auth=" + authToken);
-        HttpGet method = new HttpGet(uri);
-        final HttpParams getParams = new BasicHttpParams();
-        HttpClientParams.setRedirecting(getParams, false);  // continue is not used
-        method.setParams(getParams);
-
-        HttpResponse res = client.execute(method);
-        Header[] headers = res.getHeaders("Set-Cookie");
-        if (res.getStatusLine().getStatusCode() != 302 ||
-                headers.length == 0) {
-            return res;
-        }
-
+        String baseUrl;
+        URI uri;
         String ascidCookie = null;
-        for (Header header: headers) {
-            if (header.getValue().indexOf("ACSID=") >=0) {
-                // let's parse it
-                String value = header.getValue();
-                String[] pairs = value.split(";");
-                ascidCookie = pairs[0];
-            }
+        HttpResponse res;
+        if (BASE_LOCAL_URL == null) {
+          // Get ACSID cookie so it can be used to authenticate on AppEngine
+          String continueURL = BASE_URL;
+          uri = new URI(AUTH_URL + "?continue=" +
+                  URLEncoder.encode(continueURL, "UTF-8") +
+                  "&auth=" + authToken);
+          HttpGet method = new HttpGet(uri);
+          final HttpParams getParams = new BasicHttpParams();
+          HttpClientParams.setRedirecting(getParams, false);  // continue is not used
+          method.setParams(getParams);
+
+          res = client.execute(method);
+          Header[] headers = res.getHeaders("Set-Cookie");
+          if (res.getStatusLine().getStatusCode() != 302 ||
+                  headers.length == 0) {
+              return res;
+          }
+
+          for (Header header: headers) {
+              if (header.getValue().indexOf("ACSID=") >=0) {
+                  // let's parse it
+                  String value = header.getValue();
+                  String[] pairs = value.split(";");
+                  ascidCookie = pairs[0];
+              }
+          }
+          baseUrl = BASE_URL;
+        } else {
+          // local app server, pass user directly
+          baseUrl = BASE_LOCAL_URL;
+          params.add(new BasicNameValuePair("account", account.name));
         }
 
         // Make POST request
-        uri = new URI(BASE_URL + urlPath);
+        uri = new URI(baseUrl + urlPath);
         HttpPost post = new HttpPost(uri);
         UrlEncodedFormEntity entity =
             new UrlEncodedFormEntity(params, "UTF-8");
         post.setEntity(entity);
-        post.setHeader("Cookie", ascidCookie);
+        if (ascidCookie != null) {
+          post.setHeader("Cookie", ascidCookie);
+        }
         post.setHeader("X-Same-Domain", "1");  // XSRF
         res = client.execute(post);
         return res;
