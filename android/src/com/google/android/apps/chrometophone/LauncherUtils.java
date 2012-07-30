@@ -133,7 +133,7 @@ public class LauncherUtils {
        // reasons. This is a little racey but in practice works fine.
        if (isScreenOffOrLocked(context) &&
                intent.getAction().equals(Intent.ACTION_VIEW) &&
-               (intent.getPackage() == null)) {
+               intent.getPackage() == null && intent.getComponent() == null) {
            // Stuff away the intent URL
            SharedPreferences prefs = Prefs.get(context);
            SharedPreferences.Editor editor = prefs.edit();
@@ -149,7 +149,7 @@ public class LauncherUtils {
            pm.setComponentEnabledSetting(componentName,
                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                    PackageManager.DONT_KILL_APP);
-       } else {  // user present, so send immediately
+       } else {  // user present or non-browser target, so send immediately
            try {
                context.startActivity(intent);
            } catch (ActivityNotFoundException e) { }
