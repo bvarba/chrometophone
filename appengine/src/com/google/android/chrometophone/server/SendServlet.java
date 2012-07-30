@@ -21,6 +21,9 @@ import com.google.appengine.api.channel.ChannelMessage;
 import com.google.appengine.api.channel.ChannelServiceFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
@@ -92,8 +95,9 @@ public class SendServlet extends HttpServlet {
         boolean reqDebug = "1".equals(reqInfo.getParameter("debug"));
 
         int ac2dmCnt = 0;
-
-        for (DeviceInfo deviceInfo : reqInfo.devices) {
+        Iterator<DeviceInfo> iterator = reqInfo.devices.iterator();
+        while (iterator.hasNext()) {
+            DeviceInfo deviceInfo = iterator.next();
             if ("ac2dm".equals(deviceInfo.getType())) {
                 ac2dmCnt++;
             }
@@ -130,7 +134,7 @@ public class SendServlet extends HttpServlet {
                     if ("InvalidRegistration".equals(ex.getMessage())) {
                       // Prune device, it no longer works
                       reqInfo.deleteRegistration(deviceInfo.getDeviceRegistrationID());
-                      reqInfo.devices.remove(deviceInfo);
+                      iterator.remove();
                       ac2dmCnt--;
                     } else {
                       throw ex;
