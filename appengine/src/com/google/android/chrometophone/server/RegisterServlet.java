@@ -16,6 +16,14 @@
 
 package com.google.android.chrometophone.server;
 
+import com.google.android.c2dm.server.C2DMessaging;
+import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.google.appengine.labs.repackaged.org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -28,14 +36,6 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.android.c2dm.server.C2DMessaging;
-import com.google.appengine.api.channel.ChannelServiceFactory;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.labs.repackaged.org.json.JSONArray;
-import com.google.appengine.labs.repackaged.org.json.JSONException;
-import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 @SuppressWarnings("serial")
 public class RegisterServlet extends HttpServlet {
@@ -119,7 +119,6 @@ public class RegisterServlet extends HttpServlet {
         // Context-shared PMF.
         PersistenceManager pm =
             C2DMessaging.getPMF(getServletContext()).getPersistenceManager();
-
         try {
             List<DeviceInfo> registrations = reqInfo.devices;
 
@@ -130,7 +129,7 @@ public class RegisterServlet extends HttpServlet {
                 // unused registrations
                 DeviceInfo oldest = registrations.get(0);
                 if (oldest.getRegistrationTimestamp() == null) {
-                    reqInfo.deleteRegistration(oldest.getDeviceRegistrationID());
+                    reqInfo.deleteRegistration(oldest.getDeviceRegistrationID(), deviceType);
                 } else {
                     long oldestTime = oldest.getRegistrationTimestamp().getTime();
                     for (int i = 1; i < registrations.size(); i++) {
@@ -140,7 +139,7 @@ public class RegisterServlet extends HttpServlet {
                             oldestTime = oldest.getRegistrationTimestamp().getTime();
                         }
                     }
-                    reqInfo.deleteRegistration(oldest.getDeviceRegistrationID());
+                    reqInfo.deleteRegistration(oldest.getDeviceRegistrationID(), deviceType);
                 }
             }
 
@@ -167,6 +166,7 @@ public class RegisterServlet extends HttpServlet {
             // TODO: only need to write if something changed, for chrome nothing
             // changes, we just create a new channel
             pm.makePersistent(device);
+            DeviceStats.addDevice(pm, deviceType);
             log.log(Level.INFO, "Registered device " + reqInfo.userName + " " +
                     deviceType);
 

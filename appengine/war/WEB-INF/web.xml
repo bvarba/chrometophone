@@ -74,6 +74,12 @@
     </servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>StatsConversionServlet</servlet-name>
+    <servlet-class>com.google.android.chrometophone.server.StatsConversionServlet
+    </servlet-class>
+  </servlet>
+
 	<servlet-mapping>
 		<servlet-name>RegisterServlet</servlet-name>
 		<url-pattern>/register</url-pattern>
@@ -119,6 +125,11 @@
         <url-pattern>/admin/stats</url-pattern>
     </servlet-mapping>
     
+    <servlet-mapping>
+        <servlet-name>StatsConversionServlet</servlet-name>
+        <url-pattern>/admin/convertStats</url-pattern>
+    </servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>dataMessagingServlet</servlet-name>
 		<url-pattern>/tasks/c2dm</url-pattern>

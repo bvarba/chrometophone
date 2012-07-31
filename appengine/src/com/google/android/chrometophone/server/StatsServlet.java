@@ -19,8 +19,7 @@ import com.google.android.c2dm.server.C2DMessaging;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletContext;
@@ -39,45 +38,59 @@ public class StatsServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws IOException{
       ServletContext ctx = getServletContext();
+      List<DeviceStats> allStats;
       PersistenceManager pm = C2DMessaging.getPMF(ctx).getPersistenceManager();
-      Map<String, Integer> stats = DeviceInfo.getDevicesUsage(pm);
-      pm.close();
-
-      resp.setContentType("text/html");
-      PrintWriter out = resp.getWriter();
-      out.println("<html><body>");
-      out.println("<head>");
-      out.println("<title>Device stats</title>");
-      out.println("</head>");
-      out.println("<body>");
-      out.println("<h3>Device stats</h3>");
-      if (stats.isEmpty()) {
-        out.println("<p>No devices registered yet!</p>");
-      } else {
-        int total = 0;
-        for (Integer count : stats.values()) {
-          total += count;
-        }
-
-        out.println("<table cellspacing='2' cellpadding='2'><tr><th>Type</th>" +
-        		"<th>Count</th><th>Share</th></tr>");
-        for (Entry<String, Integer> entry : stats.entrySet()) {
-          String type = entry.getKey();
-          int count = entry.getValue();
-          float share = (100*count) / total; 
+      try {
+        DeviceStats.init(pm);
+        allStats = DeviceStats.getAll(pm);
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter();
+        out.println("<html><body>");
+        out.println("<head>");
+        out.println("<title>Device stats</title>");
+        out.println("</head>");
+        out.println("<body>");
+        out.println("<h3>Device stats</h3>");
+        if (allStats.isEmpty()) {
+          out.println("<p>No devices registered yet!</p>");
+        } else {
+          int total = 0;
+          int added = 0;
+          int deleted = 0;
+          int converted = 0;
+          for (DeviceStats stats: allStats) {
+            total += stats.getTotal();
+            added += stats.getAdded();
+            deleted += stats.getDeleted();
+            converted += stats.getConverted();
+          }
+          out.println("<table cellspacing='2' cellpadding='2'><tr><th>Type</th>" +
+          		"<th>Added</th><th>Deleted</th><th>Converted</th><th>Total</th><th>Share</th></tr>");
+          for (DeviceStats stats: allStats) {
+            int count = stats.getTotal();
+            float share = (total == 0) ? 0 : (100 * count) / total; 
+            out.println("<tr>" +
+                  "<td align='right'>" + stats.getType() + "</td>" +
+                  "<td align='right'>" + stats.getAdded() + "</td>" +
+                  "<td align='right'>" + stats.getDeleted() + "</td>" +
+                  "<td align='right'>" + stats.getConverted() + "</td>" +
+                  "<td align='right'>" + count + "</td>" +
+                  "<td align='right'>" + share + "%</td></tr>");
+          }
           out.println("<tr>" +
-                "<td align='right'>" + type + "</td>" +
-                "<td align='right'>" + count + "</td>" +
-                "<td align='right'>" + share + "%</td></tr>");
+                "<td align='right'>Total</td>" +
+                "<td align='right'>" + added + "</td>" +
+                "<td align='right'>" + deleted + "</td>" +
+                "<td align='right'>" + converted + "</td>" +
+                "<td align='right'>" + total + "</td>" +
+                "<td align='right'>100.0%</td></tr>");
+          out.println("</table>");
         }
-        out.println("<tr>" +
-              "<td align='right'>Total</td>" +
-              "<td align='right'>" + total+ "</td>" +
-              "<td align='right'>100.0%</td></tr>");
-        out.println("</table>");
+        
+        out.println("</body></html>");
+      } finally {
+        pm.close();
       }
-      
-      out.println("</body></html>");
       resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

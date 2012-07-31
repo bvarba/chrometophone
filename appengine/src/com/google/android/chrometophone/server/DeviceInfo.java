@@ -19,12 +19,10 @@ package com.google.android.chrometophone.server;
 import com.google.appengine.api.datastore.Key;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -43,12 +41,13 @@ import javax.jdo.annotations.PrimaryKey;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class DeviceInfo {
-    private static final Logger log =
-      Logger.getLogger(DeviceInfo.class.getName());
   
     public static final String TYPE_AC2DM = "ac2dm";
     public static final String TYPE_CHROME = "chrome";
     public static final String TYPE_GCM = "gcm";
+    
+    public static final List<String> SUPPORTED_TYPES = Collections
+        .unmodifiableList(Arrays.asList(TYPE_AC2DM, TYPE_CHROME, TYPE_GCM));
 
     /**
      * User-email # device-id
@@ -89,6 +88,10 @@ public class DeviceInfo {
     @Persistent
     private Date registrationTimestamp;
 
+    /**
+     * Debug is not used anymore, but since the datastore already has it, it is
+     * now used to flag whether this object has been added to the stats or not.
+     */
     @Persistent
     private Boolean debug;
 
@@ -124,8 +127,8 @@ public class DeviceInfo {
         return (debug != null ? debug.booleanValue() : false);
     }
 
-    public void setDebug(boolean debug) {
-        this.debug = new Boolean(debug);
+    public void setDebug(Boolean debug) {
+        this.debug = debug;
     }
 
     public void setType(String type) {
@@ -169,27 +172,5 @@ public class DeviceInfo {
         query.closeAll();
         return result;
     }
-    
-    /**
-     * Helper function - get number of devices registered by type.
-     */
-    public static Map<String, Integer> getDevicesUsage(PersistenceManager pm) {
-        Map<String, Integer> result = new HashMap<String, Integer>();
-        Query query = pm.newQuery(DeviceInfo.class);
-        addStats(query, result, TYPE_AC2DM);
-        addStats(query, result, TYPE_GCM);
-        addStats(query, result, TYPE_CHROME);
-        query.closeAll();
-        return result;
-    }
 
-    private static void addStats(Query query, Map<String, Integer> result, String type) {
-      query.setResult("count(this)");
-      query.setFilter("type == '" + type + "'");
-      Integer total = (Integer) query.execute();
-      log.log(Level.INFO, "Number of records of type {0}: {1}",
-          new Object[] {type, total});
-      result.put(type, total);
-    }
-    
 }

@@ -212,7 +212,7 @@ public class RequestInfo {
     // We need to iterate again - can be avoided with a query.
     // delete will fail if the pm is different than the one used to
     // load the object - we must close the object when we're done
-    public void deleteRegistration(String regId) {
+    public void deleteRegistration(String regId, String type) {
         if (ctx == null) {
             return;
         }
@@ -224,6 +224,7 @@ public class RequestInfo {
                 DeviceInfo deviceInfo = registrations.get(i);
                 if (deviceInfo.getDeviceRegistrationID().equals(regId)) {
                     pm.deletePersistent(deviceInfo);
+                    DeviceStats.removeDevice(pm, type);
                     // Keep looping in case of duplicates
                 }
             }

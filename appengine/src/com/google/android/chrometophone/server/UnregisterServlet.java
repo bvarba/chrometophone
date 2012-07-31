@@ -43,7 +43,13 @@ public class UnregisterServlet extends HttpServlet {
             return;
         }
 
-        reqInfo.deleteRegistration(reqInfo.deviceRegistrationID);
+        // TODO: make sure new app passes deviceType
+        String deviceType = reqInfo.getParameter("deviceType");
+        if (deviceType == null) {
+            deviceType = "ac2dm";
+        }
+
+        reqInfo.deleteRegistration(reqInfo.deviceRegistrationID, deviceType);
         resp.getWriter().println(OK_STATUS);
     }
 }
