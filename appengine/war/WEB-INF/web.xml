@@ -55,13 +55,6 @@
 		</servlet-class>
 	</servlet>
 
-	<servlet>
-		<servlet-name>dataMessagingServlet</servlet-name>
-		<servlet-class>
-			com.google.android.c2dm.server.C2DMRetryServlet
-	    </servlet-class>
-	</servlet>
-
   <servlet>
     <servlet-name>SenderServlet</servlet-name>
     <servlet-class>com.google.android.chrometophone.server.SenderServlet
@@ -130,20 +123,6 @@
         <url-pattern>/admin/convertStats</url-pattern>
     </servlet-mapping>
 
-	<servlet-mapping>
-		<servlet-name>dataMessagingServlet</servlet-name>
-		<url-pattern>/tasks/c2dm</url-pattern>
-	</servlet-mapping>
-
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>tasks</web-resource-name>
-			<url-pattern>/tasks/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>admin</role-name>
-		</auth-constraint>
-	</security-constraint>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>admin</web-resource-name>

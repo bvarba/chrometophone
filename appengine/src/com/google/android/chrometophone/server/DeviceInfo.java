@@ -23,7 +23,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.annotations.IdentityType;
@@ -171,6 +173,16 @@ public class DeviceInfo {
         }
         query.closeAll();
         return result;
+    }
+
+    public static DeviceInfo getDeviceInfo(PersistenceManager pm, String regId) {
+      Query query = pm.newQuery(DeviceInfo.class);
+      query.setFilter("deviceRegistrationID == '" + regId + "'");
+      @SuppressWarnings("unchecked")
+      List<DeviceInfo> result = (List<DeviceInfo>) query.execute();
+      DeviceInfo deviceInfo = (result == null || result.isEmpty()) ? null : result.get(0);
+      query.closeAll();
+      return deviceInfo;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.google.android.apps.chrometophone;
 
-import java.util.Calendar;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,8 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.TextView;
+
+import com.google.android.gcm.GCMRegistrar;
+
+import java.util.Calendar;
 
 /**
  * Activity that shows the history of links received.
@@ -42,10 +44,32 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Run the setup first if necessary
         SharedPreferences prefs = Prefs.get(this);
-        if (prefs.getString("deviceRegistrationID", null) == null) {
-            startActivity(new Intent(this, SetupActivity.class));
+        String c2dmRegId = prefs.getString("deviceRegistrationID", null);
+        if (c2dmRegId != null) {
+            // this is an update from the version that uses C2DM: must
+            // unregister and register again using GCM
+            DeviceRegistrar.unregisterWithServer(this, c2dmRegId, "ac2dm");
+            GCMRegistrar.register(this, DeviceRegistrar.SENDER_ID);
+        } else {
+            // Run the setup first if necessary
+            String gcmRegId = GCMRegistrar.getRegistrationId(this);
+            if (gcmRegId.equals("")) {
+                String accountName = DeviceRegistrar.getAccountName(this);
+                if (accountName == null) {
+                    // first time app is run
+                    startActivity(new Intent(this, SetupActivity.class));
+                } else {
+                    // app was converted from C2DM to GCM, but process didn't
+                    // complete
+                    GCMRegistrar.register(this, DeviceRegistrar.SENDER_ID);
+                }
+            } else {
+                // check if the regId must be sent to the server
+                if (!GCMRegistrar.isRegisteredOnServer(this)) {
+                    DeviceRegistrar.registerWithServer(this, gcmRegId);
+                }
+            }
         }
 
         setContentView(R.layout.history);
@@ -102,6 +126,7 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
         }
     }
 
+    @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
             int childPosition, long id) {
         mSelectedLink = mListAdapter.getLinkAtPosition(groupPosition, childPosition);
@@ -200,14 +225,17 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
             }
         }
 
+        @Override
         public Object getChild(int groupPosition, int childPosition) {
             return null;
         }
 
+        @Override
         public long getChildId(int groupPosition, int childPosition) {
             return moveCursorPosition(groupPosition, childPosition);
         }
 
+        @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                 View convertView, ViewGroup parent) {
             HistoryItemView itemView;
@@ -231,22 +259,27 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
             return itemView;
         }
 
+        @Override
         public int getChildrenCount(int groupPosition) {
             return mChildCounts[groupPosition];
         }
 
+        @Override
         public Object getGroup(int groupPosition) {
             return null;
         }
 
+        @Override
         public int getGroupCount() {
             return DateBinSorter.NUM_BINS;
         }
 
+        @Override
         public long getGroupId(int groupPosition) {
             return groupPosition;
         }
 
+        @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                 ViewGroup parent) {
             TextView item;
@@ -261,10 +294,12 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
             return item;
         }
 
+        @Override
         public boolean hasStableIds() {
             return true;
         }
 
+        @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;
         }

@@ -26,10 +26,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.google.android.c2dm.C2DMBaseReceiver;
+import com.google.android.gcm.GCMBaseIntentService;
 
-public class C2DMReceiver extends C2DMBaseReceiver {
-    public C2DMReceiver() {
+public class GCMIntentService extends GCMBaseIntentService {
+
+    public GCMIntentService() {
         super(DeviceRegistrar.SENDER_ID);
     }
 
@@ -39,10 +40,8 @@ public class C2DMReceiver extends C2DMBaseReceiver {
     }
 
     @Override
-    public void onUnregistered(Context context) {
-        SharedPreferences prefs = Prefs.get(context);
-        String deviceRegistrationID = prefs.getString("deviceRegistrationID", null);
-        DeviceRegistrar.unregisterWithServer(context, deviceRegistrationID);
+    public void onUnregistered(Context context, String registration) {
+        DeviceRegistrar.unregisterWithServer(context, registration, "gcm");
     }
 
     @Override
@@ -98,4 +97,5 @@ public class C2DMReceiver extends C2DMBaseReceiver {
             }
         }
     }
+
 }

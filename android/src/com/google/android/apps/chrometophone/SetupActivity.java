@@ -15,8 +15,6 @@
  */
 package com.google.android.apps.chrometophone;
 
-import java.util.ArrayList;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -39,10 +37,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 
-import com.google.android.c2dm.C2DMessaging;
+import com.google.android.gcm.GCMRegistrar;
+
+import java.util.ArrayList;
 
 /**
  * Setup activity - takes user through the setup.
@@ -76,11 +76,11 @@ public class SetupActivity extends Activity {
         super.onResume();
         if (mPendingAuth) {
             mPendingAuth = false;
-            String regId = C2DMessaging.getRegistrationId(this);
-            if (regId != null && !"".equals(regId)) {
+            String regId = GCMRegistrar.getRegistrationId(this);
+            if (!regId.equals("")) {
                 DeviceRegistrar.registerWithServer(this, regId);
             } else {
-                C2DMessaging.register(this, DeviceRegistrar.SENDER_ID);
+                GCMRegistrar.register(this, DeviceRegistrar.SENDER_ID);
             }
         }
     }
@@ -155,6 +155,7 @@ public class SetupActivity extends Activity {
 
         Button exitButton = (Button) findViewById(R.id.exit);
         exitButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 finish();
             }
@@ -162,6 +163,7 @@ public class SetupActivity extends Activity {
 
         Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 setScreenContent(R.layout.select_account);
             }
@@ -171,6 +173,7 @@ public class SetupActivity extends Activity {
     private void setSelectAccountScreenContent() {
         final Button backButton = (Button) findViewById(R.id.back);
         backButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 setScreenContent(R.layout.intro);
             }
@@ -178,6 +181,7 @@ public class SetupActivity extends Activity {
 
         final Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 ListView listView = (ListView) findViewById(R.id.select_account);
                 mAccountSelectedPosition = listView.getCheckedItemPosition();
@@ -208,6 +212,7 @@ public class SetupActivity extends Activity {
     private void setSelectLaunchModeScreenContent() {
         Button backButton = (Button) findViewById(R.id.back);
         backButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 setScreenContent(R.layout.select_account);
             }
@@ -215,6 +220,7 @@ public class SetupActivity extends Activity {
 
         Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 storeLaunchModePreference();
                 setScreenContent(R.layout.setup_complete);
@@ -230,6 +236,7 @@ public class SetupActivity extends Activity {
 
         Button backButton = (Button) findViewById(R.id.back);
         backButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 setScreenContent(R.layout.select_launch_mode);
             }
@@ -238,6 +245,7 @@ public class SetupActivity extends Activity {
         final Context context = this;
         Button finishButton = (Button) findViewById(R.id.finish);
         finishButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 SharedPreferences prefs = Prefs.get(context);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -258,6 +266,7 @@ public class SetupActivity extends Activity {
 
         RadioGroup launchMode = (RadioGroup) findViewById(R.id.launch_mode_radio);
         launchMode.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 storeLaunchModePreference();
             } });
@@ -265,6 +274,7 @@ public class SetupActivity extends Activity {
 
         Button disconnectButton = (Button) findViewById(R.id.disconnect);
         disconnectButton.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 unregister();
             }
@@ -302,7 +312,7 @@ public class SetupActivity extends Activity {
         editor.putString("accountName", account);
         editor.commit();
 
-        C2DMessaging.register(this, DeviceRegistrar.SENDER_ID);
+        GCMRegistrar.register(this, DeviceRegistrar.SENDER_ID);
     }
 
     private void unregister() {
@@ -314,7 +324,7 @@ public class SetupActivity extends Activity {
         Button disconnectButton = (Button) findViewById(R.id.disconnect);
         disconnectButton.setEnabled(false);
 
-        C2DMessaging.unregister(this);
+        GCMRegistrar.unregister(this);
     }
 
     private String[] getGoogleAccounts() {

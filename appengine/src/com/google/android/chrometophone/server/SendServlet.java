@@ -17,6 +17,11 @@
 package com.google.android.chrometophone.server;
 
 import com.google.android.c2dm.server.C2DMessaging;
+import com.google.android.gcm.server.Constants;
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.Message.Builder;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
 import com.google.appengine.api.channel.ChannelMessage;
 import com.google.appengine.api.channel.ChannelServiceFactory;
 
@@ -86,18 +91,18 @@ public class SendServlet extends HttpServlet {
 
         // Send push message to phone
         C2DMessaging push = C2DMessaging.get(getServletContext());
-        boolean res = false;
+        Object res = null;
 
         String collapseKey = "" + url.hashCode();
 
         boolean reqDebug = "1".equals(reqInfo.getParameter("debug"));
 
-        int ac2dmCnt = 0;
+        int deviceCount = 0;
         Iterator<DeviceInfo> iterator = reqInfo.devices.iterator();
         while (iterator.hasNext()) {
             DeviceInfo deviceInfo = iterator.next();
-            if ("ac2dm".equals(deviceInfo.getType())) {
-                ac2dmCnt++;
+            if (!DeviceInfo.TYPE_CHROME.equals(deviceInfo.getType())) {
+                deviceCount++;
             }
             if (deviceNames != null) {
                 boolean found = false;
@@ -117,27 +122,56 @@ public class SendServlet extends HttpServlet {
             if (deviceInfo.getType().equals(DeviceInfo.TYPE_CHROME)) {
                 res = doSendViaBrowserChannel(url, deviceInfo);
             } else {
-                res = doSendViaC2dm(url, title, sel, push, collapseKey,
-                        deviceInfo, reqDebug);
+              res = doSendViaGoogleCloud(url, title, sel, push, collapseKey,
+                  deviceInfo, reqDebug, deviceInfo.getType());
             }
 
-            if (res) {
+            if (res == null) {
                 log.info("Link sent to phone! collapse_key:" + collapseKey);
                 ok = true;
             } else {
-                log.warning("Error: Unable to send link to device: " +
-                        deviceInfo.getDeviceRegistrationID());
-                IOException ex = C2DMessaging.getC2dmException();
-                if (ex != null) {
-                    if ("InvalidRegistration".equals(ex.getMessage())) {
-                      // Prune device, it no longer works
-                      reqInfo.deleteRegistration(deviceInfo.getDeviceRegistrationID(),
-                          deviceInfo.getType());
-                      iterator.remove();
-                      ac2dmCnt--;
-                    } else {
-                      throw ex;
+                // C2DM error
+                if (res instanceof IOException) {
+                  IOException ex = (IOException) res;
+                  log.warning("Error: Unable to send link to device: " +
+                  deviceInfo.getDeviceRegistrationID());
+                  String error = "" + ex.getMessage();
+                  if (error.equals(Constants.ERROR_NOT_REGISTERED) || error.equals(Constants.ERROR_INVALID_REGISTRATION)) {
+                    // Prune device, it no longer works
+                    reqInfo.deleteRegistration(deviceInfo.getDeviceRegistrationID(),
+                        deviceInfo.getType());
+                    iterator.remove();
+                    deviceCount--;
+                  } else {
+                    throw ex;
+                  }
+                }
+                // GCM result.
+                if (res instanceof Result) {
+                  Result result = (Result) res;
+                  String regId = deviceInfo.getDeviceRegistrationID();
+                  if (result.getMessageId() != null) {
+                    log.info("Link sent to phone! collapse_key:" + collapseKey);
+                    ok = true;
+                    String canonicalRegId = result.getCanonicalRegistrationId();
+                    if (canonicalRegId != null) {
+                      // same device has more than on registration id: update it
+                      log.finest("canonicalRegId " + canonicalRegId);
+                      reqInfo.updateRegistration(regId, canonicalRegId);
                     }
+                  } else {
+                    String error = result.getErrorCodeName();
+                    if (error.equals(Constants.ERROR_NOT_REGISTERED) || error.equals(Constants.ERROR_INVALID_REGISTRATION)) {
+                      // Prune device, it no longer works
+                      reqInfo.deleteRegistration(regId, deviceInfo.getType());
+                      iterator.remove();
+                      deviceCount--;
+                    } else {
+                      log.severe("Error sending message to device " + regId
+                          + ": " + error);
+                      throw new IOException(error);
+                    }
+                  }
                 }
             }
         }
@@ -149,7 +183,7 @@ public class SendServlet extends HttpServlet {
             // Show the 'no devices' if only the browser is registered.
             // We should also clarify that 'error status' mean no matching
             // device found ( when the extension allow specifying the destination )
-            if (ac2dmCnt == 0 && "ac2dm".equals(deviceType)) {
+            if (deviceCount == 0 && !DeviceInfo.TYPE_CHROME.equals(deviceType)) {
                 log.warning("No device registered for " + reqInfo.userName);
                 return DEVICE_NOT_REGISTERED_STATUS;
             } else {
@@ -158,8 +192,8 @@ public class SendServlet extends HttpServlet {
         }
     }
 
-    private boolean doSendViaC2dm(String url, String title, String sel, C2DMessaging push,
-            String collapseKey, DeviceInfo deviceInfo, boolean reqDebug) {
+    private Object doSendViaGoogleCloud(String url, String title, String sel, C2DMessaging push,
+            String collapseKey, DeviceInfo deviceInfo, boolean reqDebug, String deviceType) {
 
         // Trim title, sel if needed.
         if (url.length() + title.length() + sel.length() > 1000) {
@@ -177,13 +211,28 @@ public class SendServlet extends HttpServlet {
             }
         }
 
-        boolean res;
-        res = push.sendNoRetry(deviceInfo.getDeviceRegistrationID(),
-                collapseKey,
-                "url", url,
-                "title", title,
-                "sel", sel,
-                "debug", deviceInfo.getDebug() || reqDebug ? "1" : null);
+        String regId = deviceInfo.getDeviceRegistrationID();
+        String debug = (deviceInfo.getDebug()) || reqDebug ? "1" : null;
+        Object res;
+        if (deviceType.equals(DeviceInfo.TYPE_AC2DM)) {
+            res = push.sendNoRetry(regId,
+                  collapseKey,
+                  "url", url,
+                  "title", title,
+                  "sel", sel,
+                  "debug", debug);
+        } else {
+            Builder builder = new Message.Builder()
+                .collapseKey(collapseKey)
+                .addData("url", url)
+                .addData("title", title)
+                .addData("sel", sel);
+            if (debug != null) {
+              builder.addData("debug", debug);
+            }
+            Message message = builder.build();
+            res = push.send(message, regId);
+        }
         return res;
     }
 

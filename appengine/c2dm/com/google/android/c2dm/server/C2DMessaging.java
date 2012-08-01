@@ -16,11 +16,14 @@
 
 package com.google.android.c2dm.server;
 
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -34,13 +37,6 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskHandle;
-import com.google.appengine.api.taskqueue.TaskOptions;
-
-/**
- */
 @SuppressWarnings("serial")
 public class C2DMessaging {
     private static final String UPDATE_CLIENT_AUTH = "Update-Client-Auth";
@@ -110,9 +106,14 @@ public class C2DMessaging {
                     pmfFactory);
         }
         return pmfFactory;
-}
+    }
 
 
+    /**
+     * This method is deprecated because C2DM has been replaced by GCM, and it
+     * provides a library with similar functionality.
+     */
+    @Deprecated
     public boolean sendNoRetry(String registrationId,
             String collapse,
             Map<String, String[]> params,
@@ -219,52 +220,12 @@ public class C2DMessaging {
         }
     }
 
-    /**
-     * Helper method to send a message, with 2 parameters.
-     *
-     * Permanent errors will result in IOException.
-     * Retriable errors will cause the message to be scheduled for retry.
-     */
-    public void sendWithRetry(String token, String collapseKey,
-            String name1, String value1, String name2, String value2,
-            String name3, String value3)
-                throws IOException {
-
-        Map<String, String[]> params = new HashMap<String, String[]>();
-        if (value1 != null) params.put("data." + name1, new String[] {value1});
-        if (value2 != null) params.put("data." + name2, new String[] {value2});
-        if (value3 != null) params.put("data." + name3, new String[] {value3});
-
-        boolean sentOk = sendNoRetry(token, collapseKey, params, true);
-        if (!sentOk) {
-            retry(token, collapseKey, params, true);
-        }
-    }
-
-    public boolean sendNoRetry(String token, String collapseKey,
-            String name1, String value1, String name2, String value2,
-            String name3, String value3) {
-
-        Map<String, String[]> params = new HashMap<String, String[]>();
-        if (value1 != null) params.put("data." + name1, new String[] {value1});
-        if (value2 != null) params.put("data." + name2, new String[] {value2});
-        if (value3 != null) params.put("data." + name3, new String[] {value3});
-
-        try {
-            return sendNoRetry(token, collapseKey, params, true);
-        } catch (IOException ex) {
-            return false;
-        }
-    }
-    
-    private static final ThreadLocal<IOException> C2DM_EXCEPTION =
-        new ThreadLocal<IOException>();
-    
-    public static IOException getC2dmException() {
-      return C2DM_EXCEPTION.get();
-    }
-
-    public boolean sendNoRetry(String token, String collapseKey,
+  /**
+   * This method is deprecated because C2DM has been replaced by GCM, and it
+   * provides a library with similar functionality.
+   */
+  @Deprecated
+  public Object sendNoRetry(String token, String collapseKey,
             String... nameValues) {
 
         Map<String, String[]> params = new HashMap<String, String[]>();
@@ -281,42 +242,25 @@ public class C2DMessaging {
         }
 
         try {
-            C2DM_EXCEPTION.remove();
             return sendNoRetry(token, collapseKey, params, true);
         } catch (IOException ex) {
-            // save exception in a thread-local object so it can be cheked for
-            // unregistration later
-            C2DM_EXCEPTION.set(ex);
-            return false;
+            return ex;
         }
     }
-    
-    private void retry(String token, String collapseKey,
-            Map<String, String[]> params, boolean delayWhileIdle) {
-        Queue dmQueue = QueueFactory.getQueue("c2dm");
-        try {
-            TaskOptions url =
-                TaskOptions.Builder.withUrl(C2DMRetryServlet.URI)
-                .param(C2DMessaging.PARAM_REGISTRATION_ID, token)
-                .param(C2DMessaging.PARAM_COLLAPSE_KEY, collapseKey);
-            if (delayWhileIdle) {
-                url.param(PARAM_DELAY_WHILE_IDLE, "1");
-            }
-            for (String key: params.keySet()) {
-                String[] values = params.get(key);
-                url.param(key, URLEncoder.encode(values[0], UTF8));
-            }
 
-            // Task queue implements the exponential backoff
-            long jitter = (int) Math.random() * DATAMESSAGING_MAX_JITTER_MSEC;
-            url.countdownMillis(jitter);
-
-            TaskHandle add = dmQueue.add(url);
-        } catch (UnsupportedEncodingException e) {
-            // Ignore - UTF8 should be supported
-            log.log(Level.SEVERE, "Unexpected error", e);
-        }
-
+  public Result send(Message message, String regId) {
+    String key = serverConfig.getGcmApiKey();
+    Sender sender = new Sender(key);
+    try {
+      // TODO: should use AppEngine's queue mechanism to retry, otherwise the
+      // request might time out
+      Result result = sender.send(message, regId, 2 /* number of tries */);
+      log.fine("Result: " + result);
+      return result;
+    } catch (IOException e) {
+      log.log(Level.SEVERE, "Error sending " + message + " to " + regId, e);
+      return null;
     }
+  }
 
 }

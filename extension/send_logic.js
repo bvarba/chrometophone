@@ -174,4 +174,3 @@ function closeBrowserChannel() {
   socketCloseRequested = true;
   if (socket) socket.close();
 }
-

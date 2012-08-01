@@ -29,6 +29,8 @@ import android.content.res.Configuration;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
+import com.google.android.gcm.GCMRegistrar;
+
 /**
  * Register/unregister with the Chrome to Phone App Engine server.
  */
@@ -40,7 +42,7 @@ public class DeviceRegistrar {
     public static final int ERROR_STATUS = 4;
 
     private static final String TAG = "DeviceRegistrar";
-    static final String SENDER_ID = "stp.chrome@gmail.com";
+    static final String SENDER_ID = "206147423037";
 
     private static final String REGISTER_PATH = "/register";
     private static final String UNREGISTER_PATH = "/unregister";
@@ -52,12 +54,9 @@ public class DeviceRegistrar {
             public void run() {
                 Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
                 try {
-                    HttpResponse res = makeRequest(context, deviceRegistrationID, REGISTER_PATH);
+                    HttpResponse res = makeRequest(context, deviceRegistrationID, REGISTER_PATH, "gcm");
                     if (res.getStatusLine().getStatusCode() == 200) {
-                        SharedPreferences settings = Prefs.get(context);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("deviceRegistrationID", deviceRegistrationID);
-                        editor.commit();
+                        GCMRegistrar.setRegisteredOnServer(context, true);
                         updateUIIntent.putExtra(STATUS_EXTRA, REGISTERED_STATUS);
                     } else if (res.getStatusLine().getStatusCode() == 400) {
                         updateUIIntent.putExtra(STATUS_EXTRA, AUTH_ERROR_STATUS);
@@ -82,24 +81,32 @@ public class DeviceRegistrar {
     }
 
     public static void unregisterWithServer(final Context context,
-            final String deviceRegistrationID) {
+            final String deviceRegistrationID, final String deviceType) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
                 try {
-                    HttpResponse res = makeRequest(context, deviceRegistrationID, UNREGISTER_PATH);
+                    HttpResponse res = makeRequest(context, deviceRegistrationID, UNREGISTER_PATH, deviceType);
                     if (res.getStatusLine().getStatusCode() != 200) {
                         Log.w(TAG, "Unregistration error " +
                                 String.valueOf(res.getStatusLine().getStatusCode()));
+                    } else {
+                      GCMRegistrar.setRegisteredOnServer(context, false);
                     }
                 } catch (Exception e) {
                     Log.w(TAG, "Unregistration error " + e.getMessage());
                 } finally {
                     SharedPreferences settings = Prefs.get(context);
                     SharedPreferences.Editor editor = settings.edit();
-                    editor.remove("deviceRegistrationID");
-                    editor.remove("accountName");
+                    if (deviceType.equals("gcm")) {
+                      editor.remove("accountName");
+                    } else {
+                      // this is an update from C2DM to GCM - keep the account,
+                      // but remove the old regId (the new one will be stored
+                      // on GCM's library preferences)
+                      editor.remove("deviceRegistrationID");
+                    }
                     editor.commit();
                     updateUIIntent.putExtra(STATUS_EXTRA, UNREGISTERED_STATUS);
                 }
@@ -111,9 +118,8 @@ public class DeviceRegistrar {
     }
 
     private static HttpResponse makeRequest(Context context, String deviceRegistrationID,
-            String urlPath) throws Exception {
-        SharedPreferences settings = Prefs.get(context);
-        String accountName = settings.getString("accountName", null);
+            String urlPath, String deviceType) throws Exception {
+        String accountName = getAccountName(context);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("devregid", deviceRegistrationID));
@@ -126,8 +132,16 @@ public class DeviceRegistrar {
         // TODO: Allow device name to be configured
         params.add(new BasicNameValuePair("deviceName", isTablet(context) ? "Tablet" : "Phone"));
 
+        params.add(new BasicNameValuePair("deviceType", deviceType));
+
         AppEngineClient client = new AppEngineClient(context, accountName);
         return client.makeRequest(urlPath, params);
+    }
+
+    static String getAccountName(Context context) {
+      SharedPreferences settings = Prefs.get(context);
+      String accountName = settings.getString("accountName", null);
+      return accountName;
     }
 
     static boolean isTablet (Context context) {

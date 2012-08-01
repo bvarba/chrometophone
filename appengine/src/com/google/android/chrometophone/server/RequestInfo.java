@@ -237,4 +237,17 @@ public class RequestInfo {
         }
 
     }
+
+    public void updateRegistration(String regId, String canonicalRegId) {
+      if (ctx == null) {
+        return;
+      }
+      log.fine("Updating regId " + regId + " to canonical " + canonicalRegId);
+      PersistenceManager pm = C2DMessaging.getPMF(ctx).getPersistenceManager();
+      DeviceInfo device = DeviceInfo.getDeviceInfo(pm, regId);
+      device.setDeviceRegistrationID(canonicalRegId);
+      pm.currentTransaction().begin();
+      pm.makePersistent(device);
+      pm.currentTransaction().commit();
+    }
 }

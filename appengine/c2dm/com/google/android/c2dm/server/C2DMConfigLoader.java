@@ -35,11 +35,16 @@ import javax.jdo.PersistenceManagerFactory;
  */
 public class C2DMConfigLoader {
     private static final String TOKEN_FILE = "/dataMessagingToken.txt";
+    private static final String API_KEY_FILE = "/dataMessagingApiKey.txt";
     private final PersistenceManagerFactory PMF;
     private static final Logger log = Logger.getLogger(C2DMConfigLoader.class.getName());
 
+    private static final int C2DM_TOKEN = 1;
+    private static final int GCM_API_KEY = 2;
+
     String currentToken;
     String c2dmUrl;
+    String currentApiKey;
     
     C2DMConfigLoader(PersistenceManagerFactory pmf) {
         this.PMF = pmf;
@@ -56,7 +61,7 @@ public class C2DMConfigLoader {
             currentToken = token;
             PersistenceManager pm = PMF.getPersistenceManager();
             try {
-                getDataMessagingConfig(pm).setAuthToken(token);
+                getDataMessagingConfig(pm, TOKEN_FILE, C2DM_TOKEN).setAuthToken(token);
             } finally {
                 pm.close();
             }
@@ -76,30 +81,37 @@ public class C2DMConfigLoader {
      */
     public String getToken() {
         if (currentToken == null) {
-            currentToken = getDataMessagingConfig().getAuthToken();
+            currentToken = getDataMessagingConfig(TOKEN_FILE, C2DM_TOKEN).getAuthToken();
         } 
         return currentToken;
     }
     
+    public String getGcmApiKey() {
+      if (currentApiKey == null) {
+        currentApiKey = getDataMessagingConfig(API_KEY_FILE, GCM_API_KEY).getAuthToken();
+    } 
+      return currentApiKey;
+    }
+    
     public String getC2DMUrl() {
         if (c2dmUrl == null) {
-            c2dmUrl = getDataMessagingConfig().getC2DMUrl();
+            c2dmUrl = getDataMessagingConfig(TOKEN_FILE, C2DM_TOKEN).getC2DMUrl();
         }
         return c2dmUrl;
     }
-    
-    public C2DMConfig getDataMessagingConfig() {
+
+    private C2DMConfig getDataMessagingConfig(String file, int index) {
         PersistenceManager pm = PMF.getPersistenceManager();
         try {
-            C2DMConfig dynamicConfig = getDataMessagingConfig(pm);
+            C2DMConfig dynamicConfig = getDataMessagingConfig(pm, file, index);
             return dynamicConfig;
         } finally {
             pm.close();
         }
     }
 
-    public static C2DMConfig getDataMessagingConfig(PersistenceManager pm) {
-        Key key = KeyFactory.createKey(C2DMConfig.class.getSimpleName(), 1);
+    private C2DMConfig getDataMessagingConfig(PersistenceManager pm, String file, int index) {
+        Key key = KeyFactory.createKey(C2DMConfig.class.getSimpleName(), index);
         C2DMConfig dmConfig = null;
         try {
             dmConfig = pm.getObjectById(C2DMConfig.class, key);
@@ -109,7 +121,7 @@ public class C2DMConfigLoader {
             dmConfig.setKey(key);
             // Must be in classpath, before sending. Do not checkin !
             try {
-                InputStream is = C2DMConfigLoader.class.getClassLoader().getResourceAsStream(TOKEN_FILE);
+                InputStream is = C2DMConfigLoader.class.getClassLoader().getResourceAsStream(file);
                 String token;
                 if (is != null) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(is));
