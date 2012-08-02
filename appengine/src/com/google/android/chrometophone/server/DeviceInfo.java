@@ -23,9 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 
-import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.annotations.IdentityType;
@@ -90,10 +88,6 @@ public class DeviceInfo {
     @Persistent
     private Date registrationTimestamp;
 
-    /**
-     * Debug is not used anymore, but since the datastore already has it, it is
-     * now used to flag whether this object has been added to the stats or not.
-     */
     @Persistent
     private Boolean debug;
 
@@ -129,7 +123,7 @@ public class DeviceInfo {
         return (debug != null ? debug.booleanValue() : false);
     }
 
-    public void setDebug(Boolean debug) {
+    public void setDebug(boolean debug) {
         this.debug = debug;
     }
 

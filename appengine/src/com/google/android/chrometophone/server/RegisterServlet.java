@@ -166,7 +166,6 @@ public class RegisterServlet extends HttpServlet {
             // TODO: only need to write if something changed, for chrome nothing
             // changes, we just create a new channel
             pm.makePersistent(device);
-            DeviceStats.addDevice(pm, deviceType);
             log.log(Level.INFO, "Registered device " + reqInfo.userName + " " +
                     deviceType);
 

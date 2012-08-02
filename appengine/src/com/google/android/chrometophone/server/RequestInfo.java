@@ -224,7 +224,6 @@ public class RequestInfo {
                 DeviceInfo deviceInfo = registrations.get(i);
                 if (deviceInfo.getDeviceRegistrationID().equals(regId)) {
                     pm.deletePersistent(deviceInfo);
-                    DeviceStats.removeDevice(pm, type);
                     // Keep looping in case of duplicates
                 }
             }

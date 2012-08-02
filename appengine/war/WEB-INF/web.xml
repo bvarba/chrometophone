@@ -61,18 +61,6 @@
     </servlet-class>
   </servlet>
 
-  <servlet>
-    <servlet-name>StatsServlet</servlet-name>
-    <servlet-class>com.google.android.chrometophone.server.StatsServlet
-    </servlet-class>
-  </servlet>
-
-  <servlet>
-    <servlet-name>StatsConversionServlet</servlet-name>
-    <servlet-class>com.google.android.chrometophone.server.StatsConversionServlet
-    </servlet-class>
-  </servlet>
-
 	<servlet-mapping>
 		<servlet-name>RegisterServlet</servlet-name>
 		<url-pattern>/register</url-pattern>
@@ -111,16 +99,6 @@
     <servlet-mapping>
         <servlet-name>SenderServlet</servlet-name>
         <url-pattern>/admin/sender</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>StatsServlet</servlet-name>
-        <url-pattern>/admin/stats</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>StatsConversionServlet</servlet-name>
-        <url-pattern>/admin/convertStats</url-pattern>
     </servlet-mapping>
 
   <security-constraint>
