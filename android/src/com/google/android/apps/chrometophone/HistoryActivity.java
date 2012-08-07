@@ -44,14 +44,8 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = Prefs.get(this);
-        String c2dmRegId = prefs.getString("deviceRegistrationID", null);
-        if (c2dmRegId != null) {
-            // this is an update from the version that uses C2DM: must
-            // unregister and register again using GCM
-            DeviceRegistrar.unregisterWithServer(this, c2dmRegId, "ac2dm");
-            GCMRegistrar.register(this, DeviceRegistrar.SENDER_ID);
-        } else {
+        boolean isGcmUpdate = DeviceRegistrar.updateC2DM(this);
+        if (!isGcmUpdate) {
             // Run the setup first if necessary
             String gcmRegId = GCMRegistrar.getRegistrationId(this);
             if (gcmRegId.equals("")) {

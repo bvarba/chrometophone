@@ -79,6 +79,17 @@
             </intent-filter>
         </receiver>
 
+        <!-- 
+          Receiver called when the application is updated (Android 3.1+), it will check
+          if the previous version used C2DM and update to GCM if necessary.
+          -->
+        <receiver
+            android:name=".Updater">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".UserPresentReceiver" android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />

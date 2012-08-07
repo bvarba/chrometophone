@@ -150,4 +150,22 @@ public class DeviceRegistrar {
         Configuration config = context.getResources().getConfiguration();
         return (config.screenLayout & xlargeBit) == xlargeBit;
     }
+
+    /**
+     * Update the device to use GCM instead of C2DM.
+     */
+    static boolean updateC2DM(Context context) {
+        SharedPreferences prefs = Prefs.get(context);
+        String c2dmRegId = prefs.getString("deviceRegistrationID", null);
+        // The old versions of the app that used C2DM stored the registration id in the default
+        // preferences; the new version stores it in the GCM library.
+        if (c2dmRegId != null) {
+            Log.i(TAG, "Updating from C2DM to GCM");
+            DeviceRegistrar.unregisterWithServer(context, c2dmRegId, "ac2dm");
+            GCMRegistrar.register(context, DeviceRegistrar.SENDER_ID);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
