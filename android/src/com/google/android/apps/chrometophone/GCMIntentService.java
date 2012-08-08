@@ -41,7 +41,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     public void onUnregistered(Context context, String registration) {
-        DeviceRegistrar.unregisterWithServer(context, registration, "gcm");
+        DeviceRegistrar.unregisterWithServer(context, registration);
     }
 
     @Override

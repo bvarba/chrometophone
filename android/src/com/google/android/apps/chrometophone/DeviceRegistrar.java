@@ -54,7 +54,7 @@ public class DeviceRegistrar {
             public void run() {
                 Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
                 try {
-                    HttpResponse res = makeRequest(context, deviceRegistrationID, REGISTER_PATH, "gcm");
+                    HttpResponse res = makeRequest(context, deviceRegistrationID, REGISTER_PATH);
                     if (res.getStatusLine().getStatusCode() == 200) {
                         GCMRegistrar.setRegisteredOnServer(context, true);
                         updateUIIntent.putExtra(STATUS_EXTRA, REGISTERED_STATUS);
@@ -66,6 +66,16 @@ public class DeviceRegistrar {
                         updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
                     }
                     context.sendBroadcast(updateUIIntent);
+                    // Check if this is an update from C2DM to GCM - if it is, remove the
+                    // old registration id.
+                    SharedPreferences settings = Prefs.get(context);
+                    String c2dmRegId = settings.getString("deviceRegistrationID", null);
+                    if (c2dmRegId != null) {
+                        Log.i(TAG, "Removing old C2DM registration id");
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.remove("deviceRegistrationID");
+                        editor.commit();
+                    }
                 } catch (AppEngineClient.PendingAuthException pae) {
                     // Get setup activity to ask permission from user.
                     Intent intent = new Intent(SetupActivity.AUTH_PERMISSION_ACTION);
@@ -80,14 +90,13 @@ public class DeviceRegistrar {
         }).start();
     }
 
-    public static void unregisterWithServer(final Context context,
-            final String deviceRegistrationID, final String deviceType) {
+    public static void unregisterWithServer(final Context context, final String deviceRegistrationID) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Intent updateUIIntent = new Intent("com.google.ctp.UPDATE_UI");
                 try {
-                    HttpResponse res = makeRequest(context, deviceRegistrationID, UNREGISTER_PATH, deviceType);
+                    HttpResponse res = makeRequest(context, deviceRegistrationID, UNREGISTER_PATH);
                     if (res.getStatusLine().getStatusCode() != 200) {
                         Log.w(TAG, "Unregistration error " +
                                 String.valueOf(res.getStatusLine().getStatusCode()));
@@ -99,14 +108,7 @@ public class DeviceRegistrar {
                 } finally {
                     SharedPreferences settings = Prefs.get(context);
                     SharedPreferences.Editor editor = settings.edit();
-                    if (deviceType.equals("gcm")) {
-                      editor.remove("accountName");
-                    } else {
-                      // this is an update from C2DM to GCM - keep the account,
-                      // but remove the old regId (the new one will be stored
-                      // on GCM's library preferences)
-                      editor.remove("deviceRegistrationID");
-                    }
+                    editor.remove("accountName");
                     editor.commit();
                     updateUIIntent.putExtra(STATUS_EXTRA, UNREGISTERED_STATUS);
                 }
@@ -118,7 +120,7 @@ public class DeviceRegistrar {
     }
 
     private static HttpResponse makeRequest(Context context, String deviceRegistrationID,
-            String urlPath, String deviceType) throws Exception {
+            String urlPath) throws Exception {
         String accountName = getAccountName(context);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -132,7 +134,7 @@ public class DeviceRegistrar {
         // TODO: Allow device name to be configured
         params.add(new BasicNameValuePair("deviceName", isTablet(context) ? "Tablet" : "Phone"));
 
-        params.add(new BasicNameValuePair("deviceType", deviceType));
+        params.add(new BasicNameValuePair("deviceType", "gcm"));
 
         AppEngineClient client = new AppEngineClient(context, accountName);
         return client.makeRequest(urlPath, params);
@@ -161,7 +163,8 @@ public class DeviceRegistrar {
         // preferences; the new version stores it in the GCM library.
         if (c2dmRegId != null) {
             Log.i(TAG, "Updating from C2DM to GCM");
-            DeviceRegistrar.unregisterWithServer(context, c2dmRegId, "ac2dm");
+            // Since the server will update the existing DeviceInfo entry to use GCM,
+            // it's not necessary to call unregister
             GCMRegistrar.register(context, DeviceRegistrar.SENDER_ID);
             return true;
         } else {
