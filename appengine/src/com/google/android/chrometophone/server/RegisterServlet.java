@@ -159,6 +159,8 @@ public class RegisterServlet extends HttpServlet {
             } else {
                 // update registration id
                 device.setDeviceRegistrationID(reqInfo.deviceRegistrationID);
+                // must update type, as this could be a C2DM to GCM migration
+                device.setType(deviceType);
                 device.setRegistrationTimestamp(new Date());
             }
 
