@@ -40,7 +40,7 @@ public class C2DMConfigLoader {
     private static final Logger log = Logger.getLogger(C2DMConfigLoader.class.getName());
 
     private static final int C2DM_TOKEN = 1;
-    private static final int GCM_API_KEY = 2;
+    private static final int GCM_API_KEY = 5001;
 
     String currentToken;
     String c2dmUrl;
