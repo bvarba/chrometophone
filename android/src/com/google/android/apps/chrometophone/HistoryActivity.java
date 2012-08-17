@@ -1,5 +1,6 @@
 package com.google.android.apps.chrometophone;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Browser;
+import android.provider.Settings.Secure;
 import android.text.ClipboardManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,8 @@ import android.widget.TextView;
 
 import com.google.android.gcm.GCMRegistrar;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.Calendar;
 
 /**
@@ -176,6 +180,35 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
         dialog.setTitle(mSelectedLink.mTitle);
+    }
+
+    @TargetApi(11)
+    @Override
+    public void dump(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
+        super.dump(prefix, fd, writer, args);
+        writer.println(prefix + "GCM info");
+        String innerPrefix = prefix + "  ";
+        String accountName = DeviceRegistrar.getAccountName(this);
+        String key = "N/A";
+        if (accountName != null) {
+            String deviceId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
+            String suffix = (deviceId != null ? "#" + Long.toHexString(Math.abs(deviceId.hashCode())) : "");
+            key = accountName + suffix;
+        } else {
+            accountName = "N/A";
+        }
+        writer.println(innerPrefix + "account: " + accountName);
+        writer.println(innerPrefix + "server key: " + key);
+        SharedPreferences prefs = Prefs.get(this);
+        String c2dmRegId = prefs.getString("deviceRegistrationID", "N/A");
+        writer.println(innerPrefix + "C2DM regId: " + c2dmRegId);
+        String gcmRegId = GCMRegistrar.getRegistrationId(this);
+        if (gcmRegId.equals("")) {
+            gcmRegId = "N/A";
+        }
+        writer.println(innerPrefix + "GCM regId: " + gcmRegId);
+        writer.println(innerPrefix + "registered on GCM: " + GCMRegistrar.isRegistered(this));
+        writer.println(innerPrefix + "registered on server: " + GCMRegistrar.isRegisteredOnServer(this));
     }
 
     class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
