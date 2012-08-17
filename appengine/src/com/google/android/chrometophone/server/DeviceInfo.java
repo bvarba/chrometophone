@@ -19,8 +19,6 @@ package com.google.android.chrometophone.server;
 import com.google.appengine.api.datastore.Key;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -44,10 +42,6 @@ public class DeviceInfo {
   
     public static final String TYPE_AC2DM = "ac2dm";
     public static final String TYPE_CHROME = "chrome";
-    public static final String TYPE_GCM = "gcm";
-    
-    public static final List<String> SUPPORTED_TYPES = Collections
-        .unmodifiableList(Arrays.asList(TYPE_AC2DM, TYPE_CHROME, TYPE_GCM));
 
     /**
      * User-email # device-id
@@ -91,6 +85,13 @@ public class DeviceInfo {
     @Persistent
     private Boolean debug;
 
+    /**
+     * Devices that migrated to GCM will have it set to true; older devices
+     * will have it either null or false.
+     */
+    @Persistent
+    private Boolean gcm;
+
     public DeviceInfo(Key key, String deviceRegistrationID) {
         this.key = key;
         this.deviceRegistrationID = deviceRegistrationID;
@@ -125,6 +126,18 @@ public class DeviceInfo {
 
     public void setDebug(boolean debug) {
         this.debug = debug;
+    }
+
+    public Boolean getGcm() {
+      return gcm;
+    }
+    
+    public void setGcm(Boolean gcm) {
+      this.gcm = gcm;
+    }
+
+    public boolean isC2DM() {
+      return gcm == null || !gcm;
     }
 
     public void setType(String type) {

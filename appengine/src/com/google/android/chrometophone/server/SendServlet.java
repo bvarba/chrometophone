@@ -76,6 +76,7 @@ public class SendServlet extends HttpServlet {
                 deviceNames, deviceType);
 
         if (id.startsWith(ERROR_STATUS)) {
+            log.warning("Error sending url to device of type " + deviceType + ": " + id);
             resp.setStatus(500);
         }
         resp.getWriter().println(id);
@@ -125,10 +126,11 @@ public class SendServlet extends HttpServlet {
                   deviceInfo, reqDebug, deviceInfo.getType());
             }
 
-            if (res == null) {
-                log.info("Link sent to phone! collapse_key:" + collapseKey);
-                ok = true;
+            if (res instanceof Boolean) {
+                ok = (Boolean) res;
+                log.info("Link sent to phone: " + ok + "! collapse_key:" + collapseKey);
             } else {
+                log.fine("Non-boolean send result: " + res);
                 // C2DM error
                 if (res instanceof IOException) {
                   IOException ex = (IOException) res;
@@ -147,10 +149,10 @@ public class SendServlet extends HttpServlet {
                 }
                 // GCM result.
                 if (res instanceof Result) {
+                  log.info("GCM send result: " + res);
                   Result result = (Result) res;
                   String regId = deviceInfo.getDeviceRegistrationID();
                   if (result.getMessageId() != null) {
-                    log.info("Link sent to phone! collapse_key:" + collapseKey);
                     ok = true;
                     String canonicalRegId = result.getCanonicalRegistrationId();
                     if (canonicalRegId != null) {
@@ -213,7 +215,8 @@ public class SendServlet extends HttpServlet {
         String regId = deviceInfo.getDeviceRegistrationID();
         String debug = (deviceInfo.getDebug()) || reqDebug ? "1" : null;
         Object res;
-        if (deviceType.equals(DeviceInfo.TYPE_AC2DM)) {
+        if (deviceInfo.isC2DM()) {
+            log.fine("Sending C2DM message");
             res = push.sendNoRetry(regId,
                   collapseKey,
                   "url", url,
@@ -221,6 +224,7 @@ public class SendServlet extends HttpServlet {
                   "sel", sel,
                   "debug", debug);
         } else {
+            log.fine("Sending GCM message");
             Builder builder = new Message.Builder()
                 .collapseKey(collapseKey)
                 .addData("url", url)
@@ -230,7 +234,7 @@ public class SendServlet extends HttpServlet {
               builder.addData("debug", debug);
             }
             Message message = builder.build();
-            res = push.send(message, regId);
+            res = push.sendGcmMessage(message, regId);
         }
         return res;
     }

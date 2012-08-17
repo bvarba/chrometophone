@@ -134,7 +134,8 @@ public class DeviceRegistrar {
         // TODO: Allow device name to be configured
         params.add(new BasicNameValuePair("deviceName", isTablet(context) ? "Tablet" : "Phone"));
 
-        params.add(new BasicNameValuePair("deviceType", "gcm"));
+        params.add(new BasicNameValuePair("deviceType", "ac2dm"));
+        params.add(new BasicNameValuePair("gcm", "true"));
 
         AppEngineClient client = new AppEngineClient(context, accountName);
         return client.makeRequest(urlPath, params);

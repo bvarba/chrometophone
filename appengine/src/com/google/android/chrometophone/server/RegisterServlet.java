@@ -68,6 +68,7 @@ public class RegisterServlet extends HttpServlet {
                 dijson.put("key", di.getKey().toString());
                 dijson.put("name", di.getName());
                 dijson.put("type", di.getType());
+                dijson.put("gcm", di.getGcm());
                 dijson.put("regid", di.getDeviceRegistrationID());
                 dijson.put("ts", di.getRegistrationTimestamp());
                 devices.put(dijson);
@@ -111,6 +112,9 @@ public class RegisterServlet extends HttpServlet {
         if (deviceType == null) {
             deviceType = "ac2dm";
         }
+        
+        String gcm = reqInfo.getParameter("gcm");
+        boolean isGcm = gcm != null && gcm.equalsIgnoreCase("true");
 
         // Because the deviceRegistrationId isn't static, we use a static
         // identifier for the device. (Can be null in older clients)
@@ -165,11 +169,12 @@ public class RegisterServlet extends HttpServlet {
             }
 
             device.setName(deviceName);  // update display name
+            device.setGcm(isGcm);
             // TODO: only need to write if something changed, for chrome nothing
             // changes, we just create a new channel
             pm.makePersistent(device);
             log.log(Level.INFO, "Registered device " + reqInfo.userName + " " +
-                    deviceType);
+                    deviceType + "(gcm: " + isGcm + ")");
 
             if (device.getType().equals(DeviceInfo.TYPE_CHROME)) {
                 String channelId =

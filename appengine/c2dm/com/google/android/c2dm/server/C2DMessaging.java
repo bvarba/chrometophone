@@ -248,7 +248,7 @@ public class C2DMessaging {
         }
     }
 
-  public Result send(Message message, String regId) {
+  public Result sendGcmMessage(Message message, String regId) {
     String key = serverConfig.getGcmApiKey();
     Sender sender = new Sender(key);
     try {
