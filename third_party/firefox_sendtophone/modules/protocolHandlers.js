@@ -6,6 +6,13 @@ var EXPORTED_SYMBOLS = [];
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
+//XXXgijs: Because necko is annoying and doesn't expose this error flag, we
+//         define our own constant for it. Throwing something else will show
+//         ugly errors instead of seeminly doing nothing.
+const NS_ERROR_MODULE_NETWORK_BASE = 0x804b0000;
+const NS_ERROR_NO_CONTENT = NS_ERROR_MODULE_NETWORK_BASE + 17;
+
+
 var manager = Components.manager.QueryInterface(Ci.nsIComponentRegistrar);
 var strings = Cc["@mozilla.org/intl/stringbundle;1"]
 				.getService(Ci.nsIStringBundleService)
@@ -14,10 +21,10 @@ var strings = Cc["@mozilla.org/intl/stringbundle;1"]
 // Utility function to handle the preferences
 // https://developer.mozilla.org/en/Code_snippets/Preferences
 function PrefListener(branchName, func) {
-    var prefService = Components.classes["@mozilla.org/preferences-service;1"]
+    var prefService = Cc["@mozilla.org/preferences-service;1"]
                                 .getService(Ci.nsIPrefService);
     var branch = prefService.getBranch(branchName);
-    branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
+    branch.QueryInterface(Ci.nsIPrefBranch2);
 
     this.register = function() {
         branch.addObserver("", this, false);
@@ -60,28 +67,20 @@ function SendToPhone_ProtocolWrapper( properties )
 		// nsIProtocolHandler implementation:
 
 		// default attributes
-		protocolFlags : Ci.nsIProtocolHandler.URI_LOADABLE_BY_ANYONE,
+		protocolFlags : Ci.nsIProtocolHandler.URI_LOADABLE_BY_ANYONE | Ci.nsIProtocolHandler.URI_DOES_NOT_RETURN_DATA,
 		defaultPort : -1,
 
 		newURI : function(aSpec, aCharset, aBaseURI)
 		{
-			var uri = Components.classes["@mozilla.org/network/simple-uri;1"].createInstance(Ci.nsIURI);
+			var uri = Cc["@mozilla.org/network/simple-uri;1"].createInstance(Ci.nsIURI);
 			uri.spec = aSpec;
 			return uri;
 		},
 
 		newChannel : function(aURI)
 		{
-			var myURI = decodeURI(aURI.spec);
-
-			// Core functions loaded on demand
-			if (typeof sendtophoneCore == "undefined")
-				Components.utils.import("resource://sendtophone/sendtophone.js");
-
-			sendtophoneCore.send(this.linkTitle, myURI, "")
-
-			// return a fake empty channel so current window doesn't change
-			return Components.classes[ "@mozilla.org/network/input-stream-channel;1" ].createInstance(Ci.nsIChannel);
+			// Use our channel implementation
+		    return new BogusChannel(aURI, this.linkTitle);
 		},
 		scheme : properties.scheme,
 		classDescription : "SendToPhone handler for " + properties.scheme,
@@ -92,6 +91,78 @@ function SendToPhone_ProtocolWrapper( properties )
 
 	return myHandler;
 }
+
+
+
+/* bogus nsiChannel copied from Chatzilla */
+function BogusChannel(URI, linkTitle)
+{
+    this.URI = URI;
+	this.linkTitle = linkTitle;
+}
+
+BogusChannel.prototype.QueryInterface =
+function bc_QueryInterface(iid)
+{
+   if (!iid.equals(Ci.nsIChannel) && !iid.equals(Ci.nsIRequest) &&
+        !iid.equals(Ci.nsISupports))
+        throw Components.results.NS_ERROR_NO_INTERFACE;
+
+    return this;
+}
+
+/* nsIChannel */
+BogusChannel.prototype.loadAttributes = null;
+BogusChannel.prototype.contentLength = 0;
+BogusChannel.prototype.owner = null;
+BogusChannel.prototype.loadGroup = null;
+BogusChannel.prototype.notificationCallbacks = null;
+BogusChannel.prototype.securityInfo = null;
+
+BogusChannel.prototype.open =
+BogusChannel.prototype.asyncOpen =
+function bc_open(observer, ctxt)
+{
+	// Core functions are loaded on demand
+	if (typeof sendtophoneCore == "undefined")
+		Components.utils.import("resource://sendtophone/sendtophone.js");
+
+	sendtophoneCore.send(this.linkTitle, decodeURI(this.URI.spec), "")
+
+
+	// We don't throw this (a number, not a real 'resultcode') because it
+    // upsets xpconnect if we do (error in the js console).
+    Components.returnCode = NS_ERROR_NO_CONTENT;
+}
+
+BogusChannel.prototype.asyncRead =
+function bc_asyncRead(listener, ctxt)
+{
+    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* nsIRequest */
+BogusChannel.prototype.isPending =
+function bc_isPending()
+{
+    return true;
+}
+
+BogusChannel.prototype.status = Components.results.NS_OK;
+
+BogusChannel.prototype.cancel =
+function bc_cancel(status)
+{
+    this.status = status;
+}
+
+BogusChannel.prototype.suspend =
+BogusChannel.prototype.resume =
+function bc_suspres()
+{
+    throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+}
+/* /bogus nsiChannel */
 
 // This function takes care of register/unregister the protocol handlers as requested
 // It's called when the preferences change.
@@ -137,3 +208,11 @@ var sendToPhoneProtocols = {
 // Listen for changes in the preferences and register the protocols as needed.
 var preferencesListener = new PrefListener("extensions.sendtophone.protocols.", toggleProtocolHandler);
 preferencesListener.register();
+
+// Outputs log message to the console
+function log( text )
+{
+	Cc["@mozilla.org/consoleservice;1"]
+		.getService(Ci.nsIConsoleService)
+		.logStringMessage( "foxtophone prococolHandler: " + text );
+}

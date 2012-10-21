@@ -12,23 +12,23 @@
 <!ENTITY sendtophoneContextLogout.accesskey "L">
 <!ENTITY sendtophoneOptions.title "Fox To Phone Seçenekleri">
 <!ENTITY sendtophoneProtocols.label "Protokoller">
-<!ENTITY sendtophoneContextSendFile.label "Dosya Gönder">
+<!ENTITY sendtophoneContextSendFile.label "Dosyaya Gönder">
 <!ENTITY sendtophoneContextSendFile.accesskey "S">
-<!ENTITY sendtophoneContextSendFolder.label "Klasör Gönder">
+<!ENTITY sendtophoneContextSendFolder.label "Klasöre Gönder">
 <!ENTITY sendtophoneContextSendFolder.accesskey "F">
-<!ENTITY sendtophoneContextQrImage.label "Android için çözümlenmiş QR Link Gönder">
+<!ENTITY sendtophoneContextQrImage.label "Çözümlenmiş QR Bağlantısını Android'e Gönder">
 <!ENTITY sendtophoneContextQrImage.accesskey "Q">
 <!ENTITY sendtophoneContextSendClipboard.label "Panoya Gönder">
 <!ENTITY sendtophoneContextSendClipboard.accesskey "C">
-<!ENTITY sendtophoneContextVideo.label "Androide video gönder">
+<!ENTITY sendtophoneContextVideo.label "Videoyu Andoid'e Gönder">
 <!ENTITY sendtophoneContextVideo.accesskey "V">
-<!ENTITY sendtophoneFileTransfers.label "Dosya transferleri">
+<!ENTITY sendtophoneFileTransfers.label "Dosya aktarımları">
 <!ENTITY sendtophoneFileServer.label "Sunucu">
 <!ENTITY sendtophoneFileServer.None "Hiç">
 <!ENTITY sendtophoneFileServer.Custom "Özel">
-<!ENTITY sendtophoneFileServer.Disclaimer "Yasal Uyarı: Biz (FoxToPhone geliştiriciler) burada listelenen üçüncü taraf barındırma hizmetleri ile bağlantılı değildir. Siz bunları kullanmadan önce Hizmet Şartlarını okumalısınız.">
+<!ENTITY sendtophoneFileServer.Disclaimer "Yasal Uyarı: Bizim (FoxToPhone geliştiricileri) burada listelenen üçüncü taraf barındırma hizmetleriyle bağlantımız yoktur. Bunları kullanmadan önce servisin kendi koşullarını okumalısınız.">
 <!ENTITY sendtophonePhoneAccounts.label "Telefon hesapları">
-<!ENTITY sendtophonePhoneAccounts.description "Cihazınızda birden fazla Google hesabı kullanıyorsanız,bu hesapları burada oluşturdktan sonra aralarında geçiş yapabilirsiniz.">
+<!ENTITY sendtophonePhoneAccounts.description "Eğer cihazınızda birkaç Google hesabı kullanıyorsanız, burada oluşturduktan sonra bunlar arasında geçiş yapabilirsiniz.">
 <!ENTITY sendtophonePhoneAccounts.add "Yeni ekle">
 <!ENTITY sendtophonePhoneAccounts.rename "Yeniden adlandır">
-<!ENTITY sendtophonePhoneAccounts.remove "Sil">
+<!ENTITY sendtophonePhoneAccounts.remove "Kaldır">

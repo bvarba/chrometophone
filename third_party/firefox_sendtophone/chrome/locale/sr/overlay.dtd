@@ -27,3 +27,8 @@
 <!ENTITY sendtophoneFileServer.None "Ниједан">
 <!ENTITY sendtophoneFileServer.Custom "Прилагођени">
 <!ENTITY sendtophoneFileServer.Disclaimer "Напомена: ми, аутори додатка FoxToPhone, нсимо повезани ни са једним хостингом наведеним овде. Требало би да прочитате њихове услове коришћења пре него што их почнете користити.">
+<!ENTITY sendtophonePhoneAccounts.label "Налози у телефону">
+<!ENTITY sendtophonePhoneAccounts.description "Ако на својим уређајима користите више налога за Google сервере, можете да се пребацујете између њих, када их једном направите овде.">
+<!ENTITY sendtophonePhoneAccounts.add "Додај нови">
+<!ENTITY sendtophonePhoneAccounts.rename "Преименуј">
+<!ENTITY sendtophonePhoneAccounts.remove "Уклони">

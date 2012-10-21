@@ -71,7 +71,6 @@
 				<menulist id="extensionsSendToPhoneFileServer">
 					<menupopup>
 						<menuitem value="" label="&sendtophoneFileServer.None;" />
-						<menuitem value="http://min.us" label="Min.us" />
 						<menuitem value="Custom" label="&sendtophoneFileServer.Custom;" />
 					</menupopup>
 				</menulist>

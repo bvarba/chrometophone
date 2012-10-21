@@ -1,5 +1,8 @@
 "use strict";
 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+
 let foxToPhonePreferences =
 {
 	load: function()
@@ -11,10 +14,6 @@ let foxToPhonePreferences =
 		switch (fileServerUrl)
 		{
 			case '':
-				fileserverMenuList.value = fileServerUrl;
-				break;
-
-			case 'http://min.us':
 				fileserverMenuList.value = fileServerUrl;
 				break;
 
@@ -53,8 +52,8 @@ let foxToPhonePreferences =
 		while (accountsList.getRowCount() >0)
 			accountsList.removeItemAt(0);
 
-		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-						.getService(Components.interfaces.nsIPrefService)
+		this.prefs = Cc["@mozilla.org/preferences-service;1"]
+						.getService(Ci.nsIPrefService)
 						.getBranch("extensions.sendtophone.") ;
 
 		var accounts = this.prefs.getCharPref("accounts").split(";");
@@ -73,8 +72,8 @@ let foxToPhonePreferences =
 	{
 		if (!this.strings)
 		{
-			this.strings = Components.classes["@mozilla.org/intl/stringbundle;1"]
-						.getService(Components.interfaces.nsIStringBundleService)
+			this.strings = Cc["@mozilla.org/intl/stringbundle;1"]
+						.getService(Ci.nsIStringBundleService)
 						.createBundle("chrome://sendtophone/locale/overlay.properties");
 		}
 
@@ -98,8 +97,8 @@ let foxToPhonePreferences =
 			n++;
 
 		var input = {value:"Phone " + n};
-		if (Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-						.getService(Components.interfaces.nsIPromptService)
+		if (Cc["@mozilla.org/embedcomp/prompt-service;1"]
+						.getService(Ci.nsIPromptService)
 						.prompt( null, this.getString("SendToPhoneTitle"), this.getString("PhoneAccountPromptAdd"), input, null, {value: false}))
 		{
 
@@ -118,8 +117,8 @@ let foxToPhonePreferences =
 		{
 			var item = accountsList.selectedItems[i],
 				input = {value:item.label},
-				ok = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-						.getService(Components.interfaces.nsIPromptService)
+				ok = Cc["@mozilla.org/embedcomp/prompt-service;1"]
+						.getService(Ci.nsIPromptService)
 						.prompt( null, this.getString("SendToPhoneTitle"), this.getString("PhoneAccountPromptRename"), input, null, {value: false});
 
 			if (!ok)
@@ -140,8 +139,8 @@ let foxToPhonePreferences =
 		{
 			var item = accountsList.selectedItems[i],
 				title = item.label;
-			if (!Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-				.getService(Components.interfaces.nsIPromptService)
+			if (!Cc["@mozilla.org/embedcomp/prompt-service;1"]
+				.getService(Ci.nsIPromptService)
 				.confirm( null, this.getString("SendToPhoneTitle"), this.getString("PhoneAccountPromptRemove") + "\r\n" + title))
 				return;
 

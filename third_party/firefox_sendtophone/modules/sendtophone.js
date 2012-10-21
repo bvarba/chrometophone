@@ -466,12 +466,6 @@ var sendtophoneCore = {
 			return;
 		}
 
-		if ( uri == "http://min.us" )
-		{
-			Minus.SendFile(nsFile, callback);
-			return;
-		}
-
 		this.sendFileXHR( nsFile, callback, uri, 'upload', function(target, uploadName)
 		{
 			var body = target.responseXML,
@@ -612,45 +606,6 @@ var sendtophoneCore = {
 		}
 
 	}
-};
-
-// http://min.us/
-var Minus = {
-	prefix: 'http://min.us/api/',
-
-	SendFile : function(nsFile, callback) {
-		// Create a gallery
-		sendtophoneCore.processXHR( Minus.prefix + 'CreateGallery', 'GET', null, null, function(req) {
-			var body = req.responseText;
-
-			if (body.substring(0, 1) != '{')
-			{
-				sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
-				return;
-			}
-
-			var gallery = JSON.parse( body );
-			// Send the file
-			sendtophoneCore.sendFileXHR(nsFile, callback, Minus.prefix +
-				'UploadItem?editor_id=' + gallery.editor_id + '&key=OK&filename=' + encodeURIComponent(nsFile.leafName), 'file',
-				function(target, uploadName)
-				{
-					var body = target.responseText;
-					if (body.substring(0, 1) != '{')
-					{
-						sendtophoneCore.alert(sendtophoneCore.getString("ErrorOnSend") + ' (status ' + req.status + ')\r\n' + body);
-						return;
-					}
-					var file = JSON.parse( body );
-//					var url = "http://k.min.us/j" + file.id;
-					var url = "http://min.us/m" + gallery.reader_id;
-					sendtophoneCore.send(uploadName, url, "");
-				});
-
-
-		});
-
-    }
 };
 
 /* Zipping functions */
