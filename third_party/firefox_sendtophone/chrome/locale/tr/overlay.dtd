@@ -1,0 +1,34 @@
+<!ENTITY sendtophoneToolbarButton.label "Fox To Phone">
+<!ENTITY sendtophoneToolbarButton.tooltip "Bu sayfayı Android telefonuna gönder">
+<!ENTITY sendtophoneContext.label "Bu linki Android'e gönder">
+<!ENTITY sendtophoneContext.accesskey "A">
+<!ENTITY sendtophoneContextImage.label "Bu resmi Android'e gönder">
+<!ENTITY sendtophoneContextImage.accesskey "A">
+<!ENTITY sendtophoneContextText.label "Bu metni Android'e gönder">
+<!ENTITY sendtophoneContextText.accesskey "A">
+<!ENTITY sendtophoneContextPage.label "Bu sayfayı Android'e gönder">
+<!ENTITY sendtophoneContextPage.accesskey "A">
+<!ENTITY sendtophoneContextLogout.label "Çıkış">
+<!ENTITY sendtophoneContextLogout.accesskey "L">
+<!ENTITY sendtophoneOptions.title "Fox To Phone Seçenekleri">
+<!ENTITY sendtophoneProtocols.label "Protokoller">
+<!ENTITY sendtophoneContextSendFile.label "Dosyaya Gönder">
+<!ENTITY sendtophoneContextSendFile.accesskey "S">
+<!ENTITY sendtophoneContextSendFolder.label "Klasöre Gönder">
+<!ENTITY sendtophoneContextSendFolder.accesskey "F">
+<!ENTITY sendtophoneContextQrImage.label "Çözümlenmiş QR Bağlantısını Android'e Gönder">
+<!ENTITY sendtophoneContextQrImage.accesskey "Q">
+<!ENTITY sendtophoneContextSendClipboard.label "Panoya Gönder">
+<!ENTITY sendtophoneContextSendClipboard.accesskey "C">
+<!ENTITY sendtophoneContextVideo.label "Videoyu Andoid'e Gönder">
+<!ENTITY sendtophoneContextVideo.accesskey "V">
+<!ENTITY sendtophoneFileTransfers.label "Dosya aktarımları">
+<!ENTITY sendtophoneFileServer.label "Sunucu">
+<!ENTITY sendtophoneFileServer.None "Hiç">
+<!ENTITY sendtophoneFileServer.Custom "Özel">
+<!ENTITY sendtophoneFileServer.Disclaimer "Yasal Uyarı: Bizim (FoxToPhone geliştiricileri) burada listelenen üçüncü taraf barındırma hizmetleriyle bağlantımız yoktur. Bunları kullanmadan önce servisin kendi koşullarını okumalısınız.">
+<!ENTITY sendtophonePhoneAccounts.label "Telefon hesapları">
+<!ENTITY sendtophonePhoneAccounts.description "Eğer cihazınızda birkaç Google hesabı kullanıyorsanız, burada oluşturduktan sonra bunlar arasında geçiş yapabilirsiniz.">
+<!ENTITY sendtophonePhoneAccounts.add "Yeni ekle">
+<!ENTITY sendtophonePhoneAccounts.rename "Yeniden adlandır">
+<!ENTITY sendtophonePhoneAccounts.remove "Kaldır">
