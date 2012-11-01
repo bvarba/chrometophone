@@ -11,6 +11,13 @@ let foxToPhonePreferences =
 
 		let fileserverMenuList = document.getElementById("extensionsSendToPhoneFileServer") ;
 
+		// Remove old setting as it's no longer working
+		if ( fileServerUrl == "http://min.us" )
+		{
+			document.getElementById("extensions.sendtophone.fileServerUrl").value = "";
+			fileServerUrl = "";
+		}
+
 		switch (fileServerUrl)
 		{
 			case '':

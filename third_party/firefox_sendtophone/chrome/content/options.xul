@@ -61,7 +61,7 @@
 
 	</groupbox>
 
-		<groupbox style="padding:1em; min-height:10em;">
+		<groupbox style="padding:1em; min-height:11em;">
 			<caption label="&sendtophoneFileTransfers.label;" />
 			<hbox align="center">
 				<label value="&sendtophoneFileServer.label;" 
@@ -75,7 +75,7 @@
 					</menupopup>
 				</menulist>
 
-				<description style="width:300px; height:3em;" id="foxtophoneDisclaimer">
+				<description style="width:300px; min-height:4em;" id="foxtophoneDisclaimer">
 				&sendtophoneFileServer.Disclaimer;
 				</description>
 			</hbox>

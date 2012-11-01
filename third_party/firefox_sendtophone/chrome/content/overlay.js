@@ -97,7 +97,7 @@ var sendtophone = {
 				break;
 			case 'text':
 				title = "Selection";
-				url = 'http://google.com/';
+				url = 'http://www.foxtophone.com/text-copied/';
 				var input = gContextMenu.target;
 				if (gContextMenu.onTextInput && input && input.value)
 				{
@@ -317,7 +317,7 @@ var sendtophone = {
 
 		// Send it.
 		if (pastetext)
-			sendtophoneCore.send("Clipboard", "http://google.com", pastetext);
+			sendtophoneCore.send("Clipboard", "http://www.foxtophone.com/text-copied/", pastetext);
 	},
 
 	logout: function()

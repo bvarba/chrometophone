@@ -211,6 +211,13 @@ var sendtophoneCore = {
 			return;
 		}
 
+		// Avoid USSD codes:
+		if ((/^(tel|sms(to)?):.*[^\d\s\+].*/i).test( url ))
+		{
+			this.alert("Invalid telephone number");
+			return;
+		}
+
 		var max_length = 1024;
 		if (selection.length > max_length)
 			selection = selection.substring(0, max_length);

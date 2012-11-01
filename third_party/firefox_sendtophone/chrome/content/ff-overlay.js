@@ -164,7 +164,7 @@ sendtophone.doDrop = function(event)
 	{
 		case "text/plain":
 			var plainText = dt.getData(types[0]);
-			sendtophoneCore.send("Selection", "http://google.com", plainText);
+			sendtophoneCore.send("Selection", "http://www.foxtophone.com/text-copied/", plainText);
 			break;
 
 		case "text/x-moz-url":
