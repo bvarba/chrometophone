@@ -117,8 +117,8 @@ public class HistoryActivity extends Activity implements OnChildClickListener {
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         if (requestCode == SETUP_ACTIVITY_REQUEST_CODE) {
-            SharedPreferences prefs = Prefs.get(this);
-            if (prefs.getString("deviceRegistrationID", null) == null) {
+            String gcmRegId = GCMRegistrar.getRegistrationId(this);
+            if (gcmRegId.equals("")) {
                 finish();  // user asked to exit
             }
         }
