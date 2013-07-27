@@ -13,15 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-<html>
-
-
-<script src="channel.js"></script>
-<script src="chrome_ex_oauthsimple.js"></script>
-<script src="chrome_ex_oauth.js"></script>
-<script src="send_logic.js"></script>
-<script>
 function onClickHandler(info, tab) {
   var url = info.srcUrl;
   if (url == undefined) url = info.linkUrl;
@@ -47,12 +38,9 @@ function onClickHandler(info, tab) {
 if (chrome.contextMenus) {
   chrome.contextMenus.create({'title': chrome.i18n.getMessage('app_name_short'),
                               'documentUrlPatterns': [ 'http://*/*', 'https://*/*' ],
-                              'onclick': onClickHandler,
-                              'contexts': ['link', 'selection', 'image', 'video', 'audio']});
+                              'contexts': ['link', 'selection', 'image', 'video', 'audio'],
+                              'id': '0'});
+  chrome.contextMenus.onClicked.addListener(onClickHandler);
 }
 
 initializeBrowserChannel();
-
-</script>
-
-</html>

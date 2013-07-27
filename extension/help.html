@@ -32,44 +32,27 @@ body, td {
 <script src="chrome_ex_oauthsimple.js"></script>
 <script src="chrome_ex_oauth.js"></script>
 <script src="send_logic.js"></script>
-
-<script type="text/javascript">
-  function loadHandler() {
-    if (oauth.hasToken()) {
-      document.getElementById('sign_in_out_div').innerHTML =
-          '<a href="help.html" onclick="chrome.extension.getBackgroundPage().closeBrowserChannel(); oauth.clearTokens()">' + chrome.i18n.getMessage('sign_out_message');
-      if (document.location.hash == '#just_signed_in') {
-        document.getElementById('just_signed_in_div').innerHTML = '<p><b><font color="#00A000">' +
-            chrome.i18n.getMessage('signed_in_message') + '</font></b></p>';
-      }
-    } else {
-      var sign_in_message = chrome.i18n.getMessage('sign_in_message');
-      sign_in_message = sign_in_message.substring(0, 1).toUpperCase() + sign_in_message.substring(1);  // TODO: Get a new title case string translated
-      document.getElementById('sign_in_out_div').innerHTML =
-          '<a href="oauth_interstitial.html">' + sign_in_message;
-    }
-  }
-</script>
+<script src="help.js"></script>
 </head>
 
-<body onload="loadHandler()">
+<body>
 <div id="sign_in_out_div"></div>
 <b><div id="msg"></div></b><a id="signout" href="#" style="color: gray;"></a></p>
 <h1><img src="icon_128.png" width="64" height="64" valign="bottom">&nbsp;Google Chrome to Phone Extension</h1>
 
 <div id="just_signed_in_div"></div>
 
-<h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_title_message'));</script></h2>
-<p style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('about_message'));</script></p>
+<h2 style="padding-left: 10px" i18n-message="about_title_message"></h2>
+<p style="padding-left: 10px" i18n-message="about_message"></p>
 
-<h2 style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('features_title_message'));</script></h2>
+<h2 style="padding-left: 10px" i18n-message="features_title_message"></h2>
 
 <ul>
-  <li><script>document.write(chrome.i18n.getMessage('features_message1'));</script></li>
-  <li><script>document.write(chrome.i18n.getMessage('features_message2'));</script></li>
-  <li><script>document.write(chrome.i18n.getMessage('features_message3'));</script></li>
-  <li><script>document.write(chrome.i18n.getMessage('features_message4'));</script></li>
-  <li><script>document.write(chrome.i18n.getMessage('features_message5'));</script></li>
+  <li i18n-message="features_message1"></li>
+  <li i18n-message="features_message2"></li>
+  <li i18n-message="features_message3"></li>
+  <li i18n-message="features_message4"></li>
+  <li i18n-message="features_message5"></li>
 </ul>
 
 <table width="1131px">
@@ -80,8 +63,8 @@ body, td {
   </tr>
   <tr>
     <td></td>
-    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step2_message'));</script></td>
-    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step3_message'));</script></td>
+    <td style="padding-left: 10px" i18n-message="step2_message"></td>
+    <td style="padding-left: 10px" i18n-message="step3_message"></td>
   </tr>
   <tr>
     <td width="33%"><img id="comic4" src="comic4.png"></td>
@@ -89,16 +72,15 @@ body, td {
     <td width="33%"><img src="comic6.png"></td>
   </tr>
   <tr>
-    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step4_message'));</script>
+    <td style="padding-left: 10px"><span i18n-message="step4_message"></span>
       <b><a href="#" onmouseover="document.getElementById('comic4').src='qr_code.png'" onmouseout="document.getElementById('comic4').src='comic4.png'">(QR)</a></b>
     </td>
-    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step5_message'));</script></td>
-    <td style="padding-left: 10px"><script>document.write(chrome.i18n.getMessage('step6_message'));</script></td>
+    <td style="padding-left: 10px" i18n-message="step5_message"></td>
+    <td style="padding-left: 10px" i18n-message="step6_message"></td>
   </tr>
 </table>
 <br>
-<div align="center">&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html"><script>document.write(chrome.i18n.getMessage('about_google_message'));</script></a> - 
-<a href="http://www.google.com/privacy.html"><script>document.write(chrome.i18n.getMessage('privacy_message'));</script></a> -
-<script>document.write('<a href="http://chrome.google.com/extensions/intl/' + window.navigator.language.substring(0, 2) + '/gallery_tos.html">' + chrome.i18n.getMessage('tos_message') + '</a>');</script></div>
+<div align="center">&copy;2010 Google - <a href="http://www.google.com/intl/en/about.html" i18n-message="about_google_message"></a> - 
+<a href="http://www.google.com/privacy.html" i18n-message="privacy_message"></a> - <a id="gallery_tos_link" i18n-message="tos_message"></a></div>
 </body>
 </html>
