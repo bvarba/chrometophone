@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "Es werden nur http- oder https-Seiten unterstützt."
+  },
+  "signed_out_title_message": {
+    "message": "Abgemeldet"
+  },
+  "features_message1": {
+    "message": "Senden Sie Browserlinks von Google Chrome an Ihr Handy."
+  },
+  "help_message": {
+    "message": "Hilfe"
+  },
+  "features_message3": {
+    "message": "Über die YouTube-Links wird die YouTube-Anwendung in Android gestartet."
+  },
+  "step2_message": {
+    "message": "Suchen Sie unter 'chrome.google.com/extensions' nach 'Chrome to Phone'."
+  },
+  "step3_message": {
+    "message": "Installieren Sie die Erweiterung 'Chrome to Phone' und klicken Sie auf das Symbol in der Symbolleiste, um sich anzumelden."
+  },
+  "about_title_message": {
+    "message": "Über"
+  },
+  "features_message5": {
+    "message": "Durch die Auswahl von Text auf einer Webseite wird die Zwischenablage in Android kopiert. Halten Sie zum Einfügen in Android ein Textfeld einige Sekunden lang gedrückt."
+  },
+  "features_title_message": {
+    "message": "Funktionen"
+  },
+  "about_message": {
+    "message": "Mit 'Chrome to Phone' von Google können Sie Links und andere Informationen von Google Chrome an Ihr Android-Gerät senden. 'Chrome to Phone' besteht aus einer Google Chrome-Browsererweiterung und einer Android-Anwendung."
+  },
+  "signed_out_message": {
+    "message": "Sie sind jetzt bei 'Chrome to Phone' abgemeldet."
+  },
+  "app_desc": {
+    "message": "Mit der Erweiterung 'Chrome to Phone' können Sie Links und andere Informationen von Google Chrome an Ihr Android-Gerät senden."
+  },
+  "step5_message": {
+    "message": "Installieren Sie die Android-Anwendung 'Chrome to Phone' und schließen Sie die unkomplizierte Einrichtung ab."
+  },
+  "app_name": {
+    "message": "Google Chrome to Phone Extension"
+  },
+  "sign_in_required_message": {
+    "message": "Bei 'Chrome to Phone' $link$",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "Angemeldet. Sie können nun Links an Ihr Telefon senden."
+  },
+  "about_google_message": {
+    "message": "Über"
+  },
+  "step6_message": {
+    "message": "Klicken Sie auf das Symbol in der Symbolleiste, um den Link oder den aktuell ausgewählten Text an Ihr Telefon zu senden."
+  },
+  "error_sending_message": {
+    "message": "Fehler beim Senden an Telefon: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "Suchen Sie auf Ihrem Android-Gerät in Market nach 'Chrome to Phone'."
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "Nutzungsbedingungen"
+  },
+  "sign_in_message": {
+    "message": "anmelden"
+  },
+  "features_message4": {
+    "message": "Wenn Sie eine Telefonnummer auswählen, wird automatisch das Telefon mit der entsprechenden Nummer angezeigt."
+  },
+  "device_not_registered_message": {
+    "message": "Gerät ist nicht für Nutzer registriert."
+  },
+  "privacy_message": {
+    "message": "Datenschutz"
+  },
+  "sent_message": {
+    "message": "An Telefon gesendet"
+  },
+  "sending_message": {
+    "message": "Wird an Telefon gesendet..."
+  },
+  "features_message2": {
+    "message": "Über die Google Maps-Links wird die Google Maps-Anwendung in Android gestartet."
+  },
+  "connectivity_error_message": {
+    "message": "Verbindungsfehler"
+  },
+  "sign_out_message": {
+    "message": "Abmelden"
+  }
+}

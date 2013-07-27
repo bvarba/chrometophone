@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "僅支援 http 或 https 網頁。"
+  },
+  "signed_out_title_message": {
+    "message": "已登出"
+  },
+  "features_message1": {
+    "message": "將「Google 瀏覽器」中的瀏覽器連結傳送到您的手機。"
+  },
+  "help_message": {
+    "message": "說明"
+  },
+  "features_message3": {
+    "message": "允許以 YouTube 的連結啟動 Android 中的 YouTube 應用程式。"
+  },
+  "step2_message": {
+    "message": "瀏覽 chrome.google.com/extensions 並從中搜尋「瀏覽內容轉送手機」。"
+  },
+  "step3_message": {
+    "message": "安裝「瀏覽內容轉送手機」，並按一下工具列圖示即可登入。"
+  },
+  "about_title_message": {
+    "message": "相關資訊"
+  },
+  "features_message5": {
+    "message": "只要選取網頁中的文字，就會將剪貼簿內容複製到 Android 中 (長時間按住文字方塊即可將文字貼入 Android)。"
+  },
+  "features_title_message": {
+    "message": "功能"
+  },
+  "about_message": {
+    "message": "Google 的「瀏覽內容轉送手機」擴充功能可讓您將「Google 瀏覽器」中的連結和其他資訊傳送到您的 Android 裝置。「瀏覽內容轉送手機」包含「Google 瀏覽器」擴充功能和 Android 應用程式。"
+  },
+  "signed_out_message": {
+    "message": "您現已登出「瀏覽內容轉送手機」。"
+  },
+  "app_desc": {
+    "message": "「Google 瀏覽內容轉送手機」擴充功能可讓您將「Google 瀏覽器」中的連結和其他資訊傳送到您的 Android 裝置。"
+  },
+  "step5_message": {
+    "message": "安裝「瀏覽內容轉送手機」擴充功能所需的 Android 應用程式，並完成簡單的設定程序。"
+  },
+  "app_name": {
+    "message": "Google 瀏覽內容轉送手機擴充功能"
+  },
+  "sign_in_required_message": {
+    "message": "請$link$「瀏覽內容轉送手機」。",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "登入成功，您現在可以將連結傳送到手機了。"
+  },
+  "about_google_message": {
+    "message": "相關資訊"
+  },
+  "step6_message": {
+    "message": "按一下工具列圖示，即可將連結或目前選取的文字傳送到您的手機。"
+  },
+  "error_sending_message": {
+    "message": "將連結傳送到手機時發生錯誤：$details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "在 Android 裝置上瀏覽 Market，從中搜尋「瀏覽內容轉送手機」。"
+  },
+  "app_name_short": {
+    "message": "瀏覽內容轉送手機"
+  },
+  "tos_message": {
+    "message": "服務條款"
+  },
+  "sign_in_message": {
+    "message": "登入"
+  },
+  "features_message4": {
+    "message": "選取一組電話號碼，即可自動使用傳入的號碼啟動撥號功能。"
+  },
+  "device_not_registered_message": {
+    "message": "裝置尚未註冊供使用者使用。"
+  },
+  "privacy_message": {
+    "message": "隱私設定"
+  },
+  "sent_message": {
+    "message": "已傳送到手機。"
+  },
+  "sending_message": {
+    "message": "正在將連結傳送到手機..."
+  },
+  "features_message2": {
+    "message": "允許以「Google 地圖」的連結啟動 Android 中的「Google 地圖」應用程式。"
+  },
+  "connectivity_error_message": {
+    "message": "連線錯誤。"
+  },
+  "sign_out_message": {
+    "message": "登出"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "http 또는 https 페이지만 지원됩니다."
+  },
+  "signed_out_title_message": {
+    "message": "로그아웃했습니다"
+  },
+  "features_message1": {
+    "message": "브라우저 링크를 크롬에서 휴대전화로 전송합니다."
+  },
+  "help_message": {
+    "message": "도움말"
+  },
+  "features_message3": {
+    "message": "YouTube 링크는 Android에서 YouTube 애플리케이션을 실행합니다."
+  },
+  "step2_message": {
+    "message": "chrome.google.com/extensions에서 'Chrome to Phone'을 검색합니다."
+  },
+  "step3_message": {
+    "message": "Chrome to Phone 확장 프로그램을 설치하고 툴바 아이콘을 클릭하여 로그인합니다."
+  },
+  "about_title_message": {
+    "message": "정보"
+  },
+  "features_message5": {
+    "message": "웹페이지에서 텍스트를 선택하면 클립보드를 Android로 복사합니다. Android에 붙여넣으려면 입력란을 길게 누릅니다."
+  },
+  "features_title_message": {
+    "message": "기능"
+  },
+  "about_message": {
+    "message": "Google Chrome to Phone을 사용하면 링크 및 기타 정보를 크롬에서 개인 Android 기기로 전송할 수 있습니다. Chrome to Phone은 크롬 브라우저 확장 프로그램과 Android 애플리케이션으로 구성되어 있습니다."
+  },
+  "signed_out_message": {
+    "message": "Chrome to Phone에서 로그아웃되었습니다."
+  },
+  "app_desc": {
+    "message": "Google Chrome to Phone 확장 프로그램을 사용하면 링크 및 기타 정보를 크롬에서 개인 Android 기기로 전송할 수 있습니다."
+  },
+  "step5_message": {
+    "message": "Chrome to Phone Android 애플리케이션을 설치하고 간단한 설정 프로세스를 완료하세요."
+  },
+  "app_name": {
+    "message": "Google Chrome to Phone 확장 프로그램"
+  },
+  "sign_in_required_message": {
+    "message": "Chrome to Phone으로 $link$하세요.",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "로그인되었습니다. 이제 휴대전화로 링크를 전송할 준비가 되었습니다."
+  },
+  "about_google_message": {
+    "message": "정보"
+  },
+  "step6_message": {
+    "message": "링크 또는 현재 선택된 텍스트를 휴대전화로 전송하려면 툴바 아이콘을 클릭합니다."
+  },
+  "error_sending_message": {
+    "message": "휴대전화로 전송 중 오류 발생: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "Android 기기의 마켓에서 'Chrome to Phone'을 검색합니다."
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "서비스 약관"
+  },
+  "sign_in_message": {
+    "message": "로그인"
+  },
+  "features_message4": {
+    "message": "전화번호를 선택하면 입력한 번호로 다이얼러가 자동 실행됩니다."
+  },
+  "device_not_registered_message": {
+    "message": "사용자 등록되지 않은 기기입니다."
+  },
+  "privacy_message": {
+    "message": "개인정보 보호"
+  },
+  "sent_message": {
+    "message": "휴대전화로 전송했습니다."
+  },
+  "sending_message": {
+    "message": "휴대전화로 전송..."
+  },
+  "features_message2": {
+    "message": "Google 지도 링크는 Android에서 Google 지도 애플리케이션을 실행합니다."
+  },
+  "connectivity_error_message": {
+    "message": "연결 오류입니다."
+  },
+  "sign_out_message": {
+    "message": "로그아웃"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "app_name": {
+    "message": "Google Chrome to Phone Extension",
+    "description": "Name of the application"
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone",
+    "description": "Short name of the application"
+  },
+  "app_desc": {
+    "message": "Google Chrome to Phone Extension enables you to send links and other information from Chrome to your Android device.",
+    "description": "Description of the application."
+  },
+  "sending_message": {
+    "message": "Sending to phone...",
+    "description": "Notice when link is being sent to phone."
+  },
+  "sent_message": {
+    "message": "Sent to phone.",
+    "description": "Notice when link has been successfully sent to phone."
+  },
+  "error_sending_message": {
+    "message": "Error sending to phone: $details$",
+    "description": "Notice when link cannot be sent. $details$ is automatically replaced with the error text.",
+    "placeholders": {
+      "details": {
+        "content": "$1",
+        "example": "Failed to send message."
+      }
+    }
+  },
+  "sign_in_required_message": {
+    "message": "Please $link$ to Chrome to Phone.",
+    "description": "Notice when sign in is required. $link$ is automatically replaced with 'sign in'.",
+    "placeholders": {
+      "link": {
+        "content": "$1",
+        "example": "Sign in link."
+      }
+    }
+  },
+  "sign_in_message": {
+    "message": "sign in",
+    "description": "Sign in phrase used in the context of 'Please sign in to Chrome to Phone'."
+  },
+  "sign_out_message": {
+    "message": "Sign out",
+    "description": "Sign out link message."
+  }, 
+  "invalid_scheme_message": {
+    "message": "Only http or https pages supported.",
+    "description": "Notice when user attempt to send a file link."
+  },
+  "help_message": {
+    "message": "Help",
+    "description": "The help message."
+  },
+  "connectivity_error_message": {
+    "message": "Connection error.",
+    "description": "Error message when there is a connection error with the server."
+  },
+  "device_not_registered_message": {
+    "message": "Device not registered for user.",
+    "description": "Error message when we can't match a user to a device."
+  },
+  "about_title_message": {
+    "message": "About",
+    "description": "Section title in help."
+  },
+  "about_message": {
+    "message": "Chrome to Phone, from Google, enables you to send links and other information from Chrome to your Android device. Chrome to Phone is comprised of a Chrome browser extension and an Android application.",
+    "description": "About message in help."
+  },
+  "features_title_message": {
+    "message": "Features",
+    "description": "Section title in help."
+  },
+  "features_message1": {
+    "message": "Send browser links from Chrome to your phone.",
+    "description": "Feature message in help."
+  },
+  "features_message2": {
+    "message": "Google Maps links launch the Google Maps application on Android.",
+    "description": "Feature message in help."
+  },
+  "features_message3": {
+    "message": "YouTube links launch the YouTube application on Android.",
+    "description": "Feature message in help."
+  },
+  "features_message4": {
+    "message": "Selecting a phone number will automatically launch the dialer with the number populated.",
+    "description": "Feature message in help."
+  },
+  "features_message5": {
+    "message": "Selecting text on a Web page will copy the clipboard to Android (long press a text box to paste on Android).",
+    "description": "Feature message in help."
+  },
+  "step2_message": {
+    "message": "Search for 'Chrome to Phone' at chrome.google.com/extensions.",
+    "description": "Comic step 2 in help."
+  },
+  "step3_message": {
+    "message": "Install the Chrome to Phone extension and click on the toolbar icon to sign in.",
+    "description": "Comic step 3 in help."
+  },
+  "step4_message": {
+    "message": "Search for 'Chrome to Phone' in Market on your Android device.",
+    "description": "Comic step 4 in help."
+  },
+  "step5_message": {
+    "message": "Install the Chrome to Phone Android app and complete the simple set-up process.",
+    "description": "Comic step 5 in help."
+  },
+  "step6_message": {
+    "message": "Click the toolbar icon to send the link or currently selected text to your phone.",
+    "description": "Comic step 6 in help."
+  },
+  "signed_in_message": {
+    "message": "Signed in. You are now ready to send links to your phone.",
+    "description": "Signed in message."
+  },
+  "about_google_message": {
+    "message": "About",
+    "description": "About."
+  },
+  "privacy_message": {
+    "message": "Privacy",
+    "description": "Privacy."
+  },
+  "tos_message": {
+    "message": "Terms of Service",
+    "description": "Terms of Service."
+  },
+  "signed_out_title_message": {
+    "message": "Signed out",
+    "description": "Signed out section title."
+  },
+  "signed_out_message": {
+    "message": "You are now signed out of Chrome to Phone.",
+    "description": "Signed out message."
+  }
+}
