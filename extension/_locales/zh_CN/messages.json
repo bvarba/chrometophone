@@ -1,0 +1,108 @@
+{
+  "invalid_scheme_message": {
+    "message": "仅支持 http 或 https 网页。"
+  },
+  "signed_out_title_message": {
+    "message": "已退出"
+  },
+  "features_message1": {
+    "message": "将谷歌浏览器中的链接发送至手机。"
+  },
+  "help_message": {
+    "message": "帮助"
+  },
+  "features_message3": {
+    "message": "YouTube 链接可用于在 Android 上启动 YouTube 应用程序。"
+  },
+  "step2_message": {
+    "message": "在 chrome.google.com/extensions 上搜索'Chrome to Phone'（谷歌浏览器转手机）。"
+  },
+  "step3_message": {
+    "message": "安装“谷歌浏览器转手机”扩展程序，然后点击工具栏上的图标即可登录。"
+  },
+  "about_title_message": {
+    "message": "关于"
+  },
+  "features_message5": {
+    "message": "在网页上选择文本即可将剪贴板中的内容复制到 Android（长按文本框即可在 Android 上进行粘贴操作）。"
+  },
+  "features_title_message": {
+    "message": "功能"
+  },
+  "about_message": {
+    "message": "Google 推出的“谷歌浏览器转手机”可让您将谷歌浏览器中的链接和其他信息发送至 Android 设备，它由一个谷歌浏览器扩展程序和一个 Android 应用程序构成。"
+  },
+  "signed_out_message": {
+    "message": "现在您已退出“谷歌浏览器转手机”。"
+  },
+  "app_desc": {
+    "message": "“谷歌浏览器转手机”扩展程序可让您将谷歌浏览器中的链接和其他信息发送至 Android 设备。"
+  },
+  "step5_message": {
+    "message": "安装 Android 应用程序“谷歌浏览器转手机”，然后完成简单的设置过程。"
+  },
+  "app_name": {
+    "message": "“谷歌浏览器转手机”扩展程序"
+  },
+  "sign_in_required_message": {
+    "message": "请$link$ 'Chrome to Phone'（谷歌浏览器转手机）。",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "已登录。现在您可以将链接发送至手机了。"
+  },
+  "about_google_message": {
+    "message": "关于"
+  },
+  "step6_message": {
+    "message": "点击工具栏上的图标，将链接或当前选定的文本发送至手机。"
+  },
+  "error_sending_message": {
+    "message": "发送至手机时出错：$details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "通过您的 Android 设备在电子市场中搜索'Chrome to Phone'（谷歌浏览器转手机）。"
+  },
+  "app_name_short": {
+    "message": "谷歌浏览器转手机"
+  },
+  "tos_message": {
+    "message": "服务条款"
+  },
+  "sign_in_message": {
+    "message": "登录"
+  },
+  "features_message4": {
+    "message": "选择一个电话号码即可使用填入的号码自动启动拨号器。"
+  },
+  "device_not_registered_message": {
+    "message": "用户未注册该设备。"
+  },
+  "privacy_message": {
+    "message": "隐私权"
+  },
+  "sent_message": {
+    "message": "已发送至手机。"
+  },
+  "sending_message": {
+    "message": "正在发送至手机..."
+  },
+  "features_message2": {
+    "message": "Google 地图链接可用于在 Android 上启动 Google 地图应用程序。"
+  },
+  "connectivity_error_message": {
+    "message": "发生连接错误。"
+  },
+  "sign_out_message": {
+    "message": "退出"
+  }
+}

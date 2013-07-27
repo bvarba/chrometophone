@@ -1,0 +1,109 @@
+{
+  "invalid_scheme_message": {
+    "message": "対応しているのは http ページと https ページのみです。"
+  },
+  "signed_out_title_message": {
+    "message": "ログアウトしました"
+  },
+  "features_message1": {
+    "message": "ブラウザで表示中のページのリンクを Chrome から携帯端末に送信できます。"
+  },
+  "help_message": {
+    "message": "ヘルプ"
+  },
+  "features_message3": {
+    "message": "YouTube のリンクを送信すると、Android で YouTube アプリケーションが起動します。"
+  },
+  "step2_message": {
+    "message": "chrome.google.com/extensions で「Chrome to Phone」を検索します。"
+  },
+  "step3_message": {
+    "message": "Chrome to Phone 拡張機能をインストールし、ツールバー アイコンをクリックしてログインします。"
+  },
+  "about_title_message": {
+    "message": "Google について"
+  },
+  "features_message5": {
+    "message": "ウェブページ上のテキストを選択して送信すると、Android のクリップボードにコピーされます（Android でテキスト ボックスを長押しして貼り付けることができます）。"
+  },
+  "features_title_message": {
+    "message": "機能"
+  },
+  "about_message": {
+    "message": "Google の Chrome to Phone を使用すると、リンクなどの情報を Chrome から Android 搭載携帯に送信できます。Chrome to Phone を使うには、Chrome ブラウザ拡張機能と Android アプリケーションの両方をインストールします。"
+  },
+  "signed_out_message": {
+    "message": "Chrome to Phone からログアウトしました。"
+  },
+  "app_desc": {
+    "message": "Google の Chrome to Phone 拡張機能を使用すると、リンクなどの情報を Chrome から Android 搭載携帯に送信できます。"
+  },
+  "step5_message": {
+    "message": "Chrome to Phone の Android アプリケーションをインストールし、手順に従って簡単な設定を行います。"
+  },
+  "app_name": {
+    "message": "Google Chrome to Phone 拡張機能"
+  },
+  "sign_in_required_message": {
+    "message": "Chrome to Phone に$link$してください。",
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "signed_in_message": {
+    "message": "ログインしました。これで携帯端末にリンクを送信できます。"
+  },
+  "about_google_message": {
+    "message": "概要"
+  },
+  "step6_message": {
+    "message": "ツールバー アイコンをクリックして、リンクや選択したテキストを携帯端末に送信します。"
+  },
+  "error_sending_message": {
+    "message": "携帯端末への送信中にエラーが発生しました: $details$",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "step4_message": {
+    "message": "Android 搭載携帯で Android マーケットにアクセスし、「Chrome to Phone」を検索します。"
+  },
+  "app_name_short": {
+    "message": "Chrome to Phone"
+  },
+  "tos_message": {
+    "message": "利用規約"
+  },
+  "sign_in_message": {
+    "message": "ログイン"
+  },
+  "features_message4": {
+    "message": "電話番号を選択して送信すると、その番号が入力された状態で電話アプリケーションが起動します。"
+  },
+  "device_not_registered_message": {
+    "message": "携帯端末がこのユーザーで登録されていません。"
+  },
+  "privacy_message": {
+    "message": "プライバシー"
+  },
+  "sent_message": {
+    "message": "携帯端末に送信しました。"
+  },
+  "sending_message": {
+    "message": "携帯端末に送信しています..."
+  },
+  "features_message2": {
+    "message": "Google マップのリンクを送信すると、Android で Google マップ アプリケーションが起動します。"
+  },
+  "connectivity_error_message": {
+    "message": "接続エラーが発生しました。"
+  },
+  "sign_out_message": {
+    "message": "ログアウト"
+  }
+}
+
